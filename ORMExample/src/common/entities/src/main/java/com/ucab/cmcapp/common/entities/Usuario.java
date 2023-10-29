@@ -2,12 +2,7 @@ package com.ucab.cmcapp.common.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Usuario")
@@ -18,69 +13,62 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdUsuario")
-    private long idUsuario;
+    private long _idUsuario;
 
     @Column(name = "Username")
-    private String Username;
+    private String _Username;
 
     @Column(name = "NombreUsuario")
-    private String Nombre;
+    private String _Nombre;
 
-    @Column(name = "TipoUsuario")
-    private String Tipo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn( name = "user_type_id", nullable = false )
+    private UserType _userType;
 
     public Usuario() {
 
     }
 
-
-
-
-    public Usuario(long idUsuario, String username, String nombre, String tipo) {
-        this.idUsuario = idUsuario;
-        this.Username = username;
-        this.Nombre = nombre;
-        this.Tipo = tipo;
+    public Usuario(Usuario usuario){
+        _Username = usuario._Username;
+        _Nombre = usuario._Nombre;
+        _userType = usuario._userType;
     }
 
-
-
-
-    public Usuario(String username, String nombre, String tipo) {
-        this.Username = username;
-        this.Nombre = nombre;
-        this.Tipo = tipo;
+    public Usuario( long id )
+    {
+        _idUsuario = id;
     }
 
-    public long getIdUsuario() {
-        return idUsuario;
+    public long get_idUsuario() {
+        return _idUsuario;
     }
 
-    public void setIdUsuario(long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void set_idUsuario(long _idUsuario) {
+        this._idUsuario = _idUsuario;
     }
 
-    public String getUsername() {
-        return Username;
+    public String get_Username() {
+        return _Username;
     }
 
-    public void setUsername(String username) {
-        Username = username;
+    public void set_Username(String _Username) {
+        this._Username = _Username;
     }
 
-    public String getNombre() {
-        return Nombre;
+    public String get_Nombre() {
+        return _Nombre;
     }
 
-    public void setNombre(String nombre) {
-        Nombre = nombre;
+    public void set_Nombre(String _Nombre) {
+        this._Nombre = _Nombre;
     }
 
-    public String getTipo() {
-        return Tipo;
+    public UserType get_userType() {
+        return _userType;
     }
 
-    public void setTipo(String tipo) {
-        Tipo = tipo;
+    public void set_userType(UserType _userType) {
+        this._userType = _userType;
     }
 }

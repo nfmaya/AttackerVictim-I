@@ -7,7 +7,6 @@ import com.ucab.cmcapp.persistence.DaoFactory;
 import com.ucab.cmcapp.persistence.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 public class GetUserByIdCommand extends Command<User>
 {
     private static Logger _logger = LoggerFactory.getLogger( GetUserByIdCommand.class );

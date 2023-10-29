@@ -11,4 +11,9 @@ public class DaoFactory
         return new UserDao( handler );
     }
 
+    public static UsuarioDao createUsuarioDao( DBHandler handler )
+    {
+        return new UsuarioDao( handler );
+    }
+
 }
