@@ -1,3 +1,4 @@
 com\ucab\cmcapp\implementation\UsuarioService.class
 com\ucab\cmcapp\implementation\UserService.class
+com\ucab\cmcapp\implementation\AlertaService.class
 com\ucab\cmcapp\implementation\BaseService.class

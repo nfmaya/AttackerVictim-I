@@ -1,7 +1,13 @@
 package com.ucab.cmcapp.logic.commands;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
+import com.ucab.cmcapp.logic.commands.alerta.atomic.AddAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByIdCommand;
+import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByTipoAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.GetAlertaCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.AddUserCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByIdCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
@@ -88,5 +94,43 @@ public class CommandFactory
     {
         return new CreateUsuarioCommand(user);
     }
+
+
+    //Alerta
+    public static GetAlertaCommand createGetAlertaCommand(Alerta alerta)
+    {
+        return new GetAlertaCommand(alerta);
+    }
+
+    public static GetAlertaByTipoAlertaCommand createGetAlertaByTipoAlertaCommand(Alerta alerta)
+    {
+        return new GetAlertaByTipoAlertaCommand(alerta);
+    }
+
+    public static GetAlertaByTipoAlertaCommand createGetAlertaByTipoAlertaCommand(Alerta alerta, DBHandler handler)
+    {
+        return new GetAlertaByTipoAlertaCommand(alerta, handler);
+    }
+
+    public static GetAlertaByIdCommand createGetAlertaByIdCommand (DBHandler handler, long alertaId )
+    {
+        return new GetAlertaByIdCommand(handler, alertaId);
+    }
+
+    public static AddAlertaCommand createAddAlertaCommand(Alerta alerta, DBHandler handler)
+    {
+        return new AddAlertaCommand(alerta, handler);
+    }
+
+    public static AddAlertaCommand createAddAlertaCommand(Alerta alerta)
+    {
+        return new AddAlertaCommand(alerta);
+    }
+
+    public static CreateAlertaCommand createCreateAlertaCommand(Alerta alerta)
+    {
+        return new CreateAlertaCommand(alerta);
+    }
+
 
 }

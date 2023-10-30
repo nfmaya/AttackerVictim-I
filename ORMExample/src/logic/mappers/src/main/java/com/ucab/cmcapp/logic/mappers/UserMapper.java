@@ -25,6 +25,7 @@ public class UserMapper extends BaseMapper
         entity.setTermCondition(dto.getTermCondition());
         entity.setUid( dto.getUid() );
 
+        //AQUI VA LA EL OBJETO DE LA TABLA RELACIONADA
         if ( Objects.nonNull( dto.getUserTypeDto() ) )
         {
             entity.setUserType( UserTypeMapper.mapDtoToEntity( dto.getUserTypeDto() ) );
@@ -48,6 +49,8 @@ public class UserMapper extends BaseMapper
         dto.setId( entity.getId());
         dto.setEmail(  entity.getEmail() );
         dto.setUid( entity.getUid() );
+
+        //AQUI VA LA EL OBJETO DE LA TABLA RELACIONADA
         if(Objects.nonNull(entity.getUserType()))
             dto.setUserTypeDto( UserTypeMapper.mapEntityToDto( entity.getUserType() ));
 

@@ -1,4 +1,5 @@
 com\ucab\cmcapp\logic\mappers\UserMapper.class
+com\ucab\cmcapp\logic\mappers\AlertaMapper.class
 com\ucab\cmcapp\logic\mappers\UsuarioMapper.class
 com\ucab\cmcapp\logic\mappers\UserTypeMapper.class
 com\ucab\cmcapp\logic\mappers\BaseMapper.class

@@ -49,4 +49,18 @@ public class EntityFactory
     {
         return new UserType(id);
     }
+
+
+    public static Alerta createAlerta()
+    {
+        return new Alerta();
+    }
+
+    /**
+     * Method that returns an instance of User class
+     */
+    public static Alerta createAlerta(long id)
+    {
+        return new Alerta(id);
+    }
 }

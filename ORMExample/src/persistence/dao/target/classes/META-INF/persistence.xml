@@ -8,6 +8,7 @@
         <class>com.ucab.cmcapp.common.entities.User</class>
         <class>com.ucab.cmcapp.common.entities.UserType</class>
         <class>com.ucab.cmcapp.common.entities.Usuario</class>
+        <class>com.ucab.cmcapp.common.entities.Alerta</class>
 
         <properties>
             <property name="hibernate.generate_statistics" value="true"/>
@@ -17,11 +18,11 @@
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="false" />
             <!--property name="hibernate.hbm2ddl.auto" value="none" /-->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create" />
+            <!--property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create" /-->
          </properties>
 
-        <!--SIN COMENTARIO: NO HACE NADA. COMENTADO: CREA LAS TABLAS/-->
+        <!--SIN COMENTARIO: modifica. COMENTADO: no hace nada/-->
 
     </persistence-unit>
 </persistence>
