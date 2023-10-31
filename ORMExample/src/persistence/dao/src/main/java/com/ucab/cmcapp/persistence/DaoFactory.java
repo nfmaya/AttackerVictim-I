@@ -21,5 +21,10 @@ public class DaoFactory
         return new AlertaDao( handler );
     }
 
+    public static DistanciaAlejamientoDao createDistanciaAlejamientoDao( DBHandler handler )
+    {
+        return new DistanciaAlejamientoDao( handler );
+    }
+
 
 }

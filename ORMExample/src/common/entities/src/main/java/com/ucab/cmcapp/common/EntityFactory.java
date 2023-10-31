@@ -56,11 +56,21 @@ public class EntityFactory
         return new Alerta();
     }
 
-    /**
-     * Method that returns an instance of User class
-     */
+
     public static Alerta createAlerta(long id)
     {
         return new Alerta(id);
+    }
+
+
+    public static DistanciaAlejamiento createDistanciaAlejamiento()
+    {
+        return new DistanciaAlejamiento();
+    }
+
+
+    public static DistanciaAlejamiento createDistanciaAlejamiento(long id)
+    {
+        return new DistanciaAlejamiento(id);
     }
 }

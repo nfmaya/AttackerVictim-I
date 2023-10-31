@@ -1,4 +1,5 @@
 com\ucab\cmcapp\persistence\dao\UserDao.class
+com\ucab\cmcapp\persistence\dao\DistanciaAlejamientoDao.class
 com\ucab\cmcapp\persistence\dao\BaseDao.class
 com\ucab\cmcapp\persistence\DaoFactory.class
 com\ucab\cmcapp\persistence\dao\UsuarioDao.class

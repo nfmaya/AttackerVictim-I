@@ -1,8 +1,14 @@
 package com.ucab.cmcapp.logic.commands;
 
 import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.AddDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByIdCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByUsuariosCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.AddAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByIdCommand;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByTipoAlertaCommand;
@@ -130,6 +136,44 @@ public class CommandFactory
     public static CreateAlertaCommand createCreateAlertaCommand(Alerta alerta)
     {
         return new CreateAlertaCommand(alerta);
+    }
+
+
+    //DistanciaAlejamiento
+
+    public static GetDistanciaAlejamientoCommand createGetDistanciaAlejamientoCommand(DistanciaAlejamiento distancia)
+    {
+        return new GetDistanciaAlejamientoCommand(distancia);
+    }
+
+    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DistanciaAlejamiento distancia)
+    {
+        return new GetDistanciaAlejamientoByUsuariosCommand(distancia);
+    }
+
+    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DistanciaAlejamiento distancia, DBHandler handler)
+    {
+        return new GetDistanciaAlejamientoByUsuariosCommand(distancia, handler);
+    }
+
+    public static GetDistanciaAlejamientoByIdCommand createGetDistanciaAlejamientoByIdCommand (DBHandler handler, long distanciaId )
+    {
+        return new GetDistanciaAlejamientoByIdCommand(handler, distanciaId);
+    }
+
+    public static AddDistanciaAlejamientoCommand createAddDistanciaAlejamientoCommand(DistanciaAlejamiento distancia, DBHandler handler)
+    {
+        return new AddDistanciaAlejamientoCommand(distancia, handler);
+    }
+
+    public static AddDistanciaAlejamientoCommand createAddDistanciaAlejamientoCommand(DistanciaAlejamiento distancia)
+    {
+        return new AddDistanciaAlejamientoCommand(distancia);
+    }
+
+    public static CreateDistanciaAlejamientoCommand createCreateDistanciaAlejamientoCommand(DistanciaAlejamiento distancia)
+    {
+        return new CreateDistanciaAlejamientoCommand(distancia);
     }
 
 
