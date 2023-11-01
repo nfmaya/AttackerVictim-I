@@ -17,7 +17,7 @@ public class UsuarioMapper extends BaseMapper
 
     public static Usuario mapDtoToEntity(UsuarioDto dto ) throws ParseException
     {
-        Usuario entity = EntityFactory.createUsuario();
+        Usuario entity = EntityFactory.createUsuario(dto.getId());
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in UsuarioMapper.mapDtoToEntity: dto {}", dto );
