@@ -24,7 +24,7 @@ public class Alerta implements Serializable {
     @Column(name = "TipoAlerta")
     private String _tipoAlerta;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "Victima_id")
     private Usuario _victima;
 
