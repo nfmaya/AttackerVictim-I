@@ -32,7 +32,7 @@ public class AlertaMapper extends BaseMapper
         }
 
         //region Instrumentation DEBUG
-        _logger.debug( "Leaving UsuarioMapper.mapDtoToEntity: entity {}", entity );
+        _logger.debug( "Leaving AlertaMapper.mapDtoToEntity: entity {}", entity );
         //endregion
 
         return entity;
@@ -47,6 +47,7 @@ public class AlertaMapper extends BaseMapper
         //endregion
 
         dto.setId( entity.get_IdAlerta());
+
         dto.set_tipoAlerta(  entity.get_tipoAlerta() );
         dto.set_fechaHora( entity.get_fechaHora() );
         if(Objects.nonNull(entity.get_victima()))

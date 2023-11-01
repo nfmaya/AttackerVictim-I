@@ -34,8 +34,8 @@ public class AlertaService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( AlertaService.class );
 
     @GET
-    @Path( "/{IdAlerta}" )
-    public AlertaDto getAlerta(@PathParam( "IdAlerta" ) long alertaId )
+    @Path( "/{id}" )
+    public AlertaDto getAlerta(@PathParam( "id" ) long alertaId )
     {
         Alerta entity;
         AlertaDto response;

@@ -25,7 +25,6 @@ public class UsuarioMapper extends BaseMapper
 
         entity.set_Username( dto.get_Username() );
         entity.set_Nombre(dto.get_Nombre());
-        entity.set_idUsuario( dto.get_idUsuario() );
 
         if ( Objects.nonNull( dto.getUsuarioTypeDto() ) )
         {

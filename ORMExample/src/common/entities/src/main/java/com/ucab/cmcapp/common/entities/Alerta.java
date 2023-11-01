@@ -1,5 +1,6 @@
 package com.ucab.cmcapp.common.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -8,11 +9,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Alertas")
-public class Alerta {
+public class Alerta implements Serializable {
 
     /**
      *
      */
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

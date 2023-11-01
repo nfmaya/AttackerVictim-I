@@ -3,7 +3,6 @@ package com.ucab.cmcapp.logic.dtos;
 
 public class UsuarioDto extends BaseDto
 {
-    private long _idUsuario;
     private String _Username;
     private String _Nombre;
     private UserTypeDto _userType;
@@ -18,13 +17,7 @@ public class UsuarioDto extends BaseDto
         super( id );
     }
 
-    public long get_idUsuario() {
-        return _idUsuario;
-    }
 
-    public void set_idUsuario(long _idUsuario) {
-        this._idUsuario = _idUsuario;
-    }
 
     public String get_Username() {
         return _Username;

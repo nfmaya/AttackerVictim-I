@@ -10,12 +10,13 @@ public class AlertaDto extends BaseDto
     private Date _fechaHora;
     private UsuarioDto _usuario;
 
-
     public AlertaDto()
     {
     }
 
-    public AlertaDto( long id )
+
+
+    public AlertaDto(long id )
     {
         super( id );
     }

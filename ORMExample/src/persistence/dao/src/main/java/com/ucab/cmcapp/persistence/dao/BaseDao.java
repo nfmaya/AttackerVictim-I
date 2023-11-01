@@ -78,6 +78,28 @@ public abstract class BaseDao<T>
         return entity;
     }
 
+    public T insert2( T entity )
+    {
+        setEntityManager( _dbHandler.getSession() );
+        T result;
+
+        //implementar logger
+
+        try
+        {
+            getEntityManager().merge( entity );
+            getEntityManager().flush();
+            getEntityManager().refresh( entity );
+        }
+        catch ( Exception e )
+        {
+            //implementar logger
+            throw new InsertException( e.getMessage() + "Entity: " + entity.toString() );
+        }
+
+        //implementar logger
+        return entity;
+    }
     /**
      * Name:                  insertMultiple
      * Description:           method for adding multiple records in the DB
