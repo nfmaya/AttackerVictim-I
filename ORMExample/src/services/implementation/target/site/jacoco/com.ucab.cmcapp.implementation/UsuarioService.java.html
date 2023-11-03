@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsuarioService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">implementation</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.implementation</a> &gt; <span class="el_source">UsuarioService.java</span></div><h1>UsuarioService.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.implementation;
+
+import com.ucab.cmcapp.common.entities.User;
+import com.ucab.cmcapp.common.entities.Usuario;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
+import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
+import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
+import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByUsernameCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.CreateUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
+import com.ucab.cmcapp.logic.dtos.UserDto;
+import com.ucab.cmcapp.logic.dtos.UsuarioDto;
+import com.ucab.cmcapp.logic.mappers.UserMapper;
+import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+@Path( &quot;/usuarios&quot; )
+@Produces( MediaType.APPLICATION_JSON )
+@Consumes( MediaType.APPLICATION_JSON )
+<span class="nc" id="L32">public class UsuarioService extends BaseService</span>
+{
+<span class="nc" id="L34">    private static Logger _logger = LoggerFactory.getLogger( UsuarioService.class );</span>
+
+    @GET
+    @Path( &quot;/{id}&quot; )
+    public UsuarioDto getUsuario(@PathParam( &quot;id&quot; ) long userId )
+    {
+        Usuario entity;
+        UsuarioDto response;
+<span class="nc" id="L42">        GetUsuarioCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L44">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L49">            entity = UsuarioMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L50">            command = CommandFactory.createGetUsuarioCommand( entity );</span>
+<span class="nc" id="L51">            command.execute();</span>
+<span class="nc" id="L52">            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L53">            _logger.info( &quot;Response getUsuario: {} &quot;, response );</span>
+        }
+<span class="nc" id="L55">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L57">            _logger.error(&quot;error {} getting usuario {}: {}&quot;, e.getMessage(), userId, e.getCause());</span>
+<span class="nc" id="L58">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L59">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L64">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L67">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L68">        return response;</span>
+    }
+
+
+    @GET
+    @Path( &quot;username/{username}&quot; )
+    public UsuarioDto getUsuario(@PathParam( &quot;username&quot; ) String Username )
+    {
+        Usuario entity;
+        UsuarioDto response;
+<span class="nc" id="L78">        GetUsuarioByUsernameCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L80">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L85">            entity = UsuarioMapper.mapDtoToEntityUsername( Username );</span>
+<span class="nc" id="L86">            command = CommandFactory.createGetUsuarioByUsernameCommand( entity );</span>
+<span class="nc" id="L87">            command.execute();</span>
+<span class="nc" id="L88">            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L89">            _logger.info( &quot;Response getUsuario: {} &quot;, response );</span>
+        }
+<span class="nc" id="L91">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L93">            _logger.error(&quot;error {} getting usuario {}: {}&quot;, e.getMessage(), Username, e.getCause());</span>
+<span class="nc" id="L94">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L95">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L100">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L103">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L104">        return response;</span>
+    }
+
+    @POST
+    public UsuarioDto addUsuario( UsuarioDto userDto )
+    {
+        Usuario entity;
+        UsuarioDto response;
+<span class="nc" id="L112">        CreateUsuarioCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L114">        _logger.debug( &quot;Get in UsuarioService.addUsuario&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L119">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L120">            command = CommandFactory.createCreateUsuarioCommand( entity );</span>
+<span class="nc" id="L121">            command.execute();</span>
+<span class="nc" id="L122">            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L123">            _logger.info( &quot;Response addUsuario: {} &quot;, response );</span>
+        }
+<span class="nc" id="L125">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L127">            _logger.error(&quot;error {} adding usuario: {}&quot;, e.getMessage(), e.getCause());</span>
+<span class="nc" id="L128">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L129">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L134">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L137">        _logger.debug( &quot;Leaving UsuarioService.addUsuario&quot; );</span>
+<span class="nc" id="L138">        return response;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

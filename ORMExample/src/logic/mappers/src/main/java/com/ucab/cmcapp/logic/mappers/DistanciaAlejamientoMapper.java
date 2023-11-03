@@ -25,7 +25,6 @@ public class DistanciaAlejamientoMapper extends BaseMapper
         //endregion
 
         entity.set_distanciaMinima( dto.get_distanciaMinima() );
-        entity.set_IdAlej( dto.getId() );
 
         //AQUI VA LA EL OBJETO DE LA TABLA RELACIONADA
         if ( Objects.nonNull( dto.get_agresor() ) )
