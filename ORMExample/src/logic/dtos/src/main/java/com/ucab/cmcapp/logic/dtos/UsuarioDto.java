@@ -1,11 +1,18 @@
 package com.ucab.cmcapp.logic.dtos;
 
 
+import java.util.List;
+
+
+
+
 public class UsuarioDto extends BaseDto
 {
     private String _Username;
     private String _Nombre;
     private UserTypeDto _userType;
+
+    //private List<AlertaDto> alertas;
 
 
     public UsuarioDto()
@@ -45,5 +52,14 @@ public class UsuarioDto extends BaseDto
     {
         _userType = userType;
     }
+/*
+    public List<AlertaDto> getAlertas() {
+        return alertas;
+    }
 
+    public void setAlertas(List<AlertaDto> alertas) {
+        this.alertas = alertas;
+    }
+
+ */
 }

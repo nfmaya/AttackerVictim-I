@@ -8,7 +8,9 @@ import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByUsernameCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.CreateUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.UserMapper;
@@ -135,6 +137,77 @@ public class UsuarioService extends BaseService
         }
 
         _logger.debug( "Leaving UsuarioService.addUsuario" );
+        return response;
+    }
+
+    @POST
+    @Path("/delete")
+    public UsuarioDto deleteUsuario( UsuarioDto userDto )
+    {
+        Usuario entity;
+        UsuarioDto response;
+        DeleteUsuarioCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioService.deleteUsuario" );
+        //endregion
+
+        try
+        {
+            entity = UsuarioMapper.mapDtoToEntity( userDto );
+            command = CommandFactory.createDeleteUsuarioCommand( entity );
+            command.execute();
+            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );
+            _logger.info( "Response deleteUsuario: {} ", response );
+        }
+        catch ( Exception e )
+        {
+            _logger.error("error {} deleting usuario: {}", e.getMessage(), e.getCause());
+            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
+                    entity( e ).build() );
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving UsuarioService.deleteUsuario" );
+        return response;
+    }
+
+
+    @POST
+    @Path("/update")
+    public UsuarioDto updateUsuario( UsuarioDto userDto )
+    {
+        Usuario entity;
+        UsuarioDto response;
+        UpdateUsuarioCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioService.deleteUsuario" );
+        //endregion
+
+        try
+        {
+            entity = UsuarioMapper.mapDtoToEntity( userDto );
+            command = CommandFactory.createUpdateUsuarioCommand( entity );
+            command.execute();
+            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );
+            _logger.info( "Response deleteUsuario: {} ", response );
+        }
+        catch ( Exception e )
+        {
+            _logger.error("error {} deleting usuario: {}", e.getMessage(), e.getCause());
+            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
+                    entity( e ).build() );
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving UsuarioService.deleteUsuario" );
         return response;
     }
 }

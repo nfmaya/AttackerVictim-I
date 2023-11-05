@@ -1,14 +1,17 @@
 package com.ucab.cmcapp.logic.mappers;
 
 import com.ucab.cmcapp.common.EntityFactory;
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
+import com.ucab.cmcapp.logic.dtos.AlertaDto;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Objects;
 
 public class UsuarioMapper extends BaseMapper
@@ -30,6 +33,12 @@ public class UsuarioMapper extends BaseMapper
         {
             entity.set_userType( UserTypeMapper.mapDtoToEntity( dto.getUsuarioTypeDto() ) );
         }
+/*
+        if (Objects.nonNull(dto.getAlertas())) {
+            entity.setAlertas(AlertaMapper.mapDtosToEntities(dto.getAlertas()));
+        }
+
+ */
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving UsuarioMapper.mapDtoToEntity: entity {}", entity );
@@ -51,6 +60,12 @@ public class UsuarioMapper extends BaseMapper
         dto.set_Nombre( entity.get_Nombre() );
         if(Objects.nonNull(entity.get_userType()))
             dto.setUsuarioTypeDto( UserTypeMapper.mapEntityToDto( entity.get_userType() ));
+/*
+        if (Objects.nonNull(entity.getAlertas())) {
+            dto.setAlertas(AlertaMapper.mapEntitiesToDtos(entity.getAlertas()));
+        }
+
+ */
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving UsuarioMapper.mapEntityToDto: dto {}", dto );

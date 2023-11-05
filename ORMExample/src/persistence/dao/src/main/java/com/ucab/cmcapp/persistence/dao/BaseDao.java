@@ -78,28 +78,7 @@ public abstract class BaseDao<T>
         return entity;
     }
 
-    public T insert2( T entity )
-    {
-        setEntityManager( _dbHandler.getSession() );
-        T result;
 
-        //implementar logger
-
-        try
-        {
-            getEntityManager().merge( entity );
-            getEntityManager().flush();
-            getEntityManager().refresh( entity );
-        }
-        catch ( Exception e )
-        {
-            //implementar logger
-            throw new InsertException( e.getMessage() + "Entity: " + entity.toString() );
-        }
-
-        //implementar logger
-        return entity;
-    }
     /**
      * Name:                  insertMultiple
      * Description:           method for adding multiple records in the DB
@@ -146,7 +125,7 @@ public abstract class BaseDao<T>
      *
      * @param entity entity
      */
-    public T delete( T entity )
+    public T delete(T entity )
     {
         setEntityManager( _dbHandler.getSession() );
         //implementar logger
@@ -154,6 +133,9 @@ public abstract class BaseDao<T>
         {
             getEntityManager().remove( entity );
             getEntityManager().flush();
+
+            _logger.debug( "DELETING: {}",entity);
+
         }
         catch ( Exception e )
         {
@@ -225,6 +207,14 @@ public abstract class BaseDao<T>
 
         //implementar logger
         return entity;
+    }
+
+    public void findDelete(Long id, Class<T> type){
+        T entity;
+
+        entity = find(id,type);
+
+        delete(entity);
     }
 
     /**

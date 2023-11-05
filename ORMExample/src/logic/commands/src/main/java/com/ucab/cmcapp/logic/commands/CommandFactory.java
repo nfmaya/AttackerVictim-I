@@ -19,11 +19,11 @@ import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByIdCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
-import com.ucab.cmcapp.logic.commands.usuario.atomic.AddUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByIdCommand;
-import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByUsernameCommand;
+import com.ucab.cmcapp.logic.commands.usuario.atomic.*;
 import com.ucab.cmcapp.logic.commands.usuario.composite.CreateUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.persistence.DBHandler;
 
 public class CommandFactory
@@ -81,10 +81,42 @@ public class CommandFactory
         return new GetUsuarioByUsernameCommand(user, handler);
     }
 
+    public static DeleteUsuarioByIdCommand createDeleteUsuarioByIdCommand(Usuario user, DBHandler handler)
+    {
+        return new DeleteUsuarioByIdCommand(user, handler);
+    }
+
+    public static DeleteUsuarioByIdCommand createDeleteUsuarioByIdCommand(Usuario user)
+    {
+        return new DeleteUsuarioByIdCommand(user);
+    }
+
+    public static DeleteUsuarioCommand createDeleteUsuarioCommand(Usuario user)
+    {
+        return new DeleteUsuarioCommand(user);
+    }
+
+    public static UpdateUsuarioByIdCommand createUpdateUsuarioByIdCommand(Usuario user, DBHandler handler)
+    {
+        return new UpdateUsuarioByIdCommand(user, handler);
+    }
+
+    public static UpdateUsuarioByIdCommand createUpdateUsuarioByIdCommand(Usuario user)
+    {
+        return new UpdateUsuarioByIdCommand(user);
+    }
+
+    public static UpdateUsuarioCommand createUpdateUsuarioCommand(Usuario user)
+    {
+        return new UpdateUsuarioCommand(user);
+    }
+
+
     public static GetUsuarioByIdCommand createGetUsuarioByIdCommand (DBHandler handler, long userId )
     {
         return new GetUsuarioByIdCommand(handler, userId);
     }
+
 
     public static AddUsuarioCommand createAddUsuarioCommand(Usuario user, DBHandler handler)
     {
