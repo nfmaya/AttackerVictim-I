@@ -15,6 +15,7 @@ import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.UserMapper;
 import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
+import com.ucab.cmcapp.logic.mappers.UsuarioMapperInsert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,10 +119,10 @@ public class UsuarioService extends BaseService
 
         try
         {
-            entity = UsuarioMapper.mapDtoToEntity( userDto );
+            entity = UsuarioMapperInsert.mapDtoToEntity( userDto );
             command = CommandFactory.createCreateUsuarioCommand( entity );
             command.execute();
-            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );
+            response = UsuarioMapperInsert.mapEntityToDto( command.getReturnParam() );
             _logger.info( "Response addUsuario: {} ", response );
         }
         catch ( Exception e )
