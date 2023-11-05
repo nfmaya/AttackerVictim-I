@@ -8,7 +8,6 @@ public class AlertaDto extends BaseDto
 {
     private String _tipoAlerta;
     private Date _fechaHora;
-    private UsuarioDto _usuario;
 
     public AlertaDto()
     {
@@ -37,11 +36,5 @@ public class AlertaDto extends BaseDto
         this._fechaHora = _fechaHora;
     }
 
-    public UsuarioDto get_usuario() {
-        return _usuario;
-    }
 
-    public void set_usuario(UsuarioDto _usuario) {
-        this._usuario = _usuario;
-    }
 }

@@ -1,6 +1,7 @@
 package com.ucab.cmcapp.common.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ public class Usuario {
 
 
     @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdUsuario")
     private long _idUsuario;
 
@@ -24,14 +26,22 @@ public class Usuario {
     @JoinColumn( name = "user_type_id", nullable = false )
     private UserType _userType;
 
+    /*
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn( name = "IdAlerta" )
+    private List<Alerta> alertas;
+*/
     public Usuario() {
 
     }
+
+
 
     public Usuario(Usuario usuario){
         _Username = usuario._Username;
         _Nombre = usuario._Nombre;
         _userType = usuario._userType;
+        //alertas = usuario.alertas;
     }
 
     public Usuario( long id )
@@ -70,4 +80,18 @@ public class Usuario {
     public void set_userType(UserType _userType) {
         this._userType = _userType;
     }
+/*
+    public List<Alerta> getAlertas() {
+        return alertas;
+    }
+
+    public void setAlertas(List<Alerta> alertas) {
+        this.alertas = alertas;
+    }
+
+    public void addAlertas(Alerta alerta){
+        alertas.add(alerta);
+    }
+
+ */
 }

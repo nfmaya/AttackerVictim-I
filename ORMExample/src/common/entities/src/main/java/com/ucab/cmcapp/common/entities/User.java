@@ -3,6 +3,7 @@ package com.ucab.cmcapp.common.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Name:                User.
@@ -97,6 +98,10 @@ public class User
     private UserType _userType;
 
 
+    /*
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn( name = "IdAlerta", nullable = false )
+    private List<Alerta>  alertas;*/
 
     public long getId()
     {

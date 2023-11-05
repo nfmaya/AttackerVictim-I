@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AlertaMapper extends BaseMapper
@@ -26,10 +28,6 @@ public class AlertaMapper extends BaseMapper
         entity.set_tipoAlerta( dto.get_tipoAlerta());
         entity.set_fechaHora(dto.get_fechaHora());
 
-        if ( Objects.nonNull( dto.get_usuario() ) )
-        {
-            entity.set_victima( UsuarioMapper.mapDtoToEntity( dto.get_usuario() ) );
-        }
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving AlertaMapper.mapDtoToEntity: entity {}", entity );
@@ -50,8 +48,7 @@ public class AlertaMapper extends BaseMapper
 
         dto.set_tipoAlerta(  entity.get_tipoAlerta() );
         dto.set_fechaHora( entity.get_fechaHora() );
-        if(Objects.nonNull(entity.get_victima()))
-            dto.set_usuario( UsuarioMapper.mapEntityToDto( entity.get_victima() ));
+
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving AlertaMapper.mapEntityToDto: dto {}", dto );
@@ -92,5 +89,27 @@ public class AlertaMapper extends BaseMapper
 
         return entity;
     }
+
+    public static List<Alerta> mapDtosToEntities(List<AlertaDto> dtos) throws ParseException {
+        List<Alerta> entities = new ArrayList<>();
+
+        for (AlertaDto dto : dtos) {
+            entities.add(mapDtoToEntity(dto));
+        }
+
+        return entities;
+    }
+
+    public static List<AlertaDto> mapEntitiesToDtos(List<Alerta> entities) {
+        List<AlertaDto> dtos = new ArrayList<>();
+
+        for (Alerta entity : entities) {
+            dtos.add(mapEntityToDto(entity));
+        }
+
+        return dtos;
+    }
+
+
 
 }
