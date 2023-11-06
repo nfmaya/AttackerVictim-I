@@ -131,7 +131,10 @@ public abstract class BaseDao<T>
         //implementar logger
         try
         {
-            getEntityManager().remove( entity );
+
+            //getEntityManager().merge( entity );
+            //getEntityManager().flush();
+            getEntityManager().remove( getEntityManager().merge( entity ) );
             getEntityManager().flush();
 
             _logger.debug( "DELETING: {}",entity);

@@ -5,6 +5,7 @@ import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.commands.Command;
 import com.ucab.cmcapp.persistence.DBHandler;
 import com.ucab.cmcapp.persistence.DaoFactory;
+import com.ucab.cmcapp.persistence.dao.BaseDao;
 import com.ucab.cmcapp.persistence.dao.UserDao;
 import com.ucab.cmcapp.persistence.dao.UsuarioDao;
 import org.slf4j.Logger;
@@ -53,8 +54,8 @@ public class DeleteUsuarioByIdCommand extends Command<Usuario>
     {
         //region Instrumentation DEBUG
         _logger.debug( "Get in  DeleteUsuarioByIdCommand.execute" );
-        //endregion
 
+        //endregion
         _dao.delete( _usuario);
 
 
