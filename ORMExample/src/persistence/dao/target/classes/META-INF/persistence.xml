@@ -10,6 +10,7 @@
         <class>com.ucab.cmcapp.common.entities.Usuario</class>
         <class>com.ucab.cmcapp.common.entities.Alerta</class>
         <class>com.ucab.cmcapp.common.entities.DistanciaAlejamiento</class>
+        <class>com.ucab.cmcapp.common.entities.Posicion</class>
 
         <properties>
             <property name="hibernate.generate_statistics" value="true"/>

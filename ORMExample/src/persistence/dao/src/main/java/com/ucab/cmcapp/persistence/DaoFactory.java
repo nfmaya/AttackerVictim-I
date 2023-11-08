@@ -26,5 +26,9 @@ public class DaoFactory
         return new DistanciaAlejamientoDao( handler );
     }
 
+    public static PosicionDao createPosicionDao( DBHandler handler )
+    {
+        return new PosicionDao( handler );
+    }
 
 }

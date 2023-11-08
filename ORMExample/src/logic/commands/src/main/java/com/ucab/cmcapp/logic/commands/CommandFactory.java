@@ -1,9 +1,6 @@
 package com.ucab.cmcapp.logic.commands;
 
-import com.ucab.cmcapp.common.entities.Alerta;
-import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
-import com.ucab.cmcapp.common.entities.User;
-import com.ucab.cmcapp.common.entities.Usuario;
+import com.ucab.cmcapp.common.entities.*;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.*;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
@@ -14,6 +11,14 @@ import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.GetAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.UpdateAlertaCommand;
+import com.ucab.cmcapp.logic.commands.posicion.atomic.AddPosicionCommand;
+import com.ucab.cmcapp.logic.commands.posicion.atomic.DeletePosicionByIdCommand;
+import com.ucab.cmcapp.logic.commands.posicion.atomic.GetPosicionByIdCommand;
+import com.ucab.cmcapp.logic.commands.posicion.atomic.UpdatePosicionByIdCommand;
+import com.ucab.cmcapp.logic.commands.posicion.composite.CreatePosicionCommand;
+import com.ucab.cmcapp.logic.commands.posicion.composite.DeletePosicionCommand;
+import com.ucab.cmcapp.logic.commands.posicion.composite.GetPosicionCommand;
+import com.ucab.cmcapp.logic.commands.posicion.composite.UpdatePosicionCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.AddUserCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByIdCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
@@ -269,6 +274,66 @@ public class CommandFactory
     public static UpdateDistanciaCommand createUpdateDistanciaCommand(DistanciaAlejamiento user)
     {
         return new UpdateDistanciaCommand(user);
+    }
+
+
+    //Posicion
+    public static GetPosicionCommand createGetPosicionCommand(Posicion Posicion)
+    {
+        return new GetPosicionCommand(Posicion);
+    }
+
+
+    public static GetPosicionByIdCommand createGetPosicionByIdCommand (DBHandler handler, long PosicionId )
+    {
+        return new GetPosicionByIdCommand(handler, PosicionId);
+    }
+
+    public static AddPosicionCommand createAddPosicionCommand(Posicion Posicion, DBHandler handler)
+    {
+        return new AddPosicionCommand(Posicion, handler);
+    }
+
+    public static AddPosicionCommand createAddPosicionCommand(Posicion Posicion)
+    {
+        return new AddPosicionCommand(Posicion);
+    }
+
+    public static CreatePosicionCommand createCreatePosicionCommand(Posicion Posicion)
+    {
+        return new CreatePosicionCommand(Posicion);
+    }
+
+
+
+    public static DeletePosicionByIdCommand createDeletePosicionByIdCommand(Posicion user, DBHandler handler)
+    {
+        return new DeletePosicionByIdCommand(user, handler);
+    }
+
+    public static DeletePosicionByIdCommand createDeletePosicionByIdCommand(Posicion user)
+    {
+        return new DeletePosicionByIdCommand(user);
+    }
+
+    public static DeletePosicionCommand createDeletePosicionCommand(Posicion user)
+    {
+        return new DeletePosicionCommand(user);
+    }
+
+    public static UpdatePosicionByIdCommand createUpdatePosicionByIdCommand(Posicion user, DBHandler handler)
+    {
+        return new UpdatePosicionByIdCommand(user, handler);
+    }
+
+    public static UpdatePosicionByIdCommand createUpdatePosicionByIdCommand(Posicion user)
+    {
+        return new UpdatePosicionByIdCommand(user);
+    }
+
+    public static UpdatePosicionCommand createUpdatePosicionCommand(Posicion user)
+    {
+        return new UpdatePosicionCommand(user);
     }
 
 }
