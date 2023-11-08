@@ -48,7 +48,7 @@ public class GetDistanciaAlejamientoByUsuariosCommand extends Command<DistanciaA
         //region Instrumentation DEBUG
         _logger.debug( "Get in  GetDistanciaAlejamientoByUsuariosCommand.execute" );
         //endregion
-        _distancia = _dao.getDistanciaAlejamientoByUsuarios(_distancia.get_victima().get_idUsuario(),_distancia.get_agresor().get_idUsuario());
+        //_distancia = _dao.getDistanciaAlejamientoByUsuarios(_distancia.get_victima().get_idUsuario(),_distancia.get_agresor().get_idUsuario());
         //region Instrumentation DEBUG
         _logger.debug( "Leavin  GetDistanciaAlejamientoByUsuariosCommand.execute" );
         //endregion

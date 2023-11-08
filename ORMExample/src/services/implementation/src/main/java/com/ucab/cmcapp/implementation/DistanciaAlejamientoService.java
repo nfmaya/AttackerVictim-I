@@ -6,16 +6,22 @@ import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByUsuariosCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByIdCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.DistanciaAlejamientoMapper;
+import com.ucab.cmcapp.logic.mappers.DistanciaAlejamientoMapperInsert;
 import com.ucab.cmcapp.logic.mappers.UserMapper;
+import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
 import com.ucab.cmcapp.persistence.DBHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,10 +131,10 @@ public class DistanciaAlejamientoService extends BaseService
 
         try
         {
-            entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaDto );
+            entity = DistanciaAlejamientoMapperInsert.mapDtoToEntity( distanciaDto );
             command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );
             command.execute();
-            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );
+            response = DistanciaAlejamientoMapperInsert.mapEntityToDto( command.getReturnParam() );
             _logger.info( "Response addDistanciaAlejamiento: {} ", response );
         }
         catch ( Exception e )
@@ -146,4 +152,77 @@ public class DistanciaAlejamientoService extends BaseService
         _logger.debug( "Leaving DistanciaAlejamientoService.addDistanciaAlejamiento" );
         return response;
     }
+
+
+    @POST
+    @Path("/delete")
+    public DistanciaAlejamientoDto deleteDistancia( DistanciaAlejamientoDto userDto )
+    {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response;
+        DeleteDistanciaCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
+        //endregion
+
+        try
+        {
+            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );
+            command = CommandFactory.createDeleteDistanciaCommand( entity );
+            command.execute();
+            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );
+            _logger.info( "Response deleteDistanciaAlejamiento: {} ", response );
+        }
+        catch ( Exception e )
+        {
+            _logger.error("error {} deleting DistanciaAlejamiento: {}", e.getMessage(), e.getCause());
+            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
+                    entity( e ).build() );
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
+        return response;
+    }
+
+
+    @POST
+    @Path("/update")
+    public DistanciaAlejamientoDto updateUsuario( DistanciaAlejamientoDto userDto )
+    {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response;
+        UpdateDistanciaCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
+        //endregion
+
+        try
+        {
+            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );
+            command = CommandFactory.createUpdateDistanciaCommand( entity );
+            command.execute();
+            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );
+            _logger.info( "Response deleteDistanciaAlejamiento: {} ", response );
+        }
+        catch ( Exception e )
+        {
+            _logger.error("error {} deleting DistanciaAlejamiento: {}", e.getMessage(), e.getCause());
+            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
+                    entity( e ).build() );
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
+        return response;
+    }
+
 }

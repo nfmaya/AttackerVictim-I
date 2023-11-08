@@ -6,16 +6,22 @@ import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByUsuariosCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByIdCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.DistanciaAlejamientoMapper;
+import com.ucab.cmcapp.logic.mappers.DistanciaAlejamientoMapperInsert;
 import com.ucab.cmcapp.logic.mappers.UserMapper;
+import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
 import com.ucab.cmcapp.persistence.DBHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +42,9 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
 @Path( &quot;/distancias&quot; )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-<span class="nc" id="L39">public class DistanciaAlejamientoService extends BaseService</span>
+<span class="nc" id="L45">public class DistanciaAlejamientoService extends BaseService</span>
 {
-<span class="nc" id="L41">    private static Logger _logger = LoggerFactory.getLogger( DistanciaAlejamientoService.class );</span>
+<span class="nc" id="L47">    private static Logger _logger = LoggerFactory.getLogger( DistanciaAlejamientoService.class );</span>
 
     @GET
     @Path( &quot;/{IdAlej}&quot; )
@@ -46,33 +52,33 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
-<span class="nc" id="L49">        GetDistanciaAlejamientoCommand command = null;</span>
+<span class="nc" id="L55">        GetDistanciaAlejamientoCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L51">        _logger.debug( &quot;Get in DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L57">        _logger.debug( &quot;Get in DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L56">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaId );</span>
-<span class="nc" id="L57">            command = CommandFactory.createGetDistanciaAlejamientoCommand( entity );</span>
-<span class="nc" id="L58">            command.execute();</span>
-<span class="nc" id="L59">            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );</span>
-<span class="nc" id="L60">            _logger.info( &quot;Response getDistanciaAlejamiento: {} &quot;, response );</span>
+<span class="nc" id="L62">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaId );</span>
+<span class="nc" id="L63">            command = CommandFactory.createGetDistanciaAlejamientoCommand( entity );</span>
+<span class="nc" id="L64">            command.execute();</span>
+<span class="nc" id="L65">            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L66">            _logger.info( &quot;Response getDistanciaAlejamiento: {} &quot;, response );</span>
         }
-<span class="nc" id="L62">        catch ( Exception e )</span>
+<span class="nc" id="L68">        catch ( Exception e )</span>
         {
-<span class="nc" id="L64">            _logger.error(&quot;error {} getting DistanciaAlejamiento {}: {}&quot;, e.getMessage(), distanciaId, e.getCause());</span>
-<span class="nc" id="L65">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
-<span class="nc" id="L66">                    entity( e ).build() );</span>
+<span class="nc" id="L70">            _logger.error(&quot;error {} getting DistanciaAlejamiento {}: {}&quot;, e.getMessage(), distanciaId, e.getCause());</span>
+<span class="nc" id="L71">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L72">                    entity( e ).build() );</span>
         }
         finally
         {
-<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L71">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L77">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L74">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
-<span class="nc" id="L75">        return response;</span>
+<span class="nc" id="L80">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L81">        return response;</span>
     }
 
 /*
@@ -118,33 +124,106 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
-<span class="nc" id="L121">        CreateDistanciaAlejamientoCommand command = null;</span>
+<span class="nc" id="L127">        CreateDistanciaAlejamientoCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L123">        _logger.debug( &quot;Get in DistanciaAlejamientoService.addDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L129">        _logger.debug( &quot;Get in DistanciaAlejamientoService.addDistanciaAlejamiento&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L128">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaDto );</span>
-<span class="nc" id="L129">            command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );</span>
-<span class="nc" id="L130">            command.execute();</span>
-<span class="nc" id="L131">            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );</span>
-<span class="nc" id="L132">            _logger.info( &quot;Response addDistanciaAlejamiento: {} &quot;, response );</span>
+<span class="nc" id="L134">            entity = DistanciaAlejamientoMapperInsert.mapDtoToEntity( distanciaDto );</span>
+<span class="nc" id="L135">            command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );</span>
+<span class="nc" id="L136">            command.execute();</span>
+<span class="nc" id="L137">            response = DistanciaAlejamientoMapperInsert.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L138">            _logger.info( &quot;Response addDistanciaAlejamiento: {} &quot;, response );</span>
         }
-<span class="nc" id="L134">        catch ( Exception e )</span>
+<span class="nc" id="L140">        catch ( Exception e )</span>
         {
-<span class="nc" id="L136">            _logger.error(&quot;error {} adding DistanciaAlejamiento: {}&quot;, e.getMessage(), e.getCause());</span>
-<span class="nc" id="L137">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
-<span class="nc" id="L138">                    entity( e ).build() );</span>
+<span class="nc" id="L142">            _logger.error(&quot;error {} adding DistanciaAlejamiento: {}&quot;, e.getMessage(), e.getCause());</span>
+<span class="nc" id="L143">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L144">                    entity( e ).build() );</span>
         }
         finally
         {
-<span class="nc bnc" id="L142" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L143">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L149">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L146">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.addDistanciaAlejamiento&quot; );</span>
-<span class="nc" id="L147">        return response;</span>
+<span class="nc" id="L152">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.addDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L153">        return response;</span>
     }
+
+
+    @POST
+    @Path(&quot;/delete&quot;)
+    public DistanciaAlejamientoDto deleteDistancia( DistanciaAlejamientoDto userDto )
+    {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response;
+<span class="nc" id="L163">        DeleteDistanciaCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L165">        _logger.debug( &quot;Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L170">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L171">            command = CommandFactory.createDeleteDistanciaCommand( entity );</span>
+<span class="nc" id="L172">            command.execute();</span>
+<span class="nc" id="L173">            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L174">            _logger.info( &quot;Response deleteDistanciaAlejamiento: {} &quot;, response );</span>
+        }
+<span class="nc" id="L176">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L178">            _logger.error(&quot;error {} deleting DistanciaAlejamiento: {}&quot;, e.getMessage(), e.getCause());</span>
+<span class="nc" id="L179">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L180">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L185">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L188">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L189">        return response;</span>
+    }
+
+
+    @POST
+    @Path(&quot;/update&quot;)
+    public DistanciaAlejamientoDto updateUsuario( DistanciaAlejamientoDto userDto )
+    {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response;
+<span class="nc" id="L199">        UpdateDistanciaCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L201">        _logger.debug( &quot;Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L206">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L207">            command = CommandFactory.createUpdateDistanciaCommand( entity );</span>
+<span class="nc" id="L208">            command.execute();</span>
+<span class="nc" id="L209">            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L210">            _logger.info( &quot;Response deleteDistanciaAlejamiento: {} &quot;, response );</span>
+        }
+<span class="nc" id="L212">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L214">            _logger.error(&quot;error {} deleting DistanciaAlejamiento: {}&quot;, e.getMessage(), e.getCause());</span>
+<span class="nc" id="L215">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L216">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L221">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L224">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L225">        return response;</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
