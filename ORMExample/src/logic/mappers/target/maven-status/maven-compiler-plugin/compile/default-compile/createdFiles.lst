@@ -15,5 +15,6 @@ com\ucab\cmcapp\logic\mappers\BaseMapper.class
 com\ucab\cmcapp\logic\mappers\UserMapper.class
 com\ucab\cmcapp\logic\mappers\PuntoControlMapper.class
 com\ucab\cmcapp\logic\mappers\PuntoControlMapperInsert.class
+com\ucab\cmcapp\logic\mappers\UserTypeMapperInsert.class
 com\ucab\cmcapp\logic\mappers\DistanciaAlejamientoMapper.class
 com\ucab\cmcapp\logic\mappers\UserTypeMapper.class

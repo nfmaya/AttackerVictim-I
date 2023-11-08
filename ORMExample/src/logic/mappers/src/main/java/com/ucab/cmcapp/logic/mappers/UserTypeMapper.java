@@ -6,22 +6,24 @@ import com.ucab.cmcapp.logic.dtos.UserTypeDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.ParseException;
+
 public class UserTypeMapper extends BaseMapper
 {
-    private static Logger _logger = LoggerFactory.getLogger( UserMapper.class );
+    private static Logger _logger = LoggerFactory.getLogger( UserTypeMapper.class );
 
-    public static UserType mapDtoToEntity( UserTypeDto dto )
+    public static UserType mapDtoToEntity(UserTypeDto dto ) throws ParseException
     {
-        UserType entity = EntityFactory.createUserType( dto.getId() );
+        UserType entity = EntityFactory.createUserType(dto.getId());
 
         //region Instrumentation DEBUG
-        _logger.debug( "Get in UserMapper.mapDtoToEntity: dto {}", dto );
+        _logger.debug( "Get in UserTypeMapper.mapDtoToEntity: dto {}", dto );
         //endregion
 
-        entity.setName( dto.getName() );
+        entity.setName( dto.getName());
 
         //region Instrumentation DEBUG
-        _logger.debug( "Leaving UserMapper.mapDtoToEntity: entity {}", entity );
+        _logger.debug( "Leaving UserTypeMapper.mapDtoToEntity: entity {}", entity );
         //endregion
 
         return entity;
@@ -32,16 +34,40 @@ public class UserTypeMapper extends BaseMapper
         final UserTypeDto dto = new UserTypeDto();
 
         //region Instrumentation DEBUG
-        _logger.debug( "Get in UserMapper.mapEntityToDto: entity {}", entity );
+        _logger.debug( "Get in UserTypeMapper.mapEntityToDto: entity {}", entity );
         //endregion
 
         dto.setId( entity.getId());
-        dto.setName( entity.getName());
+
+        dto.setName(  entity.getName());
+
+
 
         //region Instrumentation DEBUG
-        _logger.debug( "Leaving UserMapper.mapEntityToDto: dto {}", dto );
+        _logger.debug( "Leaving UserTypeMapper.mapEntityToDto: dto {}", dto );
         //endregion
-
         return dto;
     }
+
+    public static UserType mapDtoToEntity( long id )
+    {
+        UserType entity = EntityFactory.createUserType( id );
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UserTypeMapper.mapDtoToEntity: id {}", id );
+        //endregion
+
+        entity.setId( id );
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving UserTypeMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
+
+
+
+
 }

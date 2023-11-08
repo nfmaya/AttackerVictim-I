@@ -1,5 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 implementation,com.ucab.cmcapp.implementation,CoordenadaZonaSeguridadService,208,0,8,0,62,0,10,0,6,0
+implementation,com.ucab.cmcapp.implementation,UserTypeService,208,0,8,0,62,0,10,0,6,0
 implementation,com.ucab.cmcapp.implementation,UsuarioService,267,0,10,0,77,0,12,0,7,0
 implementation,com.ucab.cmcapp.implementation,AlertaService,267,0,10,0,77,0,12,0,7,0
 implementation,com.ucab.cmcapp.implementation,UserService,173,0,6,0,47,0,8,0,5,0

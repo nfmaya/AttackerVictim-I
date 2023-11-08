@@ -22,6 +22,14 @@ import com.ucab.cmcapp.logic.commands.TiempoControl.composite.CreateTiempoContro
 import com.ucab.cmcapp.logic.commands.TiempoControl.composite.DeleteTiempoControlCommand;
 import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetTiempoControlCommand;
 import com.ucab.cmcapp.logic.commands.TiempoControl.composite.UpdateTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.UserType.atomic.AddUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.atomic.DeleteUserTypeByIdCommand;
+import com.ucab.cmcapp.logic.commands.UserType.atomic.GetUserTypeByIdCommand;
+import com.ucab.cmcapp.logic.commands.UserType.atomic.UpdateUserTypeByIdCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.CreateUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.DeleteUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.AddZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.DeleteZonaSeguridadByIdCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.GetZonaSeguridadByIdCommand;
@@ -611,6 +619,67 @@ public class CommandFactory
     {
         return new UpdateTiempoControlCommand(user);
     }
+    
+    
+    //UserType
+    public static GetUserTypeCommand createGetUserTypeCommand(UserType UserType)
+    {
+        return new GetUserTypeCommand(UserType);
+    }
+
+
+    public static GetUserTypeByIdCommand createGetUserTypeByIdCommand (DBHandler handler, long UserTypeId )
+    {
+        return new GetUserTypeByIdCommand(handler, UserTypeId);
+    }
+
+    public static AddUserTypeCommand createAddUserTypeCommand(UserType UserType, DBHandler handler)
+    {
+        return new AddUserTypeCommand(UserType, handler);
+    }
+
+    public static AddUserTypeCommand createAddUserTypeCommand(UserType UserType)
+    {
+        return new AddUserTypeCommand(UserType);
+    }
+
+    public static CreateUserTypeCommand createCreateUserTypeCommand(UserType UserType)
+    {
+        return new CreateUserTypeCommand(UserType);
+    }
+
+
+
+    public static DeleteUserTypeByIdCommand createDeleteUserTypeByIdCommand(UserType user, DBHandler handler)
+    {
+        return new DeleteUserTypeByIdCommand(user, handler);
+    }
+
+    public static DeleteUserTypeByIdCommand createDeleteUserTypeByIdCommand(UserType user)
+    {
+        return new DeleteUserTypeByIdCommand(user);
+    }
+
+    public static DeleteUserTypeCommand createDeleteUserTypeCommand(UserType user)
+    {
+        return new DeleteUserTypeCommand(user);
+    }
+
+    public static UpdateUserTypeByIdCommand createUpdateUserTypeByIdCommand(UserType user, DBHandler handler)
+    {
+        return new UpdateUserTypeByIdCommand(user, handler);
+    }
+
+    public static UpdateUserTypeByIdCommand createUpdateUserTypeByIdCommand(UserType user)
+    {
+        return new UpdateUserTypeByIdCommand(user);
+    }
+
+    public static UpdateUserTypeCommand createUpdateUserTypeCommand(UserType user)
+    {
+        return new UpdateUserTypeCommand(user);
+    }
+    
 
 
 }

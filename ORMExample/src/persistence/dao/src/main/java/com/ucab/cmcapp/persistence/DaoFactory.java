@@ -53,5 +53,10 @@ public class DaoFactory
         return new TiempoControlDao( handler );
     }
 
+    public static UserTypeDao createUserTypeDao( DBHandler handler )
+    {
+        return new UserTypeDao( handler );
+    }
+
 
 }

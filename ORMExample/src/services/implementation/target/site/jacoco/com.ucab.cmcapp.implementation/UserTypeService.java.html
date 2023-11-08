@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserTypeService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">implementation</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.implementation</a> &gt; <span class="el_source">UserTypeService.java</span></div><h1>UserTypeService.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.implementation;
+
+import com.ucab.cmcapp.common.entities.UserType;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.UserType.composite.CreateUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.DeleteUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
+import com.ucab.cmcapp.logic.dtos.UserTypeDto;
+import com.ucab.cmcapp.logic.mappers.UserTypeMapper;
+import com.ucab.cmcapp.logic.mappers.UserTypeMapperInsert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+@Path( &quot;/tiposUsuarios&quot; )
+@Produces( MediaType.APPLICATION_JSON )
+@Consumes( MediaType.APPLICATION_JSON )
+<span class="nc" id="L22">public class UserTypeService extends BaseService</span>
+{
+<span class="nc" id="L24">    private static Logger _logger = LoggerFactory.getLogger( UserTypeService.class );</span>
+
+    @GET
+    @Path( &quot;/{id}&quot; )
+    public UserTypeDto getUserType(@PathParam( &quot;id&quot; ) long userId )
+    {
+        UserType entity;
+        UserTypeDto response;
+<span class="nc" id="L32">        GetUserTypeCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L34">        _logger.debug( &quot;Get in UserTypeService.getUserType&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L39">            entity = UserTypeMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L40">            command = CommandFactory.createGetUserTypeCommand( entity );</span>
+<span class="nc" id="L41">            command.execute();</span>
+<span class="nc" id="L42">            response = UserTypeMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L43">            _logger.info( &quot;Response getUserType: {} &quot;, response );</span>
+        }
+<span class="nc" id="L45">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L47">            _logger.error(&quot;error {} getting UserType {}: {}&quot;, e.getMessage(), userId, e.getCause());</span>
+<span class="nc" id="L48">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L49">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L54">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L57">        _logger.debug( &quot;Leaving UserTypeService.getUserType&quot; );</span>
+<span class="nc" id="L58">        return response;</span>
+    }
+
+
+
+
+    @POST
+    public UserTypeDto addUserType( UserTypeDto userDto )
+    {
+        UserType entity;
+        UserTypeDto response;
+<span class="nc" id="L69">        CreateUserTypeCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L71">        _logger.debug( &quot;Get in UserTypeService.addUserType&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L76">            entity = UserTypeMapperInsert.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L77">            command = CommandFactory.createCreateUserTypeCommand( entity );</span>
+<span class="nc" id="L78">            command.execute();</span>
+<span class="nc" id="L79">            response = UserTypeMapperInsert.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L80">            _logger.info( &quot;Response addUserType: {} &quot;, response );</span>
+        }
+<span class="nc" id="L82">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L84">            _logger.error(&quot;error {} adding UserType: {}&quot;, e.getMessage(), e.getCause());</span>
+<span class="nc" id="L85">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L86">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L91">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L94">        _logger.debug( &quot;Leaving UserTypeService.addUserType&quot; );</span>
+<span class="nc" id="L95">        return response;</span>
+    }
+
+    @DELETE
+    @Path(&quot;/delete&quot;)
+    public UserTypeDto deleteUserType( UserTypeDto userDto )
+    {
+        UserType entity;
+        UserTypeDto response;
+<span class="nc" id="L104">        DeleteUserTypeCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L106">        _logger.debug( &quot;Get in UserTypeService.deleteUserType&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L111">            entity = UserTypeMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L112">            command = CommandFactory.createDeleteUserTypeCommand( entity );</span>
+<span class="nc" id="L113">            command.execute();</span>
+<span class="nc" id="L114">            response = UserTypeMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L115">            _logger.info( &quot;Response deleteUserType: {} &quot;, response );</span>
+        }
+<span class="nc" id="L117">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L119">            _logger.error(&quot;error {} deleting UserType: {}&quot;, e.getMessage(), e.getCause());</span>
+<span class="nc" id="L120">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L121">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L126">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L129">        _logger.debug( &quot;Leaving UserTypeService.deleteUserType&quot; );</span>
+<span class="nc" id="L130">        return response;</span>
+    }
+
+
+    @PUT
+    @Path(&quot;/update&quot;)
+    public UserTypeDto updateUserType( UserTypeDto userDto )
+    {
+        UserType entity;
+        UserTypeDto response;
+<span class="nc" id="L140">        UpdateUserTypeCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L142">        _logger.debug( &quot;Get in UserTypeService.deleteUserType&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L147">            entity = UserTypeMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L148">            command = CommandFactory.createUpdateUserTypeCommand( entity );</span>
+<span class="nc" id="L149">            command.execute();</span>
+<span class="nc" id="L150">            response = UserTypeMapper.mapEntityToDto( command.getReturnParam() );</span>
+<span class="nc" id="L151">            _logger.info( &quot;Response deleteUserType: {} &quot;, response );</span>
+        }
+<span class="nc" id="L153">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L155">            _logger.error(&quot;error {} deleting UserType: {}&quot;, e.getMessage(), e.getCause());</span>
+<span class="nc" id="L156">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
+<span class="nc" id="L157">                    entity( e ).build() );</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L162">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L165">        _logger.debug( &quot;Leaving UserTypeService.deleteUserType&quot; );</span>
+<span class="nc" id="L166">        return response;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
