@@ -73,4 +73,17 @@ public class EntityFactory
     {
         return new DistanciaAlejamiento(id);
     }
+
+    public static Posicion createPosicion()
+    {
+        return new Posicion();
+    }
+
+    /**
+     * Method that returns an instance of User class
+     */
+    public static Posicion createPosicion(long id)
+    {
+        return new Posicion(id);
+    }
 }

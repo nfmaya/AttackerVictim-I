@@ -4,6 +4,8 @@ com\ucab\cmcapp\logic\mappers\UsuarioMapper.class
 com\ucab\cmcapp\logic\mappers\AlertaMapperInsert.class
 com\ucab\cmcapp\logic\mappers\BaseMapper.class
 com\ucab\cmcapp\logic\mappers\UserMapper.class
+com\ucab\cmcapp\logic\mappers\PosicionMapper.class
+com\ucab\cmcapp\logic\mappers\PosicionMapperInsert.class
 com\ucab\cmcapp\logic\mappers\DistanciaAlejamientoMapperInsert.class
 com\ucab\cmcapp\logic\mappers\DistanciaAlejamientoMapper.class
 com\ucab\cmcapp\logic\mappers\UserTypeMapper.class
