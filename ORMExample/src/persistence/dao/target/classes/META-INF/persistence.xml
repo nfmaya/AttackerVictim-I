@@ -11,6 +11,11 @@
         <class>com.ucab.cmcapp.common.entities.Alerta</class>
         <class>com.ucab.cmcapp.common.entities.DistanciaAlejamiento</class>
         <class>com.ucab.cmcapp.common.entities.Posicion</class>
+        <class>com.ucab.cmcapp.common.entities.PuntoControl</class>
+        <class>com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad</class>
+        <class>com.ucab.cmcapp.common.entities.ZonaSeguridad</class>
+        <class>com.ucab.cmcapp.common.entities.TiempoControl</class>
+
 
         <properties>
             <property name="hibernate.generate_statistics" value="true"/>

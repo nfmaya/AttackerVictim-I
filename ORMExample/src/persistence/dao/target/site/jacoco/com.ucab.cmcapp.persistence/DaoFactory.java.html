@@ -36,6 +36,23 @@ public class DaoFactory
 <span class="nc" id="L36">        return new PuntoControlDao( handler );</span>
     }
 
+    public static CoordenadaZonaSeguridadDao createCoordenadaZonaSeguridadDao( DBHandler handler )
+    {
+<span class="nc" id="L41">        return new CoordenadaZonaSeguridadDao( handler );</span>
+    }
+
+
+    public static ZonaSeguridadDao createZonaSeguridadDao( DBHandler handler )
+    {
+<span class="nc" id="L47">        return new ZonaSeguridadDao( handler );</span>
+    }
+
+
+    public static TiempoControlDao createTiempoControlDao( DBHandler handler )
+    {
+<span class="nc" id="L53">        return new TiempoControlDao( handler );</span>
+    }
+
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

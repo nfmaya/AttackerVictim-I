@@ -93,4 +93,35 @@ public class EntityFactory
     {
         return new PuntoControl(id);
     }
+
+    public static CoordenadaZonaSeguridad createCoordenadaZonaSeguridad()
+    {
+        return new CoordenadaZonaSeguridad();
+    }
+
+    public static CoordenadaZonaSeguridad createCoordenadaZonaSeguridad(long id)
+    {
+        return new CoordenadaZonaSeguridad(id);
+    }
+
+    public static ZonaSeguridad createZonaSeguridad()
+    {
+        return new ZonaSeguridad();
+    }
+
+    public static ZonaSeguridad createZonaSeguridad(long id)
+    {
+        return new ZonaSeguridad(id);
+    }
+
+
+    public static TiempoControl  createTiempoControl ()
+    {
+        return new TiempoControl ();
+    }
+
+    public static TiempoControl  createTiempoControl (long id)
+    {
+        return new TiempoControl (id);
+    }
 }
