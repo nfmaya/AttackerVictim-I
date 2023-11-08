@@ -15,6 +15,7 @@ public class DistanciaAlejamiento {
     @Column(name = "DistanciaMinima")
     private float _distanciaMinima;
 
+    /*
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Victima_id")
     private Usuario _victima;
@@ -23,14 +24,16 @@ public class DistanciaAlejamiento {
     @JoinColumn(name = "Agresor_id")
     private Usuario _agresor;
 
+     */
+
     public DistanciaAlejamiento() {
 
     }
 
     public DistanciaAlejamiento(DistanciaAlejamiento distanciaAlejamiento){
         _distanciaMinima = distanciaAlejamiento._distanciaMinima;
-        _victima = distanciaAlejamiento._victima;
-        _agresor = distanciaAlejamiento._agresor;
+        //_victima = distanciaAlejamiento._victima;
+        //_agresor = distanciaAlejamiento._agresor;
     }
 
     public DistanciaAlejamiento(long id){
@@ -53,6 +56,7 @@ public class DistanciaAlejamiento {
         this._distanciaMinima = _distanciaMinima;
     }
 
+    /*
     public Usuario get_victima() {
         return _victima;
     }
@@ -68,4 +72,6 @@ public class DistanciaAlejamiento {
     public void set_agresor(Usuario _agresor) {
         this._agresor = _agresor;
     }
+
+     */
 }

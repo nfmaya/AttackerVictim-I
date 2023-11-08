@@ -17,7 +17,7 @@ public class UpdateUsuarioByIdCommand extends Command<Usuario>
     public UpdateUsuarioByIdCommand(Usuario usuario, DBHandler handler )
     {
         //region Instrumentation DEBUG
-        _logger.debug( String.format( "Get in DeleteUsuarioByIdCommand.ctor: parameter {%s}",
+        _logger.debug( String.format( "Get in UpdateUsuarioByIdCommand.ctor: parameter {%s}",
                 usuario.toString() ) );
         setHandler(handler);
         _usuario = usuario;
@@ -25,7 +25,7 @@ public class UpdateUsuarioByIdCommand extends Command<Usuario>
 
 
         //region Instrumentation DEBUG
-        _logger.debug( String.format( "Leaving DeleteUsuarioByIdCommand.ctor: attribute {%s}",
+        _logger.debug( String.format( "Leaving UpdateUsuarioByIdCommand.ctor: attribute {%s}",
                 _usuario.toString() ) );
         //endregion
     }
@@ -33,7 +33,7 @@ public class UpdateUsuarioByIdCommand extends Command<Usuario>
     public UpdateUsuarioByIdCommand(Usuario usuario )
     {
         //region Instrumentation DEBUG
-        _logger.debug( String.format( "Get in DeleteUsuarioByIdCommand.ctor: parameter {%s}",
+        _logger.debug( String.format( "Get in UpdateUsuarioByIdCommand.ctor: parameter {%s}",
                 usuario.toString() ) );
         _usuario = usuario;
         setHandler(new DBHandler());
@@ -41,7 +41,7 @@ public class UpdateUsuarioByIdCommand extends Command<Usuario>
 
 
         //region Instrumentation DEBUG
-        _logger.debug( String.format( "Leaving DeleteUsuarioByIdCommand.ctor: attribute {%s}",
+        _logger.debug( String.format( "Leaving UpdateUsuarioByIdCommand.ctor: attribute {%s}",
                 _usuario.toString() ) );
         //endregion
     }
@@ -50,14 +50,14 @@ public class UpdateUsuarioByIdCommand extends Command<Usuario>
     public void execute()
     {
         //region Instrumentation DEBUG
-        _logger.debug( "Get in  DeleteUsuarioByIdCommand.execute" );
+        _logger.debug( "Get in  UpdateUsuarioByIdCommand.execute" );
         //endregion
 
         _dao.update( _usuario);
 
 
         //region Instrumentation DEBUG
-        _logger.debug( "Get in  DeleteUsuarioByIdCommand.execute" );
+        _logger.debug( "Get in  UpdateUsuarioByIdCommand.execute" );
         //endregion
     }
 

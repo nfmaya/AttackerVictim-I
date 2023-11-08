@@ -4,11 +4,11 @@ import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.AddDistanciaAlejamientoCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByIdCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByUsuariosCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.*;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.AddAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByIdCommand;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByTipoAlertaCommand;
@@ -208,5 +208,35 @@ public class CommandFactory
         return new CreateDistanciaAlejamientoCommand(distancia);
     }
 
+
+    public static DeleteDistanciaByIdCommand createDeleteDistanciaByIdCommand(DistanciaAlejamiento user, DBHandler handler)
+    {
+        return new DeleteDistanciaByIdCommand(user, handler);
+    }
+
+    public static DeleteDistanciaByIdCommand createDeleteDistanciaByIdCommand(DistanciaAlejamiento user)
+    {
+        return new DeleteDistanciaByIdCommand(user);
+    }
+
+    public static DeleteDistanciaCommand createDeleteDistanciaCommand(DistanciaAlejamiento user)
+    {
+        return new DeleteDistanciaCommand(user);
+    }
+
+    public static UpdateDistanciaByIdCommand createUpdateDistanciaByIdCommand(DistanciaAlejamiento user, DBHandler handler)
+    {
+        return new UpdateDistanciaByIdCommand(user, handler);
+    }
+
+    public static UpdateDistanciaByIdCommand createUpdateDistanciaByIdCommand(DistanciaAlejamiento user)
+    {
+        return new UpdateDistanciaByIdCommand(user);
+    }
+
+    public static UpdateDistanciaCommand createUpdateDistanciaCommand(DistanciaAlejamiento user)
+    {
+        return new UpdateDistanciaCommand(user);
+    }
 
 }

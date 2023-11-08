@@ -18,7 +18,7 @@ public class DistanciaAlejamientoMapper extends BaseMapper
 
     public static DistanciaAlejamiento mapDtoToEntity(DistanciaAlejamientoDto dto ) throws ParseException
     {
-        DistanciaAlejamiento entity = EntityFactory.createDistanciaAlejamiento();
+        DistanciaAlejamiento entity = EntityFactory.createDistanciaAlejamiento(dto.getId());
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in DistanciaAlejamientoMapper.mapDtoToEntity: dto {}", dto );
@@ -26,6 +26,7 @@ public class DistanciaAlejamientoMapper extends BaseMapper
 
         entity.set_distanciaMinima( dto.get_distanciaMinima() );
 
+        /*
         //AQUI VA LA EL OBJETO DE LA TABLA RELACIONADA
         if ( Objects.nonNull( dto.get_agresor() ) )
         {
@@ -33,6 +34,8 @@ public class DistanciaAlejamientoMapper extends BaseMapper
             entity.set_victima(UsuarioMapper.mapDtoToEntity( dto.get_victima() ) );
 
         }
+
+         */
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving DistanciaAlejamientoMapper.mapDtoToEntity: entity {}", entity );
@@ -53,11 +56,14 @@ public class DistanciaAlejamientoMapper extends BaseMapper
         dto.set_distanciaMinima(  entity.get_distanciaMinima() );
 
         //AQUI VA LA EL OBJETO DE LA TABLA RELACIONADA
+        /*
         if(Objects.nonNull(entity.get_agresor())){
             dto.set_agresor( UsuarioMapper.mapEntityToDto( entity.get_agresor() ));
             dto.set_victima( UsuarioMapper.mapEntityToDto( entity.get_victima() ));
 
         }
+
+         */
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving DistanciaAlejamientoMapper.mapEntityToDto: dto {}", dto );
@@ -90,8 +96,11 @@ public class DistanciaAlejamientoMapper extends BaseMapper
         _logger.debug( "Get in DistanciaAlejamientoMapper.mapDtoToEntityEmail: email" );
         //endregion
 
+        /*
         entity.set_agresor( Agresor );
         entity.set_victima( Victima );
+
+         */
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving DistanciaAlejamientoMapper.mapDtoToEntityEmail: entity {}", entity );
