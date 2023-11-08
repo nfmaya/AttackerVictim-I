@@ -79,11 +79,18 @@ public class EntityFactory
         return new Posicion();
     }
 
-    /**
-     * Method that returns an instance of User class
-     */
     public static Posicion createPosicion(long id)
     {
         return new Posicion(id);
+    }
+
+    public static PuntoControl createPuntoControl()
+    {
+        return new PuntoControl();
+    }
+
+    public static PuntoControl createPuntoControl(long id)
+    {
+        return new PuntoControl(id);
     }
 }

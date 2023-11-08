@@ -19,6 +19,14 @@ import com.ucab.cmcapp.logic.commands.posicion.composite.CreatePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.DeletePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.GetPosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.UpdatePosicionCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.AddPuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.DeletePuntoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.GetPuntoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.UpdatePuntoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.CreatePuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.DeletePuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.GetPuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.UpdatePuntoControlCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.AddUserCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByIdCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
@@ -334,6 +342,67 @@ public class CommandFactory
     public static UpdatePosicionCommand createUpdatePosicionCommand(Posicion user)
     {
         return new UpdatePosicionCommand(user);
+    }
+    
+    
+    //PuntoControl
+
+    public static GetPuntoControlCommand createGetPuntoControlCommand(PuntoControl PuntoControl)
+    {
+        return new GetPuntoControlCommand(PuntoControl);
+    }
+
+
+    public static GetPuntoControlByIdCommand createGetPuntoControlByIdCommand (DBHandler handler, long PuntoControlId )
+    {
+        return new GetPuntoControlByIdCommand(handler, PuntoControlId);
+    }
+
+    public static AddPuntoControlCommand createAddPuntoControlCommand(PuntoControl PuntoControl, DBHandler handler)
+    {
+        return new AddPuntoControlCommand(PuntoControl, handler);
+    }
+
+    public static AddPuntoControlCommand createAddPuntoControlCommand(PuntoControl PuntoControl)
+    {
+        return new AddPuntoControlCommand(PuntoControl);
+    }
+
+    public static CreatePuntoControlCommand createCreatePuntoControlCommand(PuntoControl PuntoControl)
+    {
+        return new CreatePuntoControlCommand(PuntoControl);
+    }
+
+
+
+    public static DeletePuntoControlByIdCommand createDeletePuntoControlByIdCommand(PuntoControl user, DBHandler handler)
+    {
+        return new DeletePuntoControlByIdCommand(user, handler);
+    }
+
+    public static DeletePuntoControlByIdCommand createDeletePuntoControlByIdCommand(PuntoControl user)
+    {
+        return new DeletePuntoControlByIdCommand(user);
+    }
+
+    public static DeletePuntoControlCommand createDeletePuntoControlCommand(PuntoControl user)
+    {
+        return new DeletePuntoControlCommand(user);
+    }
+
+    public static UpdatePuntoControlByIdCommand createUpdatePuntoControlByIdCommand(PuntoControl user, DBHandler handler)
+    {
+        return new UpdatePuntoControlByIdCommand(user, handler);
+    }
+
+    public static UpdatePuntoControlByIdCommand createUpdatePuntoControlByIdCommand(PuntoControl user)
+    {
+        return new UpdatePuntoControlByIdCommand(user);
+    }
+
+    public static UpdatePuntoControlCommand createUpdatePuntoControlCommand(PuntoControl user)
+    {
+        return new UpdatePuntoControlCommand(user);
     }
 
 }

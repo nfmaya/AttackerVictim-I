@@ -31,4 +31,10 @@ public class DaoFactory
         return new PosicionDao( handler );
     }
 
+    public static PuntoControlDao createPuntoControlDao( DBHandler handler )
+    {
+        return new PuntoControlDao( handler );
+    }
+
+
 }
