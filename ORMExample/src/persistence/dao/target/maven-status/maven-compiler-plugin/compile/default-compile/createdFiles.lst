@@ -1,9 +1,12 @@
 com\ucab\cmcapp\persistence\dao\UserDao.class
-com\ucab\cmcapp\persistence\dao\DistanciaAlejamientoDao.class
-com\ucab\cmcapp\persistence\dao\BaseDao.class
+com\ucab\cmcapp\persistence\dao\TiempoControlDao.class
 com\ucab\cmcapp\persistence\dao\PosicionDao.class
 com\ucab\cmcapp\persistence\DaoFactory.class
 com\ucab\cmcapp\persistence\dao\PuntoControlDao.class
 com\ucab\cmcapp\persistence\dao\UsuarioDao.class
 com\ucab\cmcapp\persistence\dao\AlertaDao.class
 com\ucab\cmcapp\persistence\DBHandler.class
+com\ucab\cmcapp\persistence\dao\CoordenadaZonaSeguridadDao.class
+com\ucab\cmcapp\persistence\dao\DistanciaAlejamientoDao.class
+com\ucab\cmcapp\persistence\dao\BaseDao.class
+com\ucab\cmcapp\persistence\dao\ZonaSeguridadDao.class

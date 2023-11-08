@@ -36,5 +36,22 @@ public class DaoFactory
         return new PuntoControlDao( handler );
     }
 
+    public static CoordenadaZonaSeguridadDao createCoordenadaZonaSeguridadDao( DBHandler handler )
+    {
+        return new CoordenadaZonaSeguridadDao( handler );
+    }
+
+
+    public static ZonaSeguridadDao createZonaSeguridadDao( DBHandler handler )
+    {
+        return new ZonaSeguridadDao( handler );
+    }
+
+
+    public static TiempoControlDao createTiempoControlDao( DBHandler handler )
+    {
+        return new TiempoControlDao( handler );
+    }
+
 
 }

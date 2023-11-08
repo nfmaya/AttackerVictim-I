@@ -1,11 +1,35 @@
 package com.ucab.cmcapp.logic.commands;
 
 import com.ucab.cmcapp.common.entities.*;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.AddCoordenadaZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.DeleteCoordenadaZonaSeguridadByIdCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.GetCoordenadaZonaSeguridadByIdCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.UpdateCoordenadaZonaSeguridadByIdCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.CreateCoordenadaZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.DeleteCoordenadaZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.GetCoordenadaZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.UpdateCoordenadaZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.*;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.AddTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.DeleteTiempoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.GetTiempoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.UpdateTiempoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.CreateTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.DeleteTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.UpdateTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.AddZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.DeleteZonaSeguridadByIdCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.GetZonaSeguridadByIdCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.UpdateZonaSeguridadByIdCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.CreateZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.DeleteZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.UpdateZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.*;
 import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
@@ -404,5 +428,189 @@ public class CommandFactory
     {
         return new UpdatePuntoControlCommand(user);
     }
+
+
+    //CoordenadaZonaSeguridad
+
+    public static GetCoordenadaZonaSeguridadCommand createGetCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad CoordenadaZonaSeguridad)
+    {
+        return new GetCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad);
+    }
+
+
+    public static GetCoordenadaZonaSeguridadByIdCommand createGetCoordenadaZonaSeguridadByIdCommand (DBHandler handler, long CoordenadaZonaSeguridadId )
+    {
+        return new GetCoordenadaZonaSeguridadByIdCommand(handler, CoordenadaZonaSeguridadId);
+    }
+
+    public static AddCoordenadaZonaSeguridadCommand createAddCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad CoordenadaZonaSeguridad, DBHandler handler)
+    {
+        return new AddCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad, handler);
+    }
+
+    public static AddCoordenadaZonaSeguridadCommand createAddCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad CoordenadaZonaSeguridad)
+    {
+        return new AddCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad);
+    }
+
+    public static CreateCoordenadaZonaSeguridadCommand createCreateCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad CoordenadaZonaSeguridad)
+    {
+        return new CreateCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad);
+    }
+
+
+
+    public static DeleteCoordenadaZonaSeguridadByIdCommand createDeleteCoordenadaZonaSeguridadByIdCommand(CoordenadaZonaSeguridad user, DBHandler handler)
+    {
+        return new DeleteCoordenadaZonaSeguridadByIdCommand(user, handler);
+    }
+
+    public static DeleteCoordenadaZonaSeguridadByIdCommand createDeleteCoordenadaZonaSeguridadByIdCommand(CoordenadaZonaSeguridad user)
+    {
+        return new DeleteCoordenadaZonaSeguridadByIdCommand(user);
+    }
+
+    public static DeleteCoordenadaZonaSeguridadCommand createDeleteCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad user)
+    {
+        return new DeleteCoordenadaZonaSeguridadCommand(user);
+    }
+
+    public static UpdateCoordenadaZonaSeguridadByIdCommand createUpdateCoordenadaZonaSeguridadByIdCommand(CoordenadaZonaSeguridad user, DBHandler handler)
+    {
+        return new UpdateCoordenadaZonaSeguridadByIdCommand(user, handler);
+    }
+
+    public static UpdateCoordenadaZonaSeguridadByIdCommand createUpdateCoordenadaZonaSeguridadByIdCommand(CoordenadaZonaSeguridad user)
+    {
+        return new UpdateCoordenadaZonaSeguridadByIdCommand(user);
+    }
+
+    public static UpdateCoordenadaZonaSeguridadCommand createUpdateCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad user)
+    {
+        return new UpdateCoordenadaZonaSeguridadCommand(user);
+    }
+
+
+
+    //ZonaSeguridad 
+
+    public static GetZonaSeguridadCommand createGetZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad)
+    {
+        return new GetZonaSeguridadCommand(ZonaSeguridad);
+    }
+
+
+    public static GetZonaSeguridadByIdCommand createGetZonaSeguridadByIdCommand (DBHandler handler, long ZonaSeguridadId )
+    {
+        return new GetZonaSeguridadByIdCommand(handler, ZonaSeguridadId);
+    }
+
+    public static AddZonaSeguridadCommand createAddZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad, DBHandler handler)
+    {
+        return new AddZonaSeguridadCommand(ZonaSeguridad, handler);
+    }
+
+    public static AddZonaSeguridadCommand createAddZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad)
+    {
+        return new AddZonaSeguridadCommand(ZonaSeguridad);
+    }
+
+    public static CreateZonaSeguridadCommand createCreateZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad)
+    {
+        return new CreateZonaSeguridadCommand(ZonaSeguridad);
+    }
+
+
+
+    public static DeleteZonaSeguridadByIdCommand createDeleteZonaSeguridadByIdCommand(ZonaSeguridad user, DBHandler handler)
+    {
+        return new DeleteZonaSeguridadByIdCommand(user, handler);
+    }
+
+    public static DeleteZonaSeguridadByIdCommand createDeleteZonaSeguridadByIdCommand(ZonaSeguridad user)
+    {
+        return new DeleteZonaSeguridadByIdCommand(user);
+    }
+
+    public static DeleteZonaSeguridadCommand createDeleteZonaSeguridadCommand(ZonaSeguridad user)
+    {
+        return new DeleteZonaSeguridadCommand(user);
+    }
+
+    public static UpdateZonaSeguridadByIdCommand createUpdateZonaSeguridadByIdCommand(ZonaSeguridad user, DBHandler handler)
+    {
+        return new UpdateZonaSeguridadByIdCommand(user, handler);
+    }
+
+    public static UpdateZonaSeguridadByIdCommand createUpdateZonaSeguridadByIdCommand(ZonaSeguridad user)
+    {
+        return new UpdateZonaSeguridadByIdCommand(user);
+    }
+
+    public static UpdateZonaSeguridadCommand createUpdateZonaSeguridadCommand(ZonaSeguridad user)
+    {
+        return new UpdateZonaSeguridadCommand(user);
+    }
+    
+    
+    //TiempoControl
+    public static GetTiempoControlCommand createGetTiempoControlCommand(TiempoControl TiempoControl)
+    {
+        return new GetTiempoControlCommand(TiempoControl);
+    }
+
+
+    public static GetTiempoControlByIdCommand createGetTiempoControlByIdCommand (DBHandler handler, long TiempoControlId )
+    {
+        return new GetTiempoControlByIdCommand(handler, TiempoControlId);
+    }
+
+    public static AddTiempoControlCommand createAddTiempoControlCommand(TiempoControl TiempoControl, DBHandler handler)
+    {
+        return new AddTiempoControlCommand(TiempoControl, handler);
+    }
+
+    public static AddTiempoControlCommand createAddTiempoControlCommand(TiempoControl TiempoControl)
+    {
+        return new AddTiempoControlCommand(TiempoControl);
+    }
+
+    public static CreateTiempoControlCommand createCreateTiempoControlCommand(TiempoControl TiempoControl)
+    {
+        return new CreateTiempoControlCommand(TiempoControl);
+    }
+
+
+
+    public static DeleteTiempoControlByIdCommand createDeleteTiempoControlByIdCommand(TiempoControl user, DBHandler handler)
+    {
+        return new DeleteTiempoControlByIdCommand(user, handler);
+    }
+
+    public static DeleteTiempoControlByIdCommand createDeleteTiempoControlByIdCommand(TiempoControl user)
+    {
+        return new DeleteTiempoControlByIdCommand(user);
+    }
+
+    public static DeleteTiempoControlCommand createDeleteTiempoControlCommand(TiempoControl user)
+    {
+        return new DeleteTiempoControlCommand(user);
+    }
+
+    public static UpdateTiempoControlByIdCommand createUpdateTiempoControlByIdCommand(TiempoControl user, DBHandler handler)
+    {
+        return new UpdateTiempoControlByIdCommand(user, handler);
+    }
+
+    public static UpdateTiempoControlByIdCommand createUpdateTiempoControlByIdCommand(TiempoControl user)
+    {
+        return new UpdateTiempoControlByIdCommand(user);
+    }
+
+    public static UpdateTiempoControlCommand createUpdateTiempoControlCommand(TiempoControl user)
+    {
+        return new UpdateTiempoControlCommand(user);
+    }
+
 
 }

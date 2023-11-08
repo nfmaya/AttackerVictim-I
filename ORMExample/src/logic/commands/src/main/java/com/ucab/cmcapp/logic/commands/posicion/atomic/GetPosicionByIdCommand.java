@@ -7,6 +7,7 @@ import com.ucab.cmcapp.persistence.DaoFactory;
 import com.ucab.cmcapp.persistence.dao.PosicionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 public class GetPosicionByIdCommand extends Command<Posicion>
 {
     private static Logger _logger = LoggerFactory.getLogger( GetPosicionByIdCommand.class );
@@ -14,7 +15,7 @@ public class GetPosicionByIdCommand extends Command<Posicion>
     private Posicion _result;
     private PosicionDao _dao;
 
-    public GetPosicionByIdCommand( DBHandler handler, long userId )
+    public GetPosicionByIdCommand(DBHandler handler, long userId )
     {
         //region Instrumentation DEBUG
         _logger.debug( String.format( "Get in GetPosicionByIdCommand.ctor: parameter {%s}", userId ) );
