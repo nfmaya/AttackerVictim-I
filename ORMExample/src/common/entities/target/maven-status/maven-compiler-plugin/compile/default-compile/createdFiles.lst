@@ -1,4 +1,5 @@
 com\ucab\cmcapp\common\entities\Posicion.class
+com\ucab\cmcapp\common\entities\PuntoControl.class
 com\ucab\cmcapp\common\entities\User.class
 com\ucab\cmcapp\common\EntityFactory.class
 com\ucab\cmcapp\common\entities\Alerta.class
