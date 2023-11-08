@@ -9,11 +9,11 @@ import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDista
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
-import com.ucab.cmcapp.logic.commands.alerta.atomic.AddAlertaCommand;
-import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByIdCommand;
-import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByTipoAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.atomic.*;
 import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.GetAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.UpdateAlertaCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.AddUserCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByIdCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
@@ -168,6 +168,38 @@ public class CommandFactory
     public static CreateAlertaCommand createCreateAlertaCommand(Alerta alerta)
     {
         return new CreateAlertaCommand(alerta);
+    }
+
+
+
+    public static DeleteAlertaByIdCommand createDeleteAlertaByIdCommand(Alerta user, DBHandler handler)
+    {
+        return new DeleteAlertaByIdCommand(user, handler);
+    }
+
+    public static DeleteAlertaByIdCommand createDeleteAlertaByIdCommand(Alerta user)
+    {
+        return new DeleteAlertaByIdCommand(user);
+    }
+
+    public static DeleteAlertaCommand createDeleteAlertaCommand(Alerta user)
+    {
+        return new DeleteAlertaCommand(user);
+    }
+
+    public static UpdateAlertaByIdCommand createUpdateAlertaByIdCommand(Alerta user, DBHandler handler)
+    {
+        return new UpdateAlertaByIdCommand(user, handler);
+    }
+
+    public static UpdateAlertaByIdCommand createUpdateAlertaByIdCommand(Alerta user)
+    {
+        return new UpdateAlertaByIdCommand(user);
+    }
+
+    public static UpdateAlertaCommand createUpdateAlertaCommand(Alerta user)
+    {
+        return new UpdateAlertaCommand(user);
     }
 
 
