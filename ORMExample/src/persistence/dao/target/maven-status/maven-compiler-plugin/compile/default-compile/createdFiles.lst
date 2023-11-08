@@ -9,4 +9,5 @@ com\ucab\cmcapp\persistence\DBHandler.class
 com\ucab\cmcapp\persistence\dao\CoordenadaZonaSeguridadDao.class
 com\ucab\cmcapp\persistence\dao\DistanciaAlejamientoDao.class
 com\ucab\cmcapp\persistence\dao\BaseDao.class
+com\ucab\cmcapp\persistence\dao\UserTypeDao.class
 com\ucab\cmcapp\persistence\dao\ZonaSeguridadDao.class
