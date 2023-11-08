@@ -19,7 +19,7 @@ public class AlertaMapper extends BaseMapper
 
     public static Alerta mapDtoToEntity(AlertaDto dto ) throws ParseException
     {
-        Alerta entity = EntityFactory.createAlerta();
+        Alerta entity = EntityFactory.createAlerta(dto.getId());
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in AlertaMapper.mapDtoToEntity: dto {}", dto );

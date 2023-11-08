@@ -1,4 +1,6 @@
 com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\atomic\AddDistanciaAlejamientoCommand.class
+com\ucab\cmcapp\logic\commands\alerta\composite\UpdateAlertaCommand.class
+com\ucab\cmcapp\logic\commands\alerta\composite\DeleteAlertaCommand.class
 com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\composite\DeleteDistanciaCommand.class
 com\ucab\cmcapp\logic\commands\alerta\atomic\AddAlertaCommand.class
 com\ucab\cmcapp\logic\commands\usuario\atomic\AddUsuarioCommand.class
@@ -23,8 +25,10 @@ com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\composite\GetDistanciaAlejam
 com\ucab\cmcapp\logic\commands\Command.class
 com\ucab\cmcapp\logic\commands\usuario\atomic\GetUsuarioByIdCommand.class
 com\ucab\cmcapp\logic\commands\usuario\composite\UpdateUsuarioCommand.class
+com\ucab\cmcapp\logic\commands\alerta\atomic\UpdateAlertaByIdCommand.class
 com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\composite\UpdateDistanciaCommand.class
 com\ucab\cmcapp\logic\commands\user\composite\CreateUserCommand.class
 com\ucab\cmcapp\logic\commands\usuario\atomic\GetUsuarioByUsernameCommand.class
 com\ucab\cmcapp\logic\commands\usuario\composite\CreateUsuarioCommand.class
+com\ucab\cmcapp\logic\commands\alerta\atomic\DeleteAlertaByIdCommand.class
 com\ucab\cmcapp\logic\commands\user\atomic\GetUserByEmailCommand.class

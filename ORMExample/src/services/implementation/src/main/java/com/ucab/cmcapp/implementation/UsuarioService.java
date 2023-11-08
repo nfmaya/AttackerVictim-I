@@ -19,13 +19,7 @@ import com.ucab.cmcapp.logic.mappers.UsuarioMapperInsert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -141,7 +135,7 @@ public class UsuarioService extends BaseService
         return response;
     }
 
-    @POST
+    @DELETE
     @Path("/delete")
     public UsuarioDto deleteUsuario( UsuarioDto userDto )
     {
@@ -177,7 +171,7 @@ public class UsuarioService extends BaseService
     }
 
 
-    @POST
+    @PUT
     @Path("/update")
     public UsuarioDto updateUsuario( UsuarioDto userDto )
     {

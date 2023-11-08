@@ -1,10 +1,12 @@
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\alerta\composite\CreateAlertaCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\atomic\GetDistanciaAlejamientoByUsuariosCommand.java
+C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\alerta\atomic\DeleteAlertaByIdCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\composite\DeleteDistanciaCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\alerta\composite\GetAlertaCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\usuario\atomic\GetUsuarioByUsernameCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\usuario\composite\CreateUsuarioCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\composite\UpdateDistanciaCommand.java
+C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\alerta\composite\UpdateAlertaCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\usuario\composite\GetUsuarioCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\atomic\DeleteDistanciaByIdCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\atomic\UpdateDistanciaByIdCommand.java
@@ -13,6 +15,7 @@ C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\comman
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\user\atomic\AddUserCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\Command.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\user\atomic\GetUserByEmailCommand.java
+C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\alerta\composite\DeleteAlertaCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\usuario\atomic\AddUsuarioCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\atomic\AddDistanciaAlejamientoCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\alerta\atomic\GetAlertaByIdCommand.java
@@ -23,6 +26,7 @@ C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\comman
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\composite\GetDistanciaAlejamientoCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\user\atomic\GetUserByIdCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\user\composite\GetUserCommand.java
+C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\alerta\atomic\UpdateAlertaByIdCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\usuario\atomic\UpdateUsuarioByIdCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\atomic\GetDistanciaAlejamientoByIdCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\usuario\atomic\DeleteUsuarioByIdCommand.java
