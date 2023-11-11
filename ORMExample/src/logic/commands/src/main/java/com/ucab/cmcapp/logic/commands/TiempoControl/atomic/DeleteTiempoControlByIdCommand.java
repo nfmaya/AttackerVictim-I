@@ -54,7 +54,8 @@ public class DeleteTiempoControlByIdCommand extends Command<TiempoControl>
 
         //endregion
         _dao.delete( _TiempoControl);
-
+        //SI SE QUIERE ELIMINAR DE LA BD, SE PONE .delete()
+        //AQUI HACE UN DELETE LOGICO: .update()
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in  DeleteTiempoControlByIdCommand.execute" );

@@ -57,7 +57,8 @@ public class DeleteAlertaByIdCommand extends Command<Alerta>
 
         //endregion
         _dao.delete( _Alerta);
-
+        //SI SE QUIERE ELIMINAR DE LA BD, SE PONE .delete()
+        //AQUI HACE UN DELETE LOGICO: .update()
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in  DeleteAlertaByIdCommand.execute" );

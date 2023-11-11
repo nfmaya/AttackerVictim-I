@@ -22,6 +22,21 @@ public class Usuario {
     @Column(name = "NombreUsuario")
     private String _Nombre;
 
+    //AGREGAR ESTOS ATRIBUTOS
+    /*
+    @Column(name = "DocIdentidad")
+    private String DocIdentidad;
+
+    @Column(name = "IMEI")
+    private String IMEI;
+
+    @Column(name = "Estatus")
+    private boolean Estatus;
+
+     */
+
+
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn( name = "user_type_id", nullable = false )
     private UserType _userType;
@@ -80,7 +95,35 @@ public class Usuario {
     public void set_userType(UserType _userType) {
         this._userType = _userType;
     }
-/*
+
+    /*
+    public String getDocIdentidad() {
+        return DocIdentidad;
+    }
+
+    public void setDocIdentidad(String docIdentidad) {
+        DocIdentidad = docIdentidad;
+    }
+
+    public String getIMEI() {
+        return IMEI;
+    }
+
+    public void setIMEI(String IMEI) {
+        this.IMEI = IMEI;
+    }
+
+    public boolean isEstatus() {
+        return Estatus;
+    }
+
+    public void setEstatus(boolean estatus) {
+        Estatus = estatus;
+    }
+
+     */
+
+    /*
     public List<Alerta> getAlertas() {
         return alertas;
     }

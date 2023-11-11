@@ -107,17 +107,20 @@ public abstract class BaseDao&lt;T&gt;
 
         try
         {
-<span class="nc" id="L110">            getEntityManager().merge( entity );</span>
-<span class="nc" id="L111">            getEntityManager().flush();</span>
+
+<span class="nc" id="L111">            getEntityManager().merge( entity );</span>
+<span class="nc" id="L112">            getEntityManager().flush();</span>
         }
-<span class="nc" id="L113">        catch ( Exception e )</span>
+<span class="nc" id="L114">        catch ( Exception e )</span>
         {
             //implementar logger
-<span class="nc" id="L116">            throw new UpdateException( e, entity.toString() );</span>
-<span class="nc" id="L117">        }</span>
+<span class="nc" id="L117">            throw new UpdateException( e, entity.toString() );</span>
+<span class="nc" id="L118">        }</span>
         //implementar logger
-<span class="nc" id="L119">        return entity;</span>
+<span class="nc" id="L120">        return entity;</span>
     }
+
+
 
     /**
      * Name:                  delete
@@ -127,27 +130,27 @@ public abstract class BaseDao&lt;T&gt;
      */
     public T delete(T entity )
     {
-<span class="nc" id="L130">        setEntityManager( _dbHandler.getSession() );</span>
+<span class="nc" id="L133">        setEntityManager( _dbHandler.getSession() );</span>
         //implementar logger
         try
         {
 
             //getEntityManager().merge( entity );
             //getEntityManager().flush();
-<span class="nc" id="L137">            getEntityManager().remove( getEntityManager().merge( entity ) );</span>
-<span class="nc" id="L138">            getEntityManager().flush();</span>
+<span class="nc" id="L140">            getEntityManager().remove( getEntityManager().merge( entity ) );</span>
+<span class="nc" id="L141">            getEntityManager().flush();</span>
 
-<span class="nc" id="L140">            _logger.debug( &quot;DELETING: {}&quot;,entity);</span>
+<span class="nc" id="L143">            _logger.debug( &quot;DELETING: {}&quot;,entity);</span>
 
         }
-<span class="nc" id="L143">        catch ( Exception e )</span>
+<span class="nc" id="L146">        catch ( Exception e )</span>
         {
             //implementar logger
-<span class="nc" id="L146">            throw new DeleteException( e.getMessage() + &quot;Entity: &quot; + entity.toString() );</span>
-<span class="nc" id="L147">        }</span>
+<span class="nc" id="L149">            throw new DeleteException( e.getMessage() + &quot;Entity: &quot; + entity.toString() );</span>
+<span class="nc" id="L150">        }</span>
 
         //implementar logger
-<span class="nc" id="L150">        return entity;</span>
+<span class="nc" id="L153">        return entity;</span>
     }
 
     /**
@@ -162,27 +165,27 @@ public abstract class BaseDao&lt;T&gt;
     public List&lt;T&gt; findAll( Class&lt;T&gt; type )
     {
         //implementar logger
-<span class="nc" id="L165">        setEntityManager( _dbHandler.getSession() );</span>
+<span class="nc" id="L168">        setEntityManager( _dbHandler.getSession() );</span>
 
-<span class="nc" id="L167">        final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();</span>
-<span class="nc" id="L168">        final CriteriaQuery&lt;T&gt; criteriaQuery = criteriaBuilder.createQuery( type );</span>
-<span class="nc" id="L169">        final Root&lt;T&gt; root = criteriaQuery.from( type );</span>
+<span class="nc" id="L170">        final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();</span>
+<span class="nc" id="L171">        final CriteriaQuery&lt;T&gt; criteriaQuery = criteriaBuilder.createQuery( type );</span>
+<span class="nc" id="L172">        final Root&lt;T&gt; root = criteriaQuery.from( type );</span>
         final List&lt;T&gt; list;
 
         try
         {
-<span class="nc" id="L174">            criteriaQuery.select( root );</span>
+<span class="nc" id="L177">            criteriaQuery.select( root );</span>
 
-<span class="nc" id="L176">            list = getEntityManager().createQuery( criteriaQuery ).getResultList();</span>
+<span class="nc" id="L179">            list = getEntityManager().createQuery( criteriaQuery ).getResultList();</span>
 
         }
-<span class="nc" id="L179">        catch ( Exception e )</span>
+<span class="nc" id="L182">        catch ( Exception e )</span>
         {
             //implementar logger
-<span class="nc" id="L182">            throw new FindAllException( e.getMessage() + &quot; Type&quot; + type.toString() );</span>
-<span class="nc" id="L183">        }</span>
+<span class="nc" id="L185">            throw new FindAllException( e.getMessage() + &quot; Type&quot; + type.toString() );</span>
+<span class="nc" id="L186">        }</span>
         //implementar logger
-<span class="nc" id="L185">        return list;</span>
+<span class="nc" id="L188">        return list;</span>
     }
 
     /**
@@ -199,26 +202,26 @@ public abstract class BaseDao&lt;T&gt;
 
         try
         {
-<span class="nc" id="L202">            setEntityManager( _dbHandler.getSession() );</span>
-<span class="nc" id="L203">            entity = getEntityManager().find( type, id );</span>
+<span class="nc" id="L205">            setEntityManager( _dbHandler.getSession() );</span>
+<span class="nc" id="L206">            entity = getEntityManager().find( type, id );</span>
         }
-<span class="nc" id="L205">        catch ( Exception e )</span>
+<span class="nc" id="L208">        catch ( Exception e )</span>
         {
             //implementar logger
-<span class="nc" id="L208">            throw new FindException( e.getMessage() + &quot;Id: &quot; + id + &quot; Type&quot; + type.toString() );</span>
-<span class="nc" id="L209">        }</span>
+<span class="nc" id="L211">            throw new FindException( e.getMessage() + &quot;Id: &quot; + id + &quot; Type&quot; + type.toString() );</span>
+<span class="nc" id="L212">        }</span>
 
         //implementar logger
-<span class="nc" id="L212">        return entity;</span>
+<span class="nc" id="L215">        return entity;</span>
     }
 
     public void findDelete(Long id, Class&lt;T&gt; type){
         T entity;
 
-<span class="nc" id="L218">        entity = find(id,type);</span>
+<span class="nc" id="L221">        entity = find(id,type);</span>
 
-<span class="nc" id="L220">        delete(entity);</span>
-<span class="nc" id="L221">    }</span>
+<span class="nc" id="L223">        delete(entity);</span>
+<span class="nc" id="L224">    }</span>
 
     /**
      * Name:                  getDBHandler
@@ -228,7 +231,7 @@ public abstract class BaseDao&lt;T&gt;
      */
     public DBHandler getDBHandler()
     {
-<span class="nc" id="L231">        return _dbHandler;</span>
+<span class="nc" id="L234">        return _dbHandler;</span>
     }
 
 
