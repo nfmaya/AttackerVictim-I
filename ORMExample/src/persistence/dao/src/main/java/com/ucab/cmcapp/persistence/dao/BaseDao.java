@@ -107,6 +107,7 @@ public abstract class BaseDao<T>
 
         try
         {
+
             getEntityManager().merge( entity );
             getEntityManager().flush();
         }
@@ -118,6 +119,8 @@ public abstract class BaseDao<T>
         //implementar logger
         return entity;
     }
+
+
 
     /**
      * Name:                  delete

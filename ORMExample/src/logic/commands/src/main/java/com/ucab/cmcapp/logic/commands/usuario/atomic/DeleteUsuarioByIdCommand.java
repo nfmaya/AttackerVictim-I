@@ -57,7 +57,8 @@ public class DeleteUsuarioByIdCommand extends Command<Usuario>
 
         //endregion
         _dao.delete( _usuario);
-
+        //SI SE QUIERE ELIMINAR DE LA BD, SE PONE .delete()
+        //AQUI HACE UN DELETE LOGICO: .update()
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in  DeleteUsuarioByIdCommand.execute" );

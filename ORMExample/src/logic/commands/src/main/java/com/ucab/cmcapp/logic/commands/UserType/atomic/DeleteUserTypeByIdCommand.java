@@ -54,7 +54,8 @@ public class DeleteUserTypeByIdCommand extends Command<UserType>
 
         //endregion
         _dao.delete( _UserType);
-
+        //SI SE QUIERE ELIMINAR DE LA BD, SE PONE .delete()
+        //AQUI HACE UN DELETE LOGICO: .update()
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in  DeleteUserTypeByIdCommand.execute" );

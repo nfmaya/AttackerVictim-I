@@ -54,7 +54,8 @@ public class DeleteCoordenadaZonaSeguridadByIdCommand extends Command<Coordenada
 
         //endregion
         _dao.delete( _CoordenadaZonaSeguridad);
-
+        //SI SE QUIERE ELIMINAR DE LA BD, SE PONE .delete()
+        //AQUI HACE UN DELETE LOGICO: .update()
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in  DeleteCoordenadaZonaSeguridadByIdCommand.execute" );

@@ -54,7 +54,8 @@ public class DeletePosicionByIdCommand extends Command<Posicion>
 
         //endregion
         _dao.delete( _Posicion);
-
+        //SI SE QUIERE ELIMINAR DE LA BD, SE PONE .delete()
+        //AQUI HACE UN DELETE LOGICO: .update()
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in  DeletePosicionByIdCommand.execute" );

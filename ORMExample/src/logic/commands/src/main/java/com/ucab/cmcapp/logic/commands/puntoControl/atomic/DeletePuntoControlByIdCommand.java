@@ -54,7 +54,8 @@ public class DeletePuntoControlByIdCommand extends Command<PuntoControl>
 
         //endregion
         _dao.delete( _PuntoControl);
-
+        //SI SE QUIERE ELIMINAR DE LA BD, SE PONE .delete()
+        //AQUI HACE UN DELETE LOGICO: .update()
 
         //region Instrumentation DEBUG
         _logger.debug( "Get in  DeletePuntoControlByIdCommand.execute" );
