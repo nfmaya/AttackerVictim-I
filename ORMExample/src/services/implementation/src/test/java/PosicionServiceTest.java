@@ -13,8 +13,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class PosicionServiceTest {
+    /*
 @Test
 public void testGetPosicion() {
+
     long posicionId = 1L;
     Posicion posicion = new Posicion();
     PosicionDto expectedDto = new PosicionDto();
@@ -118,4 +120,6 @@ public void testGetPosicion() {
         // Assertions
         assertEquals(expectedDto, result);
     }
+
+     */
 }

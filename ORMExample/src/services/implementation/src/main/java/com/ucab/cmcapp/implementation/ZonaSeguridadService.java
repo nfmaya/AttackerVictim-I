@@ -1,5 +1,6 @@
 package com.ucab.cmcapp.implementation;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.ZonaSeguridad;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.CreateZonaSeguridadCommand;
@@ -7,8 +8,11 @@ import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.DeleteZonaSegurida
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.UpdateZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapper;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapperInsert;
+import com.ucab.cmcapp.persistence.dao.ZonaSeguridadDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +29,7 @@ public class ZonaSeguridadService extends BaseService
 
     @GET
     @Path( "/{id}" )
-    public ZonaSeguridadDto getZonaSeguridad(@PathParam( "id" ) long userId )
+    public Response getZonaSeguridad(@PathParam( "id" ) long userId )
     {
         ZonaSeguridad entity;
         ZonaSeguridadDto response;
@@ -39,14 +43,16 @@ public class ZonaSeguridadService extends BaseService
             entity = ZonaSeguridadMapper.mapDtoToEntity( userId );
             command = CommandFactory.createGetZonaSeguridadCommand( entity );
             command.execute();
-            response = ZonaSeguridadMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getZonaSeguridad: {} ", response );
+            if(command.getReturnParam() != null){
+                response = ZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting ZonaSeguridad {}: {}", e.getMessage(), userId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userId)).build();
+
         }
         finally
         {
@@ -55,14 +61,15 @@ public class ZonaSeguridadService extends BaseService
         }
 
         _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Zona Seguridad: " + userId)).build();
     }
 
 
 
 
     @POST
-    public ZonaSeguridadDto addZonaSeguridad( ZonaSeguridadDto userDto )
+    @Path("/insert")
+    public Response addZonaSeguridad( ZonaSeguridadDto userDto )
     {
         ZonaSeguridad entity;
         ZonaSeguridadDto response;
@@ -76,14 +83,16 @@ public class ZonaSeguridadService extends BaseService
             entity = ZonaSeguridadMapperInsert.mapDtoToEntity( userDto );
             command = CommandFactory.createCreateZonaSeguridadCommand( entity );
             command.execute();
-            response = ZonaSeguridadMapperInsert.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response addZonaSeguridad: {} ", response );
+            if(command.getReturnParam() != null){
+                response = ZonaSeguridadMapperInsert.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} adding ZonaSeguridad: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userDto.getId())).build();
+
         }
         finally
         {
@@ -92,12 +101,12 @@ public class ZonaSeguridadService extends BaseService
         }
 
         _logger.debug( "Leaving ZonaSeguridadService.addZonaSeguridad" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
     @DELETE
     @Path("/delete")
-    public ZonaSeguridadDto deleteZonaSeguridad( ZonaSeguridadDto userDto )
+    public Response deleteZonaSeguridad( ZonaSeguridadDto userDto )
     {
         ZonaSeguridad entity;
         ZonaSeguridadDto response;
@@ -111,14 +120,16 @@ public class ZonaSeguridadService extends BaseService
             entity = ZonaSeguridadMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createDeleteZonaSeguridadCommand( entity );
             command.execute();
-            response = ZonaSeguridadMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteZonaSeguridad: {} ", response );
+            if(command.getReturnParam() != null){
+                response = ZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede eliminar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting ZonaSeguridad: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userDto.getId())).build();
+
         }
         finally
         {
@@ -127,34 +138,41 @@ public class ZonaSeguridadService extends BaseService
         }
 
         _logger.debug( "Leaving ZonaSeguridadService.deleteZonaSeguridad" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Eliminado: " + userDto.getId())).build();
     }
 
 
     @PUT
     @Path("/update")
-    public ZonaSeguridadDto updateZonaSeguridad( ZonaSeguridadDto userDto )
+    public Response updateZonaSeguridad( ZonaSeguridadDto userDto )
     {
         ZonaSeguridad entity;
         ZonaSeguridadDto response;
         UpdateZonaSeguridadCommand command = null;
+        ZonaSeguridadDao base = new ZonaSeguridadDao();
         //region Instrumentation DEBUG
         _logger.debug( "Get in ZonaSeguridadService.deleteZonaSeguridad" );
         //endregion
 
         try
         {
+            if (base.find(userDto.getId(), ZonaSeguridad.class) == null){
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
+
+            }
             entity = ZonaSeguridadMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdateZonaSeguridadCommand( entity );
             command.execute();
-            response = ZonaSeguridadMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteZonaSeguridad: {} ", response );
+            if(command.getReturnParam() != null){
+                response = ZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede editar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting ZonaSeguridad: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userDto.getId())).build();
+
         }
         finally
         {
@@ -163,6 +181,6 @@ public class ZonaSeguridadService extends BaseService
         }
 
         _logger.debug( "Leaving ZonaSeguridadService.deleteZonaSeguridad" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
     }
 }

@@ -1,5 +1,6 @@
 package com.ucab.cmcapp.implementation;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.Posicion;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.posicion.composite.CreatePosicionCommand;
@@ -7,8 +8,11 @@ import com.ucab.cmcapp.logic.commands.posicion.composite.DeletePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.GetPosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.UpdatePosicionCommand;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.PosicionMapper;
 import com.ucab.cmcapp.logic.mappers.PosicionMapperInsert;
+import com.ucab.cmcapp.persistence.dao.PosicionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +29,7 @@ public class PosicionService extends BaseService
 
     @GET
     @Path( "/{id}" )
-    public PosicionDto getPosicion(@PathParam( "id" ) long userId )
+    public Response getPosicion(@PathParam( "id" ) long userId )
     {
         Posicion entity;
         PosicionDto response;
@@ -39,14 +43,16 @@ public class PosicionService extends BaseService
             entity = PosicionMapper.mapDtoToEntity( userId );
             command = CommandFactory.createGetPosicionCommand( entity );
             command.execute();
-            response = PosicionMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getPosicion: {} ", response );
+            if(command.getReturnParam() != null){
+                response = PosicionMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting Posicion {}: {}", e.getMessage(), userId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userId)).build();
+
         }
         finally
         {
@@ -55,14 +61,15 @@ public class PosicionService extends BaseService
         }
 
         _logger.debug( "Leaving PosicionService.getPosicion" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Posicion: " + userId)).build();
     }
 
 
 
 
     @POST
-    public PosicionDto addPosicion( PosicionDto userDto )
+    @Path("/insert")
+    public Response addPosicion( PosicionDto userDto )
     {
         Posicion entity;
         PosicionDto response;
@@ -76,14 +83,16 @@ public class PosicionService extends BaseService
             entity = PosicionMapperInsert.mapDtoToEntity( userDto );
             command = CommandFactory.createCreatePosicionCommand( entity );
             command.execute();
-            response = PosicionMapperInsert.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response addPosicion: {} ", response );
+            if(command.getReturnParam() != null){
+                response = PosicionMapperInsert.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} adding Posicion: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userDto.getId())).build();
+
         }
         finally
         {
@@ -92,12 +101,12 @@ public class PosicionService extends BaseService
         }
 
         _logger.debug( "Leaving PosicionService.addPosicion" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
     @DELETE
     @Path("/delete")
-    public PosicionDto deletePosicion( PosicionDto userDto )
+    public Response deletePosicion( PosicionDto userDto )
     {
         Posicion entity;
         PosicionDto response;
@@ -111,14 +120,16 @@ public class PosicionService extends BaseService
             entity = PosicionMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createDeletePosicionCommand( entity );
             command.execute();
-            response = PosicionMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deletePosicion: {} ", response );
+            if(command.getReturnParam() != null){
+                response = PosicionMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede eliminar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting Posicion: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userDto.getId())).build();
+
         }
         finally
         {
@@ -127,34 +138,41 @@ public class PosicionService extends BaseService
         }
 
         _logger.debug( "Leaving PosicionService.deletePosicion" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Eliminado: " + userDto.getId())).build();
     }
 
 
     @PUT
     @Path("/update")
-    public PosicionDto updatePosicion( PosicionDto userDto )
+    public Response updatePosicion( PosicionDto userDto )
     {
         Posicion entity;
         PosicionDto response;
         UpdatePosicionCommand command = null;
+        PosicionDao base = new PosicionDao();
         //region Instrumentation DEBUG
         _logger.debug( "Get in PosicionService.deletePosicion" );
         //endregion
 
         try
         {
+            if (base.find(userDto.getId(), Posicion.class) == null){
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
+
+            }
             entity = PosicionMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdatePosicionCommand( entity );
             command.execute();
-            response = PosicionMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deletePosicion: {} ", response );
+            if(command.getReturnParam() != null){
+                response = PosicionMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede editar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting Posicion: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userDto.getId())).build();
+
         }
         finally
         {
@@ -163,6 +181,6 @@ public class PosicionService extends BaseService
         }
 
         _logger.debug( "Leaving PosicionService.deletePosicion" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
     }
 }

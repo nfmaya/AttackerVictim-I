@@ -1,5 +1,6 @@
 package com.ucab.cmcapp.implementation;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.CreateCoordenadaZonaSeguridadCommand;
@@ -7,8 +8,12 @@ import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.DeleteCo
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.GetCoordenadaZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.UpdateCoordenadaZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.dtos.CoordenadaZonaSeguridadDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.CoordenadaZonaSeguridadMapper;
 import com.ucab.cmcapp.logic.mappers.CoordenadaZonaSeguridadMapperInsert;
+import com.ucab.cmcapp.persistence.dao.AlertaDao;
+import com.ucab.cmcapp.persistence.dao.CoordenadaZonaSeguridadDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +30,7 @@ public class CoordenadaZonaSeguridadService extends BaseService
 
     @GET
     @Path( "/{id}" )
-    public CoordenadaZonaSeguridadDto getCoordenadaZonaSeguridad(@PathParam( "id" ) long userId )
+    public Response getCoordenadaZonaSeguridad(@PathParam( "id" ) long userId )
     {
         CoordenadaZonaSeguridad entity;
         CoordenadaZonaSeguridadDto response;
@@ -39,14 +44,16 @@ public class CoordenadaZonaSeguridadService extends BaseService
             entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userId );
             command = CommandFactory.createGetCoordenadaZonaSeguridadCommand( entity );
             command.execute();
-            response = CoordenadaZonaSeguridadMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getCoordenadaZonaSeguridad: {} ", response );
+            if(command.getReturnParam() != null){
+                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting CoordenadaZonaSeguridad {}: {}", e.getMessage(), userId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en CoordenadaSeg " + userId)).build();
+
         }
         finally
         {
@@ -55,14 +62,15 @@ public class CoordenadaZonaSeguridadService extends BaseService
         }
 
         _logger.debug( "Leaving CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Coordenada: " + userId)).build();
     }
 
 
 
 
     @POST
-    public CoordenadaZonaSeguridadDto addCoordenadaZonaSeguridad( CoordenadaZonaSeguridadDto userDto )
+    @Path("/insert")
+    public Response addCoordenadaZonaSeguridad( CoordenadaZonaSeguridadDto userDto )
     {
         CoordenadaZonaSeguridad entity;
         CoordenadaZonaSeguridadDto response;
@@ -76,14 +84,16 @@ public class CoordenadaZonaSeguridadService extends BaseService
             entity = CoordenadaZonaSeguridadMapperInsert.mapDtoToEntity( userDto );
             command = CommandFactory.createCreateCoordenadaZonaSeguridadCommand( entity );
             command.execute();
-            response = CoordenadaZonaSeguridadMapperInsert.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response addCoordenadaZonaSeguridad: {} ", response );
+            if(command.getReturnParam() != null){
+                response = CoordenadaZonaSeguridadMapperInsert.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} adding CoordenadaZonaSeguridad: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Coordenada " + userDto.getId())).build();
+
         }
         finally
         {
@@ -92,12 +102,14 @@ public class CoordenadaZonaSeguridadService extends BaseService
         }
 
         _logger.debug( "Leaving CoordenadaZonaSeguridadService.addCoordenadaZonaSeguridad" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
+
+    //ESTE ES EL DELETE DE LA BD
     @DELETE
     @Path("/delete")
-    public CoordenadaZonaSeguridadDto deleteCoordenadaZonaSeguridad( CoordenadaZonaSeguridadDto userDto )
+    public Response deleteCoordenadaZonaSeguridad( CoordenadaZonaSeguridadDto userDto )
     {
         CoordenadaZonaSeguridad entity;
         CoordenadaZonaSeguridadDto response;
@@ -111,14 +123,16 @@ public class CoordenadaZonaSeguridadService extends BaseService
             entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createDeleteCoordenadaZonaSeguridadCommand( entity );
             command.execute();
-            response = CoordenadaZonaSeguridadMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteCoordenadaZonaSeguridad: {} ", response );
+            if(command.getReturnParam() != null){
+                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede eliminar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting CoordenadaZonaSeguridad: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Coordenada " + userDto.getId())).build();
+
         }
         finally
         {
@@ -127,34 +141,42 @@ public class CoordenadaZonaSeguridadService extends BaseService
         }
 
         _logger.debug( "Leaving CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Eliminado: " + userDto.getId())).build();
     }
 
 
     @PUT
     @Path("/update")
-    public CoordenadaZonaSeguridadDto updateCoordenadaZonaSeguridad( CoordenadaZonaSeguridadDto userDto )
+    public Response updateCoordenadaZonaSeguridad( CoordenadaZonaSeguridadDto userDto )
     {
         CoordenadaZonaSeguridad entity;
         CoordenadaZonaSeguridadDto response;
         UpdateCoordenadaZonaSeguridadCommand command = null;
+        CoordenadaZonaSeguridadDao base = new CoordenadaZonaSeguridadDao();
+
         //region Instrumentation DEBUG
         _logger.debug( "Get in CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad" );
         //endregion
 
         try
         {
+            if (base.find(userDto.getId(), CoordenadaZonaSeguridad.class) == null){
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
+
+            }
             entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdateCoordenadaZonaSeguridadCommand( entity );
             command.execute();
-            response = CoordenadaZonaSeguridadMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteCoordenadaZonaSeguridad: {} ", response );
+            if(command.getReturnParam() != null){
+                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede editar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting CoordenadaZonaSeguridad: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Alerta " + userDto.getId())).build();
+
         }
         finally
         {
@@ -163,6 +185,6 @@ public class CoordenadaZonaSeguridadService extends BaseService
         }
 
         _logger.debug( "Leaving CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
     }
 }

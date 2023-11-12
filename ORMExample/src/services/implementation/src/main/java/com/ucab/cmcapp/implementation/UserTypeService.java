@@ -1,5 +1,6 @@
 package com.ucab.cmcapp.implementation;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.UserType;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.UserType.composite.CreateUserTypeCommand;
@@ -7,8 +8,11 @@ import com.ucab.cmcapp.logic.commands.UserType.composite.DeleteUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
 import com.ucab.cmcapp.logic.dtos.UserTypeDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.UserTypeMapper;
 import com.ucab.cmcapp.logic.mappers.UserTypeMapperInsert;
+import com.ucab.cmcapp.persistence.dao.UserTypeDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +29,7 @@ public class UserTypeService extends BaseService
 
     @GET
     @Path( "/{id}" )
-    public UserTypeDto getUserType(@PathParam( "id" ) long userId )
+    public Response getUserType(@PathParam( "id" ) long userId )
     {
         UserType entity;
         UserTypeDto response;
@@ -39,14 +43,16 @@ public class UserTypeService extends BaseService
             entity = UserTypeMapper.mapDtoToEntity( userId );
             command = CommandFactory.createGetUserTypeCommand( entity );
             command.execute();
-            response = UserTypeMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getUserType: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting UserType {}: {}", e.getMessage(), userId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en UserType " + userId)).build();
+
         }
         finally
         {
@@ -55,14 +61,15 @@ public class UserTypeService extends BaseService
         }
 
         _logger.debug( "Leaving UserTypeService.getUserType" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id UserType: " + userId)).build();
     }
 
 
 
 
     @POST
-    public UserTypeDto addUserType( UserTypeDto userDto )
+    @Path("/insert")
+    public Response addUserType( UserTypeDto userDto )
     {
         UserType entity;
         UserTypeDto response;
@@ -76,14 +83,16 @@ public class UserTypeService extends BaseService
             entity = UserTypeMapperInsert.mapDtoToEntity( userDto );
             command = CommandFactory.createCreateUserTypeCommand( entity );
             command.execute();
-            response = UserTypeMapperInsert.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response addUserType: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UserTypeMapperInsert.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} adding UserType: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en UserType " + userDto.getId())).build();
+
         }
         finally
         {
@@ -92,12 +101,12 @@ public class UserTypeService extends BaseService
         }
 
         _logger.debug( "Leaving UserTypeService.addUserType" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
     @DELETE
     @Path("/delete")
-    public UserTypeDto deleteUserType( UserTypeDto userDto )
+    public Response deleteUserType( UserTypeDto userDto )
     {
         UserType entity;
         UserTypeDto response;
@@ -111,14 +120,16 @@ public class UserTypeService extends BaseService
             entity = UserTypeMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createDeleteUserTypeCommand( entity );
             command.execute();
-            response = UserTypeMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteUserType: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede eliminar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting UserType: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en UserType " + userDto.getId())).build();
+
         }
         finally
         {
@@ -127,34 +138,41 @@ public class UserTypeService extends BaseService
         }
 
         _logger.debug( "Leaving UserTypeService.deleteUserType" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Eliminado: " + userDto.getId())).build();
     }
 
 
     @PUT
     @Path("/update")
-    public UserTypeDto updateUserType( UserTypeDto userDto )
+    public Response updateUserType( UserTypeDto userDto )
     {
         UserType entity;
         UserTypeDto response;
         UpdateUserTypeCommand command = null;
+        UserTypeDao base = new UserTypeDao();
         //region Instrumentation DEBUG
         _logger.debug( "Get in UserTypeService.deleteUserType" );
         //endregion
 
         try
         {
+            if (base.find(userDto.getId(), UserType.class) == null){
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
+
+            }
             entity = UserTypeMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdateUserTypeCommand( entity );
             command.execute();
-            response = UserTypeMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteUserType: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede editar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting UserType: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en UserType " + userDto.getId())).build();
+
         }
         finally
         {
@@ -163,6 +181,6 @@ public class UserTypeService extends BaseService
         }
 
         _logger.debug( "Leaving UserTypeService.deleteUserType" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
     }
 }

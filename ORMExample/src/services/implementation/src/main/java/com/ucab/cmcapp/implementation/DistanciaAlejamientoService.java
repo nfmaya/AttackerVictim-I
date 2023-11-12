@@ -1,5 +1,6 @@
 package com.ucab.cmcapp.implementation;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
@@ -18,11 +19,10 @@ import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
-import com.ucab.cmcapp.logic.mappers.DistanciaAlejamientoMapper;
-import com.ucab.cmcapp.logic.mappers.DistanciaAlejamientoMapperInsert;
-import com.ucab.cmcapp.logic.mappers.UserMapper;
-import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
+import com.ucab.cmcapp.logic.mappers.*;
 import com.ucab.cmcapp.persistence.DBHandler;
+import com.ucab.cmcapp.persistence.dao.AlertaDao;
+import com.ucab.cmcapp.persistence.dao.DistanciaAlejamientoDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class DistanciaAlejamientoService extends BaseService
 
     @GET
     @Path( "/{IdAlej}" )
-    public DistanciaAlejamientoDto getDistanciaAlejamiento(@PathParam( "IdAlej" ) long distanciaId )
+    public Response getDistanciaAlejamiento(@PathParam( "IdAlej" ) long distanciaId )
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
@@ -56,14 +56,16 @@ public class DistanciaAlejamientoService extends BaseService
             entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaId );
             command = CommandFactory.createGetDistanciaAlejamientoCommand( entity );
             command.execute();
-            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getDistanciaAlejamiento: {} ", response );
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + distanciaId)).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting DistanciaAlejamiento {}: {}", e.getMessage(), distanciaId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia" + distanciaId)).build();
+
         }
         finally
         {
@@ -72,7 +74,7 @@ public class DistanciaAlejamientoService extends BaseService
         }
 
         _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamiento" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Distancia: " + distanciaId)).build();
     }
 
 /*
@@ -114,7 +116,8 @@ public class DistanciaAlejamientoService extends BaseService
 
 
     @POST
-    public DistanciaAlejamientoDto addDistanciaAlejamiento( DistanciaAlejamientoDto distanciaDto )
+    @Path("/insert")
+    public Response addDistanciaAlejamiento( DistanciaAlejamientoDto distanciaDto )
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
@@ -128,14 +131,16 @@ public class DistanciaAlejamientoService extends BaseService
             entity = DistanciaAlejamientoMapperInsert.mapDtoToEntity( distanciaDto );
             command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );
             command.execute();
-            response = DistanciaAlejamientoMapperInsert.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response addDistanciaAlejamiento: {} ", response );
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapperInsert.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + distanciaDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} adding DistanciaAlejamiento: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia " + distanciaDto.getId())).build();
+
         }
         finally
         {
@@ -144,13 +149,13 @@ public class DistanciaAlejamientoService extends BaseService
         }
 
         _logger.debug( "Leaving DistanciaAlejamientoService.addDistanciaAlejamiento" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + distanciaDto.getId())).build();
     }
 
-
+    //ESTE ES EL DELETE DE LA BD
     @DELETE
     @Path("/delete")
-    public DistanciaAlejamientoDto deleteDistancia( DistanciaAlejamientoDto userDto )
+    public Response deleteDistancia( DistanciaAlejamientoDto userDto )
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
@@ -164,14 +169,16 @@ public class DistanciaAlejamientoService extends BaseService
             entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createDeleteDistanciaCommand( entity );
             command.execute();
-            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteDistanciaAlejamiento: {} ", response );
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede eliminar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting DistanciaAlejamiento: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia " + userDto.getId())).build();
+
         }
         finally
         {
@@ -180,34 +187,43 @@ public class DistanciaAlejamientoService extends BaseService
         }
 
         _logger.debug( "Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Eliminado: " + userDto.getId())).build();
     }
 
 
     @PUT
     @Path("/update")
-    public DistanciaAlejamientoDto updateUsuario( DistanciaAlejamientoDto userDto )
+    public Response updateUsuario( DistanciaAlejamientoDto userDto )
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
         UpdateDistanciaCommand command = null;
+        DistanciaAlejamientoDao base = new DistanciaAlejamientoDao();
+
         //region Instrumentation DEBUG
         _logger.debug( "Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
         //endregion
 
         try
         {
+            if (base.find(userDto.getId(), DistanciaAlejamiento.class) == null){
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
+
+            }
             entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdateDistanciaCommand( entity );
             command.execute();
-            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteDistanciaAlejamiento: {} ", response );
+
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede editar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting DistanciaAlejamiento: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia " + userDto.getId())).build();
+
         }
         finally
         {
@@ -216,7 +232,7 @@ public class DistanciaAlejamientoService extends BaseService
         }
 
         _logger.debug( "Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
     }
 
 }

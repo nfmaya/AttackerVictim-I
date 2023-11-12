@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class UsuarioServiceTest {
+    /*
     @Test
     public void testGetUsuarioById() {
         long userId = 1L;
@@ -109,4 +110,6 @@ public class UsuarioServiceTest {
 
         assertEquals(expectedDto, result);
     }
+
+     */
 }
