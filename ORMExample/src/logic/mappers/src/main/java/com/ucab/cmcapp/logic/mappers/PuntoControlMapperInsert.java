@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.Objects;
 
 public class PuntoControlMapperInsert extends BaseMapper
 {
@@ -23,6 +24,12 @@ public class PuntoControlMapperInsert extends BaseMapper
         entity.setCoordenadaX( dto.getCoordenadaX());
         entity.setCoordenadaY(dto.getCoordenadaY());
         entity.setFechaHora(dto.getFechaHora());
+
+        if ( Objects.nonNull( dto.getUsuario() ) )
+        {
+            entity.setUsuario( UsuarioMapper.mapDtoToEntity( dto.getUsuario() ) );
+        }
+
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving PuntoControlMapper.mapDtoToEntity: entity {}", entity );
@@ -45,6 +52,9 @@ public class PuntoControlMapperInsert extends BaseMapper
         dto.setCoordenadaY(  entity.getCoordenadaY() );
 
         dto.setFechaHora( entity.getFechaHora() );
+
+        if(Objects.nonNull(entity.getUsuario()))
+            dto.setUsuario( UsuarioMapper.mapEntityToDto( entity.getUsuario() ));
 
 
         //region Instrumentation DEBUG

@@ -16,7 +16,7 @@ public class CoordenadaZonaSeguridadDto extends BaseDto{
 
 
 
-    //private ZonaSeguridad zonaSeguridad;
+    private ZonaSeguridadDto zonaSeguridad;
 
 
 
@@ -48,16 +48,11 @@ public class CoordenadaZonaSeguridadDto extends BaseDto{
         this.coordenadaY = coordenadaY;
     }
 
-/*
-    public UsuarioDto getUsuario() {
-        return usuario;
+    public ZonaSeguridadDto getZonaSeguridad() {
+        return zonaSeguridad;
     }
 
-    public void setUsuario(UsuarioDto usuario) {
-        this.usuario = usuario;
+    public void setZonaSeguridad(ZonaSeguridadDto zonaSeguridad) {
+        this.zonaSeguridad = zonaSeguridad;
     }
-
- */
-
-
 }

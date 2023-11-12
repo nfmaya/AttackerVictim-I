@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.Objects;
 
 public class PosicionMapperInsert extends BaseMapper
 {
@@ -23,7 +24,10 @@ public class PosicionMapperInsert extends BaseMapper
         entity.setCoordenadaX( dto.getCoordenadaX());
         entity.setCoordenadaY(dto.getCoordenadaY());
         entity.setFechaHora(dto.getFechaHora());
-
+        if ( Objects.nonNull( dto.getUsuario() ) )
+        {
+            entity.setUsuario( UsuarioMapper.mapDtoToEntity( dto.getUsuario() ) );
+        }
         //region Instrumentation DEBUG
         _logger.debug( "Leaving PosicionMapper.mapDtoToEntity: entity {}", entity );
         //endregion
@@ -46,6 +50,8 @@ public class PosicionMapperInsert extends BaseMapper
 
         dto.setFechaHora( entity.getFechaHora() );
 
+        if(Objects.nonNull(entity.getUsuario()))
+            dto.setUsuario( UsuarioMapper.mapEntityToDto( entity.getUsuario() ));
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving PosicionMapper.mapEntityToDto: dto {}", dto );

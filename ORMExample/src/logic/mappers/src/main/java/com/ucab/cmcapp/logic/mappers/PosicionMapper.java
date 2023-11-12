@@ -29,6 +29,11 @@ public class PosicionMapper extends BaseMapper
         entity.setCoordenadaY(dto.getCoordenadaY());
         entity.setFechaHora(dto.getFechaHora());
 
+        if ( Objects.nonNull( dto.getUsuario() ) )
+        {
+            entity.setUsuario( UsuarioMapper.mapDtoToEntity( dto.getUsuario() ) );
+        }
+
         //region Instrumentation DEBUG
         _logger.debug( "Leaving PosicionMapper.mapDtoToEntity: entity {}", entity );
         //endregion
@@ -50,6 +55,10 @@ public class PosicionMapper extends BaseMapper
         dto.setCoordenadaY(  entity.getCoordenadaY() );
 
         dto.setFechaHora( entity.getFechaHora() );
+
+        if(Objects.nonNull(entity.getUsuario()))
+            dto.setUsuario( UsuarioMapper.mapEntityToDto( entity.getUsuario() ));
+
 
 
         //region Instrumentation DEBUG

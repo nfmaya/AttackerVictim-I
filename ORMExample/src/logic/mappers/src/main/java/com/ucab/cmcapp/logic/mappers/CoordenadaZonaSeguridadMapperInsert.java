@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.Objects;
 
 public class CoordenadaZonaSeguridadMapperInsert extends BaseMapper
 {
@@ -22,6 +23,11 @@ public class CoordenadaZonaSeguridadMapperInsert extends BaseMapper
 
         entity.setCoordenadaX( dto.getCoordenadaX());
         entity.setCoordenadaY(dto.getCoordenadaY());
+        if ( Objects.nonNull( dto.getZonaSeguridad() ) )
+        {
+            entity.setZonaSeguridad( ZonaSeguridadMapper.mapDtoToEntity( dto.getZonaSeguridad() ) );
+        }
+
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving CoordenadaZonaSeguridadMapper.mapDtoToEntity: entity {}", entity );
@@ -43,6 +49,8 @@ public class CoordenadaZonaSeguridadMapperInsert extends BaseMapper
         dto.setCoordenadaX(  entity.getCoordenadaX() );
         dto.setCoordenadaY(  entity.getCoordenadaY() );
 
+        if(Objects.nonNull(entity.getZonaSeguridad()))
+            dto.setZonaSeguridad( ZonaSeguridadMapper.mapEntityToDto( entity.getZonaSeguridad() ));
 
 
         //region Instrumentation DEBUG
