@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsuarioService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">implementation</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.implementation</a> &gt; <span class="el_source">UsuarioService.java</span></div><h1>UsuarioService.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.implementation;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
@@ -13,9 +14,8 @@ import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
-import com.ucab.cmcapp.logic.mappers.UserMapper;
-import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
-import com.ucab.cmcapp.logic.mappers.UsuarioMapperInsert;
+import com.ucab.cmcapp.logic.mappers.*;
+import com.ucab.cmcapp.persistence.dao.UsuarioDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ import javax.ws.rs.core.Response;
 
     @GET
     @Path( &quot;/{id}&quot; )
-    public UsuarioDto getUsuario(@PathParam( &quot;id&quot; ) long userId )
+    public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
     {
         Usuario entity;
         UsuarioDto response;
@@ -46,164 +46,180 @@ import javax.ws.rs.core.Response;
 <span class="nc" id="L46">            entity = UsuarioMapper.mapDtoToEntity( userId );</span>
 <span class="nc" id="L47">            command = CommandFactory.createGetUsuarioCommand( entity );</span>
 <span class="nc" id="L48">            command.execute();</span>
-<span class="nc" id="L49">            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );</span>
-<span class="nc" id="L50">            _logger.info( &quot;Response getUsuario: {} &quot;, response );</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L50">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L52">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
+            }
         }
-<span class="nc" id="L52">        catch ( Exception e )</span>
+<span class="nc" id="L55">        catch ( Exception e )</span>
         {
-<span class="nc" id="L54">            _logger.error(&quot;error {} getting usuario {}: {}&quot;, e.getMessage(), userId, e.getCause());</span>
-<span class="nc" id="L55">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
-<span class="nc" id="L56">                    entity( e ).build() );</span>
+<span class="nc" id="L57">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userId)).build();</span>
+
         }
         finally
         {
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L61">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L63">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L64">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
-<span class="nc" id="L65">        return response;</span>
+<span class="nc" id="L66">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L67">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Usuario: &quot; + userId)).build();</span>
     }
 
 
     @GET
     @Path( &quot;username/{username}&quot; )
-    public UsuarioDto getUsuario(@PathParam( &quot;username&quot; ) String Username )
+    public Response getUsuario(@PathParam( &quot;username&quot; ) String Username )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L75">        GetUsuarioByUsernameCommand command = null;</span>
+<span class="nc" id="L77">        GetUsuarioByUsernameCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L77">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L79">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L82">            entity = UsuarioMapper.mapDtoToEntityUsername( Username );</span>
-<span class="nc" id="L83">            command = CommandFactory.createGetUsuarioByUsernameCommand( entity );</span>
-<span class="nc" id="L84">            command.execute();</span>
-<span class="nc" id="L85">            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );</span>
-<span class="nc" id="L86">            _logger.info( &quot;Response getUsuario: {} &quot;, response );</span>
+<span class="nc" id="L84">            entity = UsuarioMapper.mapDtoToEntityUsername( Username );</span>
+<span class="nc" id="L85">            command = CommandFactory.createGetUsuarioByUsernameCommand( entity );</span>
+<span class="nc" id="L86">            command.execute();</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L88">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L90">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + Username)).build();</span>
+            }
         }
-<span class="nc" id="L88">        catch ( Exception e )</span>
+<span class="nc" id="L93">        catch ( Exception e )</span>
         {
-<span class="nc" id="L90">            _logger.error(&quot;error {} getting usuario {}: {}&quot;, e.getMessage(), Username, e.getCause());</span>
-<span class="nc" id="L91">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
-<span class="nc" id="L92">                    entity( e ).build() );</span>
+<span class="nc" id="L95">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + Username)).build();</span>
+
         }
         finally
         {
-<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L97">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L101">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L100">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
-<span class="nc" id="L101">        return response;</span>
+<span class="nc" id="L104">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L105">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Username Usuario: &quot; + Username)).build();</span>
     }
 
     @POST
-    public UsuarioDto addUsuario( UsuarioDto userDto )
+    @Path(&quot;/insert&quot;)
+    public Response addUsuario( UsuarioDto userDto )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L109">        CreateUsuarioCommand command = null;</span>
+<span class="nc" id="L114">        CreateUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L111">        _logger.debug( &quot;Get in UsuarioService.addUsuario&quot; );</span>
+<span class="nc" id="L116">        _logger.debug( &quot;Get in UsuarioService.addUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L116">            entity = UsuarioMapperInsert.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L117">            command = CommandFactory.createCreateUsuarioCommand( entity );</span>
-<span class="nc" id="L118">            command.execute();</span>
-<span class="nc" id="L119">            response = UsuarioMapperInsert.mapEntityToDto( command.getReturnParam() );</span>
-<span class="nc" id="L120">            _logger.info( &quot;Response addUsuario: {} &quot;, response );</span>
+<span class="nc" id="L121">            entity = UsuarioMapperInsert.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L122">            command = CommandFactory.createCreateUsuarioCommand( entity );</span>
+<span class="nc" id="L123">            command.execute();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L125">                response = UsuarioMapperInsert.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L127">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+            }
         }
-<span class="nc" id="L122">        catch ( Exception e )</span>
+<span class="nc" id="L130">        catch ( Exception e )</span>
         {
-<span class="nc" id="L124">            _logger.error(&quot;error {} adding usuario: {}&quot;, e.getMessage(), e.getCause());</span>
-<span class="nc" id="L125">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
-<span class="nc" id="L126">                    entity( e ).build() );</span>
+<span class="nc" id="L132">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
+
         }
         finally
         {
-<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L131">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L138">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L134">        _logger.debug( &quot;Leaving UsuarioService.addUsuario&quot; );</span>
-<span class="nc" id="L135">        return response;</span>
+<span class="nc" id="L141">        _logger.debug( &quot;Leaving UsuarioService.addUsuario&quot; );</span>
+<span class="nc" id="L142">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
     }
 
     @DELETE
     @Path(&quot;/delete&quot;)
-    public UsuarioDto deleteUsuario( UsuarioDto userDto )
+    public Response deleteUsuario( UsuarioDto userDto )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L144">        DeleteUsuarioCommand command = null;</span>
+<span class="nc" id="L151">        DeleteUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L146">        _logger.debug( &quot;Get in UsuarioService.deleteUsuario&quot; );</span>
+<span class="nc" id="L153">        _logger.debug( &quot;Get in UsuarioService.deleteUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L151">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L152">            command = CommandFactory.createDeleteUsuarioCommand( entity );</span>
-<span class="nc" id="L153">            command.execute();</span>
-<span class="nc" id="L154">            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );</span>
-<span class="nc" id="L155">            _logger.info( &quot;Response deleteUsuario: {} &quot;, response );</span>
+<span class="nc" id="L158">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L159">            command = CommandFactory.createDeleteUsuarioCommand( entity );</span>
+<span class="nc" id="L160">            command.execute();</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L162">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L164">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+            }
         }
-<span class="nc" id="L157">        catch ( Exception e )</span>
+<span class="nc" id="L167">        catch ( Exception e )</span>
         {
-<span class="nc" id="L159">            _logger.error(&quot;error {} deleting usuario: {}&quot;, e.getMessage(), e.getCause());</span>
-<span class="nc" id="L160">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
-<span class="nc" id="L161">                    entity( e ).build() );</span>
+<span class="nc" id="L169">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
+
         }
         finally
         {
-<span class="nc bnc" id="L165" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L166">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L175">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L169">        _logger.debug( &quot;Leaving UsuarioService.deleteUsuario&quot; );</span>
-<span class="nc" id="L170">        return response;</span>
+<span class="nc" id="L178">        _logger.debug( &quot;Leaving UsuarioService.deleteUsuario&quot; );</span>
+<span class="nc" id="L179">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
     @PUT
     @Path(&quot;/update&quot;)
-    public UsuarioDto updateUsuario( UsuarioDto userDto )
+    public Response updateUsuario( UsuarioDto userDto )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L180">        UpdateUsuarioCommand command = null;</span>
+<span class="nc" id="L189">        UpdateUsuarioCommand command = null;</span>
+<span class="nc" id="L190">        UsuarioDao base = new UsuarioDao();</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L182">        _logger.debug( &quot;Get in UsuarioService.deleteUsuario&quot; );</span>
+<span class="nc" id="L192">        _logger.debug( &quot;Get in UsuarioService.deleteUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L187">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L188">            command = CommandFactory.createUpdateUsuarioCommand( entity );</span>
-<span class="nc" id="L189">            command.execute();</span>
-<span class="nc" id="L190">            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );</span>
-<span class="nc" id="L191">            _logger.info( &quot;Response deleteUsuario: {} &quot;, response );</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">            if (base.find(userDto.getId(), Usuario.class) == null){</span>
+<span class="nc" id="L198">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+
+            }
+<span class="nc" id="L201">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L202">            command = CommandFactory.createUpdateUsuarioCommand( entity );</span>
+<span class="nc" id="L203">            command.execute();</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L205">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L207">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+            }
         }
-<span class="nc" id="L193">        catch ( Exception e )</span>
+<span class="nc" id="L210">        catch ( Exception e )</span>
         {
-<span class="nc" id="L195">            _logger.error(&quot;error {} deleting usuario: {}&quot;, e.getMessage(), e.getCause());</span>
-<span class="nc" id="L196">            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).</span>
-<span class="nc" id="L197">                    entity( e ).build() );</span>
+<span class="nc" id="L212">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
+
         }
         finally
         {
-<span class="nc bnc" id="L201" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L202">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L218">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L205">        _logger.debug( &quot;Leaving UsuarioService.deleteUsuario&quot; );</span>
-<span class="nc" id="L206">        return response;</span>
+<span class="nc" id="L221">        _logger.debug( &quot;Leaving UsuarioService.deleteUsuario&quot; );</span>
+<span class="nc" id="L222">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

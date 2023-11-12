@@ -1,5 +1,6 @@
 package com.ucab.cmcapp.implementation;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
@@ -13,9 +14,8 @@ import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
-import com.ucab.cmcapp.logic.mappers.UserMapper;
-import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
-import com.ucab.cmcapp.logic.mappers.UsuarioMapperInsert;
+import com.ucab.cmcapp.logic.mappers.*;
+import com.ucab.cmcapp.persistence.dao.UsuarioDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ public class UsuarioService extends BaseService
 
     @GET
     @Path( "/{id}" )
-    public UsuarioDto getUsuario(@PathParam( "id" ) long userId )
+    public Response getUsuario(@PathParam( "id" ) long userId )
     {
         Usuario entity;
         UsuarioDto response;
@@ -46,14 +46,16 @@ public class UsuarioService extends BaseService
             entity = UsuarioMapper.mapDtoToEntity( userId );
             command = CommandFactory.createGetUsuarioCommand( entity );
             command.execute();
-            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getUsuario: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting usuario {}: {}", e.getMessage(), userId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + userId)).build();
+
         }
         finally
         {
@@ -62,13 +64,13 @@ public class UsuarioService extends BaseService
         }
 
         _logger.debug( "Leaving UsuarioService.getUsuario" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Usuario: " + userId)).build();
     }
 
 
     @GET
     @Path( "username/{username}" )
-    public UsuarioDto getUsuario(@PathParam( "username" ) String Username )
+    public Response getUsuario(@PathParam( "username" ) String Username )
     {
         Usuario entity;
         UsuarioDto response;
@@ -82,14 +84,16 @@ public class UsuarioService extends BaseService
             entity = UsuarioMapper.mapDtoToEntityUsername( Username );
             command = CommandFactory.createGetUsuarioByUsernameCommand( entity );
             command.execute();
-            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getUsuario: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + Username)).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting usuario {}: {}", e.getMessage(), Username, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + Username)).build();
+
         }
         finally
         {
@@ -98,11 +102,12 @@ public class UsuarioService extends BaseService
         }
 
         _logger.debug( "Leaving UsuarioService.getUsuario" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Username Usuario: " + Username)).build();
     }
 
     @POST
-    public UsuarioDto addUsuario( UsuarioDto userDto )
+    @Path("/insert")
+    public Response addUsuario( UsuarioDto userDto )
     {
         Usuario entity;
         UsuarioDto response;
@@ -116,14 +121,16 @@ public class UsuarioService extends BaseService
             entity = UsuarioMapperInsert.mapDtoToEntity( userDto );
             command = CommandFactory.createCreateUsuarioCommand( entity );
             command.execute();
-            response = UsuarioMapperInsert.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response addUsuario: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UsuarioMapperInsert.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} adding usuario: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + userDto.getId())).build();
+
         }
         finally
         {
@@ -132,12 +139,12 @@ public class UsuarioService extends BaseService
         }
 
         _logger.debug( "Leaving UsuarioService.addUsuario" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
     @DELETE
     @Path("/delete")
-    public UsuarioDto deleteUsuario( UsuarioDto userDto )
+    public Response deleteUsuario( UsuarioDto userDto )
     {
         Usuario entity;
         UsuarioDto response;
@@ -151,14 +158,16 @@ public class UsuarioService extends BaseService
             entity = UsuarioMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createDeleteUsuarioCommand( entity );
             command.execute();
-            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteUsuario: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede eliminar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting usuario: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + userDto.getId())).build();
+
         }
         finally
         {
@@ -167,34 +176,41 @@ public class UsuarioService extends BaseService
         }
 
         _logger.debug( "Leaving UsuarioService.deleteUsuario" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Eliminado: " + userDto.getId())).build();
     }
 
 
     @PUT
     @Path("/update")
-    public UsuarioDto updateUsuario( UsuarioDto userDto )
+    public Response updateUsuario( UsuarioDto userDto )
     {
         Usuario entity;
         UsuarioDto response;
         UpdateUsuarioCommand command = null;
+        UsuarioDao base = new UsuarioDao();
         //region Instrumentation DEBUG
         _logger.debug( "Get in UsuarioService.deleteUsuario" );
         //endregion
 
         try
         {
+            if (base.find(userDto.getId(), Usuario.class) == null){
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
+
+            }
             entity = UsuarioMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdateUsuarioCommand( entity );
             command.execute();
-            response = UsuarioMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deleteUsuario: {} ", response );
+            if(command.getReturnParam() != null){
+                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede editar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting usuario: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + userDto.getId())).build();
+
         }
         finally
         {
@@ -203,6 +219,6 @@ public class UsuarioService extends BaseService
         }
 
         _logger.debug( "Leaving UsuarioService.deleteUsuario" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
     }
 }

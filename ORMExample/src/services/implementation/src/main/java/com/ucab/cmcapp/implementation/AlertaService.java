@@ -77,7 +77,7 @@ public class AlertaService extends BaseService
 
 
     @GET
-    @Path( "TipoAlerta/{TipoAlerta}" )
+    @Path( "/TipoAlerta/{TipoAlerta}" )
     public Response getAlerta(@PathParam( "TipoAlerta" ) String tipoAlerta )
     {
         Alerta entity;
@@ -114,6 +114,7 @@ public class AlertaService extends BaseService
     }
 
     @POST
+    @Path("/insert")
     public Response addAlerta( AlertaDto alertaDto )
     {
         Alerta entity;

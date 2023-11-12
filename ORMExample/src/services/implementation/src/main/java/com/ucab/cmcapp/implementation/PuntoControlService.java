@@ -1,5 +1,6 @@
 package com.ucab.cmcapp.implementation;
 
+import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.PuntoControl;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.puntoControl.composite.CreatePuntoControlCommand;
@@ -7,8 +8,11 @@ import com.ucab.cmcapp.logic.commands.puntoControl.composite.DeletePuntoControlC
 import com.ucab.cmcapp.logic.commands.puntoControl.composite.GetPuntoControlCommand;
 import com.ucab.cmcapp.logic.commands.puntoControl.composite.UpdatePuntoControlCommand;
 import com.ucab.cmcapp.logic.dtos.PuntoControlDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.PuntoControlMapper;
 import com.ucab.cmcapp.logic.mappers.PuntoControlMapperInsert;
+import com.ucab.cmcapp.persistence.dao.PuntoControlDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +29,7 @@ public class PuntoControlService extends BaseService
 
     @GET
     @Path( "/{id}" )
-    public PuntoControlDto getPuntoControl(@PathParam( "id" ) long userId )
+    public Response getPuntoControl(@PathParam( "id" ) long userId )
     {
         PuntoControl entity;
         PuntoControlDto response;
@@ -39,14 +43,16 @@ public class PuntoControlService extends BaseService
             entity = PuntoControlMapper.mapDtoToEntity( userId );
             command = CommandFactory.createGetPuntoControlCommand( entity );
             command.execute();
-            response = PuntoControlMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getPuntoControl: {} ", response );
+            if(command.getReturnParam() != null){
+                response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting PuntoControl {}: {}", e.getMessage(), userId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Punto Control " + userId)).build();
+
         }
         finally
         {
@@ -55,14 +61,15 @@ public class PuntoControlService extends BaseService
         }
 
         _logger.debug( "Leaving PuntoControlService.getPuntoControl" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Punto Control: " + userId)).build();
     }
 
 
 
 
     @POST
-    public PuntoControlDto addPuntoControl( PuntoControlDto userDto )
+    @Path("/insert")
+    public Response addPuntoControl( PuntoControlDto userDto )
     {
         PuntoControl entity;
         PuntoControlDto response;
@@ -76,14 +83,16 @@ public class PuntoControlService extends BaseService
             entity = PuntoControlMapperInsert.mapDtoToEntity( userDto );
             command = CommandFactory.createCreatePuntoControlCommand( entity );
             command.execute();
-            response = PuntoControlMapperInsert.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response addPuntoControl: {} ", response );
+            if(command.getReturnParam() != null){
+                response = PuntoControlMapperInsert.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} adding PuntoControl: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Punto Control " + userDto.getId())).build();
+
         }
         finally
         {
@@ -92,12 +101,12 @@ public class PuntoControlService extends BaseService
         }
 
         _logger.debug( "Leaving PuntoControlService.addPuntoControl" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
     @DELETE
     @Path("/delete")
-    public PuntoControlDto deletePuntoControl( PuntoControlDto userDto )
+    public Response deletePuntoControl( PuntoControlDto userDto )
     {
         PuntoControl entity;
         PuntoControlDto response;
@@ -111,14 +120,16 @@ public class PuntoControlService extends BaseService
             entity = PuntoControlMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createDeletePuntoControlCommand( entity );
             command.execute();
-            response = PuntoControlMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deletePuntoControl: {} ", response );
+            if(command.getReturnParam() != null){
+                response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede eliminar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting PuntoControl: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Punto Control " + userDto.getId())).build();
+
         }
         finally
         {
@@ -127,34 +138,41 @@ public class PuntoControlService extends BaseService
         }
 
         _logger.debug( "Leaving PuntoControlService.deletePuntoControl" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Eliminado: " + userDto.getId())).build();
     }
 
 
     @PUT
     @Path("/update")
-    public PuntoControlDto updatePuntoControl( PuntoControlDto userDto )
+    public Response updatePuntoControl( PuntoControlDto userDto )
     {
         PuntoControl entity;
         PuntoControlDto response;
         UpdatePuntoControlCommand command = null;
+        PuntoControlDao base = new PuntoControlDao();
         //region Instrumentation DEBUG
         _logger.debug( "Get in PuntoControlService.deletePuntoControl" );
         //endregion
 
         try
         {
+            if (base.find(userDto.getId(), PuntoControl.class) == null){
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
+
+            }
             entity = PuntoControlMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdatePuntoControlCommand( entity );
             command.execute();
-            response = PuntoControlMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response deletePuntoControl: {} ", response );
+            if(command.getReturnParam() != null){
+                response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede editar " + userDto.getId())).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} deleting PuntoControl: {}", e.getMessage(), e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Punto Control " + userDto.getId())).build();
+
         }
         finally
         {
@@ -163,6 +181,6 @@ public class PuntoControlService extends BaseService
         }
 
         _logger.debug( "Leaving PuntoControlService.deletePuntoControl" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
     }
 }
