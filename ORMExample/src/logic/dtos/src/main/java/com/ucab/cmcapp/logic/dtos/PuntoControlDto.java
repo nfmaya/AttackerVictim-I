@@ -14,12 +14,9 @@ public class PuntoControlDto extends BaseDto{
 
     private float coordenadaY;
 
-
-
-    //private UsuarioDto usuario;
-
     private Date fechaHora;
 
+    private UsuarioDto usuario;
 
 
 
@@ -49,7 +46,7 @@ public class PuntoControlDto extends BaseDto{
         this.coordenadaY = coordenadaY;
     }
 
-/*
+
     public UsuarioDto getUsuario() {
         return usuario;
     }
@@ -58,7 +55,7 @@ public class PuntoControlDto extends BaseDto{
         this.usuario = usuario;
     }
 
- */
+
 
     public Date getFechaHora() {
         return fechaHora;

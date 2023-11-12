@@ -2,11 +2,13 @@ package com.ucab.cmcapp.logic.mappers;
 
 import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad;
+import com.ucab.cmcapp.common.entities.ZonaSeguridad;
 import com.ucab.cmcapp.logic.dtos.CoordenadaZonaSeguridadDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.Objects;
 
 public class CoordenadaZonaSeguridadMapper extends BaseMapper
 {
@@ -22,6 +24,12 @@ public class CoordenadaZonaSeguridadMapper extends BaseMapper
 
         entity.setCoordenadaX( dto.getCoordenadaX());
         entity.setCoordenadaY(dto.getCoordenadaY());
+
+        if ( Objects.nonNull( dto.getZonaSeguridad() ) )
+        {
+            entity.setZonaSeguridad( ZonaSeguridadMapper.mapDtoToEntity( dto.getZonaSeguridad() ) );
+        }
+
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving CoordenadaZonaSeguridadMapper.mapDtoToEntity: entity {}", entity );
@@ -43,6 +51,8 @@ public class CoordenadaZonaSeguridadMapper extends BaseMapper
         dto.setCoordenadaX(  entity.getCoordenadaX() );
         dto.setCoordenadaY(  entity.getCoordenadaY() );
 
+        if(Objects.nonNull(entity.getZonaSeguridad()))
+            dto.setZonaSeguridad( ZonaSeguridadMapper.mapEntityToDto( entity.getZonaSeguridad() ));
 
 
         //region Instrumentation DEBUG

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AlertaMapperInsert extends BaseMapper
 {
@@ -24,6 +25,11 @@ public class AlertaMapperInsert extends BaseMapper
 
         entity.set_tipoAlerta( dto.get_tipoAlerta());
         entity.set_fechaHora(dto.get_fechaHora());
+        if ( Objects.nonNull( dto.getUsuario() ) )
+        {
+            entity.setUsuario( UsuarioMapper.mapDtoToEntity( dto.getUsuario() ) );
+        }
+
 
 
         //region Instrumentation DEBUG
@@ -45,6 +51,9 @@ public class AlertaMapperInsert extends BaseMapper
 
         dto.set_tipoAlerta(  entity.get_tipoAlerta() );
         dto.set_fechaHora( entity.get_fechaHora() );
+
+        if(Objects.nonNull(entity.getUsuario()))
+            dto.setUsuario( UsuarioMapper.mapEntityToDto( entity.getUsuario() ));
 
 
         //region Instrumentation DEBUG

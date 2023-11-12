@@ -7,12 +7,12 @@ public class DistanciaAlejamientoDto extends BaseDto
 {
     private float _distanciaMinima;
 
-    /*
+
     private UsuarioDto _victima;
 
     private UsuarioDto _agresor;
 
-     */
+
 
 
     public DistanciaAlejamientoDto()
@@ -31,7 +31,7 @@ public class DistanciaAlejamientoDto extends BaseDto
     public void set_distanciaMinima(float _distanciaMinima) {
         this._distanciaMinima = _distanciaMinima;
     }
-/*
+
     public UsuarioDto get_victima() {
         return _victima;
     }
@@ -48,5 +48,5 @@ public class DistanciaAlejamientoDto extends BaseDto
         this._agresor = _agresor;
     }
 
- */
+
 }

@@ -28,6 +28,11 @@ public class AlertaMapper extends BaseMapper
         entity.set_tipoAlerta( dto.get_tipoAlerta());
         entity.set_fechaHora(dto.get_fechaHora());
 
+        if ( Objects.nonNull( dto.getUsuario() ) )
+        {
+            entity.setUsuario( UsuarioMapper.mapDtoToEntity( dto.getUsuario() ) );
+        }
+
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving AlertaMapper.mapDtoToEntity: entity {}", entity );
@@ -48,6 +53,9 @@ public class AlertaMapper extends BaseMapper
 
         dto.set_tipoAlerta(  entity.get_tipoAlerta() );
         dto.set_fechaHora( entity.get_fechaHora() );
+
+        if(Objects.nonNull(entity.getUsuario()))
+            dto.setUsuario( UsuarioMapper.mapEntityToDto( entity.getUsuario() ));
 
 
         //region Instrumentation DEBUG

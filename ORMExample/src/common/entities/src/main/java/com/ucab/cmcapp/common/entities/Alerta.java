@@ -26,6 +26,11 @@ public class Alerta  {
     @Column(name = "FechaHora")
     private Date _fechaHora;
 
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn( name = "IdUsuario", nullable = false )
+    private Usuario usuario;
+
     public Alerta(){
 
     }
@@ -33,7 +38,7 @@ public class Alerta  {
     public Alerta (Alerta alerta){
         _tipoAlerta = alerta._tipoAlerta;
         _fechaHora = alerta._fechaHora;
-
+        usuario = alerta.usuario;
     }
 
     public Alerta (long id){
@@ -64,5 +69,13 @@ public class Alerta  {
 
     public void set_fechaHora(Date _fechaHora) {
         this._fechaHora = _fechaHora;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

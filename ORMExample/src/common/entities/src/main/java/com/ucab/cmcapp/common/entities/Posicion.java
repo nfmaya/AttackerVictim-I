@@ -1,27 +1,15 @@
 package com.ucab.cmcapp.common.entities;
 
+import javafx.geometry.Pos;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Posicion")
 public class Posicion {
-
-    /**
-     *
-     */
-
-
-
 
 
     @Id
@@ -29,35 +17,29 @@ public class Posicion {
     @Column(name = "IdPos")
     private long IdPos;
 
-
-
-
     @Column(name = "CoordenadaX")
     private float coordenadaX;
 
     @Column(name = "CoordenadaY")
     private float coordenadaY;
 
-    /*
-    @ManyToOne
-    @JoinColumn(name = "Usuario_id")
-    private Usuario usuario;
-
-     */
-
     @Column(name = "FechaHora")
     private Date fechaHora;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Usuario_id", nullable = false)
+    private Usuario usuario;
 
 
     public Posicion() {
 
     }
 
-    public Posicion(float coordenadaX, float coordenadaY , Date fechaHora) {
-        this.coordenadaX = coordenadaX;
-        this.coordenadaY = coordenadaY;
-
-        this.fechaHora = fechaHora;
+    public Posicion(Posicion posicion) {
+        coordenadaX = posicion.coordenadaX;
+        coordenadaY = posicion.coordenadaY;
+        usuario = posicion.usuario;
+        fechaHora = posicion.fechaHora;
     }
 
     public Posicion (long id){
@@ -88,7 +70,7 @@ public class Posicion {
         this.coordenadaY = coordenadaY;
     }
 
-    /*
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -97,7 +79,7 @@ public class Posicion {
         this.usuario = usuario;
     }
 
-     */
+
 
     public Date getFechaHora() {
         return fechaHora;
@@ -109,5 +91,4 @@ public class Posicion {
 
 
 
-    // Define relationships if needed
 }

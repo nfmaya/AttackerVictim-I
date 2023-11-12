@@ -1,13 +1,6 @@
 package com.ucab.cmcapp.common.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -23,12 +16,6 @@ public class CoordenadaZonaSeguridad {
     @Column(name = "IdCoor")
     private long IdCoor;
 
-    /*
-    @ManyToOne
-    @JoinColumn(name = "IdZona")
-    private ZonaSeguridad zonaSeguridad;
-    //VER SI ES ManyToMAny
-     */
 
     @Column(name = "CoordenadaX")
     private float coordenadaX;
@@ -36,26 +23,22 @@ public class CoordenadaZonaSeguridad {
     @Column(name = "CoordenadaY")
     private float coordenadaY;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "IdZona", nullable = false)
+    private ZonaSeguridad zonaSeguridad;
 
 
     public CoordenadaZonaSeguridad() {
 
     }
 
-/*
-    public CoordenadaZonaSeguridad(ZonaSeguridad zonaSeguridad, float coordenadaX, float coordenadaY) {
-        this.zonaSeguridad = zonaSeguridad;
-        this.coordenadaX = coordenadaX;
-        this.coordenadaY = coordenadaY;
+
+    public CoordenadaZonaSeguridad(CoordenadaZonaSeguridad coordenadaZonaSeguridad) {
+        zonaSeguridad = coordenadaZonaSeguridad.zonaSeguridad;
+        coordenadaX = coordenadaZonaSeguridad.coordenadaX;
+        coordenadaY = coordenadaZonaSeguridad.coordenadaY;
     }
 
- */
-
-    public CoordenadaZonaSeguridad(float coordenadaX, float coordenadaY) {
-
-        this.coordenadaX = coordenadaX;
-        this.coordenadaY = coordenadaY;
-    }
 
 
 
@@ -74,7 +57,7 @@ public class CoordenadaZonaSeguridad {
         IdCoor = idCoor;
     }
 
-    /*
+
     public ZonaSeguridad getZonaSeguridad() {
         return zonaSeguridad;
     }
@@ -83,7 +66,7 @@ public class CoordenadaZonaSeguridad {
         this.zonaSeguridad = zonaSeguridad;
     }
 
-     */
+
 
     public float getCoordenadaX() {
         return coordenadaX;

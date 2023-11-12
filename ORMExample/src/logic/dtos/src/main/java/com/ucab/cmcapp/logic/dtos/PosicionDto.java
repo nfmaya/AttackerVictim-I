@@ -25,12 +25,9 @@ public class PosicionDto extends BaseDto{
     private float coordenadaY;
 
 
-
-    //private UsuarioDto usuario;
-
     private Date fechaHora;
 
-
+    private UsuarioDto usuario;
 
 
     public PosicionDto() {
@@ -59,7 +56,7 @@ public class PosicionDto extends BaseDto{
         this.coordenadaY = coordenadaY;
     }
 
-/*
+
     public UsuarioDto getUsuario() {
         return usuario;
     }
@@ -68,7 +65,7 @@ public class PosicionDto extends BaseDto{
         this.usuario = usuario;
     }
 
- */
+
 
     public Date getFechaHora() {
         return fechaHora;

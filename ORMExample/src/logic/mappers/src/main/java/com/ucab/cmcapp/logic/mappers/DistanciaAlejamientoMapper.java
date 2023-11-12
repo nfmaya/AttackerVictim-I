@@ -26,16 +26,20 @@ public class DistanciaAlejamientoMapper extends BaseMapper
 
         entity.set_distanciaMinima( dto.get_distanciaMinima() );
 
-        /*
+
         //AQUI VA LA EL OBJETO DE LA TABLA RELACIONADA
         if ( Objects.nonNull( dto.get_agresor() ) )
         {
-            entity.set_agresor(UsuarioMapper.mapDtoToEntity( dto.get_agresor() ) );
-            entity.set_victima(UsuarioMapper.mapDtoToEntity( dto.get_victima() ) );
-
+            entity.set_agresor( UsuarioMapper.mapDtoToEntity( dto.get_agresor() ) );
         }
 
-         */
+        if ( Objects.nonNull( dto.get_victima() ) )
+        {
+            entity.set_victima( UsuarioMapper.mapDtoToEntity( dto.get_victima() ) );
+        }
+
+
+
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving DistanciaAlejamientoMapper.mapDtoToEntity: entity {}", entity );
@@ -56,14 +60,13 @@ public class DistanciaAlejamientoMapper extends BaseMapper
         dto.set_distanciaMinima(  entity.get_distanciaMinima() );
 
         //AQUI VA LA EL OBJETO DE LA TABLA RELACIONADA
-        /*
-        if(Objects.nonNull(entity.get_agresor())){
-            dto.set_agresor( UsuarioMapper.mapEntityToDto( entity.get_agresor() ));
+
+        if(Objects.nonNull(entity.get_victima()))
             dto.set_victima( UsuarioMapper.mapEntityToDto( entity.get_victima() ));
 
-        }
+        if(Objects.nonNull(entity.get_agresor()))
+            dto.set_agresor( UsuarioMapper.mapEntityToDto( entity.get_agresor() ));
 
-         */
 
         //region Instrumentation DEBUG
         _logger.debug( "Leaving DistanciaAlejamientoMapper.mapEntityToDto: dto {}", dto );
