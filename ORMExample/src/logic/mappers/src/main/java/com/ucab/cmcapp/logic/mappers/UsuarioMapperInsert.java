@@ -23,6 +23,9 @@ public class UsuarioMapperInsert extends BaseMapper
 
         entity.set_Username( dto.get_Username() );
         entity.set_Nombre(dto.get_Nombre());
+        entity.setDocIdentidad(dto.getDocIdentidad());
+        entity.setIMEI(dto.getIMEI());
+        entity.setEstatus(dto.isEstatus());
 
         if ( Objects.nonNull( dto.getUsuarioTypeDto() ) )
         {
@@ -53,6 +56,10 @@ public class UsuarioMapperInsert extends BaseMapper
         dto.setId( entity.get_idUsuario());
         dto.set_Username(  entity.get_Username() );
         dto.set_Nombre( entity.get_Nombre() );
+        dto.setIMEI( entity.getIMEI() );
+        dto.setDocIdentidad( entity.getDocIdentidad() );
+        dto.setEstatus( entity.isEstatus() );
+
         if(Objects.nonNull(entity.get_userType()))
             dto.setUsuarioTypeDto( UserTypeMapper.mapEntityToDto( entity.get_userType() ));
 /*
