@@ -23,7 +23,7 @@ public class Usuario {
     private String _Nombre;
 
     //AGREGAR ESTOS ATRIBUTOS
-    /*
+
     @Column(name = "DocIdentidad")
     private String DocIdentidad;
 
@@ -32,9 +32,6 @@ public class Usuario {
 
     @Column(name = "Estatus")
     private boolean Estatus;
-
-     */
-
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -57,6 +54,9 @@ public class Usuario {
         _Nombre = usuario._Nombre;
         _userType = usuario._userType;
         //alertas = usuario.alertas;
+        DocIdentidad = usuario.DocIdentidad;
+        IMEI = usuario.IMEI;
+        Estatus = usuario.Estatus;
     }
 
     public Usuario( long id )
@@ -96,7 +96,7 @@ public class Usuario {
         this._userType = _userType;
     }
 
-    /*
+
     public String getDocIdentidad() {
         return DocIdentidad;
     }
@@ -121,7 +121,7 @@ public class Usuario {
         Estatus = estatus;
     }
 
-     */
+
 
     /*
     public List<Alerta> getAlertas() {
