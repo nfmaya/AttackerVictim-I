@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import login_screen from './Screens/Login';
-import registro_screen from './Screens/Register';
 import HomeScreen from './Screens/Home';
+import Alarma from "./Screens/Alarma";
 import Notifications_screen from './Screens/Notifications';
 import CustomAlert from "./Components/Alerta";
 
@@ -28,12 +28,6 @@ export default function App() {
         // Previenes el comportamiento predeterminado (que elimine la pantalla y volver a la anterior en la pila)
         e.preventDefault();
   
-        // Manda una alerta al usuario
-        /*Alert.alert(
-          'Log Out!',
-          'You cant go back from this screen.',
-          [{ text: "OK", style: 'cancel', onPress: () => {} }]
-        );*/
         setAlertVisible(true)
       });
       
@@ -52,8 +46,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator  screenOptions={{  headerStyle: {backgroundColor: '#444444'}, headerTintColor: '#fff' }}>
           <Stack.Screen name="Login" component={login_screen} options={{headerShown: false}} />
-          <Stack.Screen name="Register" component={registro_screen} options={{title: "Sing Up"}}/>
           <Stack.Screen name="Home" component={NoBackScreen} options={{headerShown: false, gestureEnabled: false}} />
+          <Stack.Screen name="Alarm" component={Alarma} options={{title: "Alarm"}} />
           <Stack.Screen name="Notifications" component={Notifications_screen} options={{title: "Notifications"}} />
         </Stack.Navigator>
       </NavigationContainer>
