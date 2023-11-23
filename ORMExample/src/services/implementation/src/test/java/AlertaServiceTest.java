@@ -1,40 +1,54 @@
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.implementation.AlertaService;
-import com.ucab.cmcapp.logic.commands.alerta.composite.GetAlertaCommand;
 import com.ucab.cmcapp.logic.dtos.AlertaDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class AlertaServiceTest {
 
-    /*
-    @Test
-    public void testGetAlerta() {
-        long alertaId = 1L;
-        Alerta alerta = new Alerta();
-        AlertaDto expectedDto = new AlertaDto();
+    private AlertaService alertaService;
+    private AlertaDto alertaDto;
 
-        // Create mock objects
-        GetAlertaCommand getAlertaCommand = mock(GetAlertaCommand.class);
-        AlertaService alertaService = new AlertaService();
-
-        // Stub method calls using Mockito.when()
-        when(getAlertaCommand.getReturnParam()).thenReturn(alerta);
-        when(AlertaMapper.mapEntityToDto(any(Alerta.class))).thenReturn(expectedDto);
-
-        AlertaDto result = alertaService.getAlerta(alertaId);
-
-        // Verify method invocations
-        verify(getAlertaCommand).execute();
-        verify(getAlertaCommand).closeHandlerSession();
-        verifyNoMoreInteractions(getAlertaCommand);
-
-        // Assertions
-        assertEquals(expectedDto, result);
+    @Before
+    public void setUp() {
+        alertaService = Mockito.mock(AlertaService.class);
+        alertaDto = new AlertaDto();
+        alertaDto.setId(1L);
     }
 
-     */
+    @Test
+    public void getAlertaReturnsExpectedAlertaWhenAlertaExists() {
+        when(alertaService.getAlerta(1L)).thenReturn(Response.status(Response.Status.OK).entity(alertaDto).build());
+
+        Response actualAlerta = alertaService.getAlerta(1L);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualAlerta.getStatus());
+        assertEquals(alertaDto, actualAlerta.getEntity());
+    }
+
+
+    @Test
+    public void getAlertaReturnsNotFoundWhenAlertaDoesNotExist() {
+        when(alertaService.getAlerta(2L)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualAlerta = alertaService.getAlerta(2L);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualAlerta.getStatus());
+    }
+
+    @Test
+    public void getAlertaReturnsServerErrorWhenExceptionOccurs() {
+        when(alertaService.getAlerta(3L)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+
+        Response actualAlerta = alertaService.getAlerta(3L);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualAlerta.getStatus());
+    }
 }
