@@ -9,9 +9,7 @@ import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.GetCoord
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.UpdateCoordenadaZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.dtos.CoordenadaZonaSeguridadDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.CoordenadaZonaSeguridadMapper;
-import com.ucab.cmcapp.logic.mappers.CoordenadaZonaSeguridadMapperInsert;
 import com.ucab.cmcapp.persistence.dao.AlertaDao;
 import com.ucab.cmcapp.persistence.dao.CoordenadaZonaSeguridadDao;
 import org.slf4j.Logger;
@@ -81,11 +79,11 @@ public class CoordenadaZonaSeguridadService extends BaseService
 
         try
         {
-            entity = CoordenadaZonaSeguridadMapperInsert.mapDtoToEntity( userDto );
+            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreateCoordenadaZonaSeguridadCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = CoordenadaZonaSeguridadMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }

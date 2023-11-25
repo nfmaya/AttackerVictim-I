@@ -9,9 +9,7 @@ import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetZonaSeguridadCo
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.UpdateZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapper;
-import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapperInsert;
 import com.ucab.cmcapp.persistence.dao.ZonaSeguridadDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,11 +78,11 @@ public class ZonaSeguridadService extends BaseService
 
         try
         {
-            entity = ZonaSeguridadMapperInsert.mapDtoToEntity( userDto );
+            entity = ZonaSeguridadMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreateZonaSeguridadCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = ZonaSeguridadMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = ZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }

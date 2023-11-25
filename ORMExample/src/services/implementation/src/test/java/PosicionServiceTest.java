@@ -4,7 +4,6 @@ import com.ucab.cmcapp.implementation.PosicionService;
 import com.ucab.cmcapp.logic.commands.posicion.composite.*;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import com.ucab.cmcapp.logic.mappers.PosicionMapper;
-import com.ucab.cmcapp.logic.mappers.PosicionMapperInsert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

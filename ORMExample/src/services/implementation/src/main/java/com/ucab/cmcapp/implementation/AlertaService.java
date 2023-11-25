@@ -18,7 +18,6 @@ import com.ucab.cmcapp.logic.dtos.AlertaDto;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.AlertaDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.UserMapper;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
 import com.ucab.cmcapp.persistence.dao.AlertaDao;
@@ -126,11 +125,11 @@ public class AlertaService extends BaseService
 
         try
         {
-            entity = AlertaMapperInsert.mapDtoToEntity( alertaDto );
+            entity = AlertaMapper.mapDtoToEntityInsert( alertaDto );
             command = CommandFactory.createCreateAlertaCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = AlertaMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = AlertaMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + alertaDto.getId())).build();
             }
@@ -232,7 +231,7 @@ public class AlertaService extends BaseService
 
     @PUT
     @Path("/update")
-    public Response updateALerta (AlertaDto alertaDto){
+    public Response updateAlerta (AlertaDto alertaDto){
         Alerta entity;
         AlertaDto responseDto = null;
         UpdateAlertaCommand command = null;

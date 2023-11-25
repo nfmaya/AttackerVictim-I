@@ -9,9 +9,7 @@ import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetTiempoControlCo
 import com.ucab.cmcapp.logic.commands.TiempoControl.composite.UpdateTiempoControlCommand;
 import com.ucab.cmcapp.logic.dtos.TiempoControlDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.TiempoControlMapper;
-import com.ucab.cmcapp.logic.mappers.TiempoControlMapperInsert;
 import com.ucab.cmcapp.persistence.dao.TiempoControlDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,11 +78,11 @@ public class TiempoControlService extends BaseService
 
         try
         {
-            entity = TiempoControlMapperInsert.mapDtoToEntity( userDto );
+            entity = TiempoControlMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreateTiempoControlCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = TiempoControlMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = TiempoControlMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }

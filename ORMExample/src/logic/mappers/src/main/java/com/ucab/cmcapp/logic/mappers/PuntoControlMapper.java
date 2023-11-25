@@ -37,6 +37,33 @@ public class PuntoControlMapper extends BaseMapper
         return entity;
     }
 
+
+
+    public static PuntoControl mapDtoToEntityInsert(PuntoControlDto dto ) throws ParseException
+    {
+        PuntoControl entity = EntityFactory.createPuntoControl();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in PuntoControlMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.setCoordenadaX( dto.getCoordenadaX());
+        entity.setCoordenadaY(dto.getCoordenadaY());
+        entity.setFechaHora(dto.getFechaHora());
+
+        if ( Objects.nonNull( dto.getUsuario() ) )
+        {
+            entity.setUsuario( UsuarioMapper.mapDtoToEntity( dto.getUsuario() ) );
+        }
+
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving PuntoControlMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static PuntoControlDto mapEntityToDto( PuntoControl entity )
     {
         final PuntoControlDto dto = new PuntoControlDto();

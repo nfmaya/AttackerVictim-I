@@ -9,9 +9,7 @@ import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
 import com.ucab.cmcapp.logic.dtos.UserTypeDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.UserTypeMapper;
-import com.ucab.cmcapp.logic.mappers.UserTypeMapperInsert;
 import com.ucab.cmcapp.persistence.dao.UserTypeDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +21,9 @@ import javax.ws.rs.core.Response;
 @Path( &quot;/tiposUsuarios&quot; )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-<span class="nc" id="L26">public class UserTypeService extends BaseService</span>
+<span class="nc" id="L24">public class UserTypeService extends BaseService</span>
 {
-<span class="nc" id="L28">    private static Logger _logger = LoggerFactory.getLogger( UserTypeService.class );</span>
+<span class="nc" id="L26">    private static Logger _logger = LoggerFactory.getLogger( UserTypeService.class );</span>
 
     @GET
     @Path( &quot;/{id}&quot; )
@@ -33,35 +31,35 @@ import javax.ws.rs.core.Response;
     {
         UserType entity;
         UserTypeDto response;
-<span class="nc" id="L36">        GetUserTypeCommand command = null;</span>
+<span class="nc" id="L34">        GetUserTypeCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L38">        _logger.debug( &quot;Get in UserTypeService.getUserType&quot; );</span>
+<span class="nc" id="L36">        _logger.debug( &quot;Get in UserTypeService.getUserType&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L43">            entity = UserTypeMapper.mapDtoToEntity( userId );</span>
-<span class="nc" id="L44">            command = CommandFactory.createGetUserTypeCommand( entity );</span>
-<span class="nc" id="L45">            command.execute();</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L47">                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L41">            entity = UserTypeMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L42">            command = CommandFactory.createGetUserTypeCommand( entity );</span>
+<span class="nc" id="L43">            command.execute();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L45">                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L49">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
+<span class="nc" id="L47">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
             }
         }
-<span class="nc" id="L52">        catch ( Exception e )</span>
+<span class="nc" id="L50">        catch ( Exception e )</span>
         {
-<span class="nc" id="L54">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en UserType &quot; + userId)).build();</span>
+<span class="nc" id="L52">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en UserType &quot; + userId)).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L60">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L58">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L63">        _logger.debug( &quot;Leaving UserTypeService.getUserType&quot; );</span>
-<span class="nc" id="L64">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id UserType: &quot; + userId)).build();</span>
+<span class="nc" id="L61">        _logger.debug( &quot;Leaving UserTypeService.getUserType&quot; );</span>
+<span class="nc" id="L62">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id UserType: &quot; + userId)).build();</span>
     }
 
 
@@ -73,35 +71,35 @@ import javax.ws.rs.core.Response;
     {
         UserType entity;
         UserTypeDto response;
-<span class="nc" id="L76">        CreateUserTypeCommand command = null;</span>
+<span class="nc" id="L74">        CreateUserTypeCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L78">        _logger.debug( &quot;Get in UserTypeService.addUserType&quot; );</span>
+<span class="nc" id="L76">        _logger.debug( &quot;Get in UserTypeService.addUserType&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L83">            entity = UserTypeMapperInsert.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L84">            command = CommandFactory.createCreateUserTypeCommand( entity );</span>
-<span class="nc" id="L85">            command.execute();</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L87">                response = UserTypeMapperInsert.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L81">            entity = UserTypeMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L82">            command = CommandFactory.createCreateUserTypeCommand( entity );</span>
+<span class="nc" id="L83">            command.execute();</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L85">                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L89">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L87">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L92">        catch ( Exception e )</span>
+<span class="nc" id="L90">        catch ( Exception e )</span>
         {
-<span class="nc" id="L94">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en UserType &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L92">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en UserType &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L100">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L98">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L103">        _logger.debug( &quot;Leaving UserTypeService.addUserType&quot; );</span>
-<span class="nc" id="L104">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L101">        _logger.debug( &quot;Leaving UserTypeService.addUserType&quot; );</span>
+<span class="nc" id="L102">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
     }
 
     @DELETE
@@ -110,35 +108,35 @@ import javax.ws.rs.core.Response;
     {
         UserType entity;
         UserTypeDto response;
-<span class="nc" id="L113">        DeleteUserTypeCommand command = null;</span>
+<span class="nc" id="L111">        DeleteUserTypeCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L115">        _logger.debug( &quot;Get in UserTypeService.deleteUserType&quot; );</span>
+<span class="nc" id="L113">        _logger.debug( &quot;Get in UserTypeService.deleteUserType&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L120">            entity = UserTypeMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L121">            command = CommandFactory.createDeleteUserTypeCommand( entity );</span>
-<span class="nc" id="L122">            command.execute();</span>
-<span class="nc bnc" id="L123" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L124">                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L118">            entity = UserTypeMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L119">            command = CommandFactory.createDeleteUserTypeCommand( entity );</span>
+<span class="nc" id="L120">            command.execute();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L122">                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L126">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L124">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L129">        catch ( Exception e )</span>
+<span class="nc" id="L127">        catch ( Exception e )</span>
         {
-<span class="nc" id="L131">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en UserType &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L129">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en UserType &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L137">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L135">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L140">        _logger.debug( &quot;Leaving UserTypeService.deleteUserType&quot; );</span>
-<span class="nc" id="L141">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L138">        _logger.debug( &quot;Leaving UserTypeService.deleteUserType&quot; );</span>
+<span class="nc" id="L139">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -148,40 +146,40 @@ import javax.ws.rs.core.Response;
     {
         UserType entity;
         UserTypeDto response;
-<span class="nc" id="L151">        UpdateUserTypeCommand command = null;</span>
-<span class="nc" id="L152">        UserTypeDao base = new UserTypeDao();</span>
+<span class="nc" id="L149">        UpdateUserTypeCommand command = null;</span>
+<span class="nc" id="L150">        UserTypeDao base = new UserTypeDao();</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L154">        _logger.debug( &quot;Get in UserTypeService.deleteUserType&quot; );</span>
+<span class="nc" id="L152">        _logger.debug( &quot;Get in UserTypeService.deleteUserType&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc bnc" id="L159" title="All 2 branches missed.">            if (base.find(userDto.getId(), UserType.class) == null){</span>
-<span class="nc" id="L160">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if (base.find(userDto.getId(), UserType.class) == null){</span>
+<span class="nc" id="L158">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
 
             }
-<span class="nc" id="L163">            entity = UserTypeMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L164">            command = CommandFactory.createUpdateUserTypeCommand( entity );</span>
-<span class="nc" id="L165">            command.execute();</span>
-<span class="nc bnc" id="L166" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L167">                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L161">            entity = UserTypeMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L162">            command = CommandFactory.createUpdateUserTypeCommand( entity );</span>
+<span class="nc" id="L163">            command.execute();</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L165">                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L169">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L167">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L172">        catch ( Exception e )</span>
+<span class="nc" id="L170">        catch ( Exception e )</span>
         {
-<span class="nc" id="L174">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en UserType &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L172">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en UserType &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L179" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L180">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L178">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L183">        _logger.debug( &quot;Leaving UserTypeService.deleteUserType&quot; );</span>
-<span class="nc" id="L184">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L181">        _logger.debug( &quot;Leaving UserTypeService.deleteUserType&quot; );</span>
+<span class="nc" id="L182">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

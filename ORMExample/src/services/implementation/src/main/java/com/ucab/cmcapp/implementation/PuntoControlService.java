@@ -9,9 +9,7 @@ import com.ucab.cmcapp.logic.commands.puntoControl.composite.GetPuntoControlComm
 import com.ucab.cmcapp.logic.commands.puntoControl.composite.UpdatePuntoControlCommand;
 import com.ucab.cmcapp.logic.dtos.PuntoControlDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.PuntoControlMapper;
-import com.ucab.cmcapp.logic.mappers.PuntoControlMapperInsert;
 import com.ucab.cmcapp.persistence.dao.PuntoControlDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,11 +78,11 @@ public class PuntoControlService extends BaseService
 
         try
         {
-            entity = PuntoControlMapperInsert.mapDtoToEntity( userDto );
+            entity = PuntoControlMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreatePuntoControlCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = PuntoControlMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }

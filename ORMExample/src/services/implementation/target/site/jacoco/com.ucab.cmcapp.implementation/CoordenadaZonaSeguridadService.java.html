@@ -9,9 +9,7 @@ import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.GetCoord
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.UpdateCoordenadaZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.dtos.CoordenadaZonaSeguridadDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.CoordenadaZonaSeguridadMapper;
-import com.ucab.cmcapp.logic.mappers.CoordenadaZonaSeguridadMapperInsert;
 import com.ucab.cmcapp.persistence.dao.AlertaDao;
 import com.ucab.cmcapp.persistence.dao.CoordenadaZonaSeguridadDao;
 import org.slf4j.Logger;
@@ -24,9 +22,9 @@ import javax.ws.rs.core.Response;
 @Path( &quot;/coordenadas&quot; )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-<span class="nc" id="L27">public class CoordenadaZonaSeguridadService extends BaseService</span>
+<span class="nc" id="L25">public class CoordenadaZonaSeguridadService extends BaseService</span>
 {
-<span class="nc" id="L29">    private static Logger _logger = LoggerFactory.getLogger( CoordenadaZonaSeguridadService.class );</span>
+<span class="nc" id="L27">    private static Logger _logger = LoggerFactory.getLogger( CoordenadaZonaSeguridadService.class );</span>
 
     @GET
     @Path( &quot;/{id}&quot; )
@@ -34,35 +32,35 @@ import javax.ws.rs.core.Response;
     {
         CoordenadaZonaSeguridad entity;
         CoordenadaZonaSeguridadDto response;
-<span class="nc" id="L37">        GetCoordenadaZonaSeguridadCommand command = null;</span>
+<span class="nc" id="L35">        GetCoordenadaZonaSeguridadCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L39">        _logger.debug( &quot;Get in CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad&quot; );</span>
+<span class="nc" id="L37">        _logger.debug( &quot;Get in CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L44">            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userId );</span>
-<span class="nc" id="L45">            command = CommandFactory.createGetCoordenadaZonaSeguridadCommand( entity );</span>
-<span class="nc" id="L46">            command.execute();</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L48">                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L42">            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L43">            command = CommandFactory.createGetCoordenadaZonaSeguridadCommand( entity );</span>
+<span class="nc" id="L44">            command.execute();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L46">                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L50">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
+<span class="nc" id="L48">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
             }
         }
-<span class="nc" id="L53">        catch ( Exception e )</span>
+<span class="nc" id="L51">        catch ( Exception e )</span>
         {
-<span class="nc" id="L55">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en CoordenadaSeg &quot; + userId)).build();</span>
+<span class="nc" id="L53">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en CoordenadaSeg &quot; + userId)).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L61">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L59">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L64">        _logger.debug( &quot;Leaving CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad&quot; );</span>
-<span class="nc" id="L65">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Coordenada: &quot; + userId)).build();</span>
+<span class="nc" id="L62">        _logger.debug( &quot;Leaving CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad&quot; );</span>
+<span class="nc" id="L63">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Coordenada: &quot; + userId)).build();</span>
     }
 
 
@@ -74,35 +72,35 @@ import javax.ws.rs.core.Response;
     {
         CoordenadaZonaSeguridad entity;
         CoordenadaZonaSeguridadDto response;
-<span class="nc" id="L77">        CreateCoordenadaZonaSeguridadCommand command = null;</span>
+<span class="nc" id="L75">        CreateCoordenadaZonaSeguridadCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L79">        _logger.debug( &quot;Get in CoordenadaZonaSeguridadService.addCoordenadaZonaSeguridad&quot; );</span>
+<span class="nc" id="L77">        _logger.debug( &quot;Get in CoordenadaZonaSeguridadService.addCoordenadaZonaSeguridad&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L84">            entity = CoordenadaZonaSeguridadMapperInsert.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L85">            command = CommandFactory.createCreateCoordenadaZonaSeguridadCommand( entity );</span>
-<span class="nc" id="L86">            command.execute();</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L88">                response = CoordenadaZonaSeguridadMapperInsert.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L82">            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L83">            command = CommandFactory.createCreateCoordenadaZonaSeguridadCommand( entity );</span>
+<span class="nc" id="L84">            command.execute();</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L86">                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L90">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L88">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L93">        catch ( Exception e )</span>
+<span class="nc" id="L91">        catch ( Exception e )</span>
         {
-<span class="nc" id="L95">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Coordenada &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L93">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Coordenada &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L101">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L99">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L104">        _logger.debug( &quot;Leaving CoordenadaZonaSeguridadService.addCoordenadaZonaSeguridad&quot; );</span>
-<span class="nc" id="L105">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L102">        _logger.debug( &quot;Leaving CoordenadaZonaSeguridadService.addCoordenadaZonaSeguridad&quot; );</span>
+<span class="nc" id="L103">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -113,35 +111,35 @@ import javax.ws.rs.core.Response;
     {
         CoordenadaZonaSeguridad entity;
         CoordenadaZonaSeguridadDto response;
-<span class="nc" id="L116">        DeleteCoordenadaZonaSeguridadCommand command = null;</span>
+<span class="nc" id="L114">        DeleteCoordenadaZonaSeguridadCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L118">        _logger.debug( &quot;Get in CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad&quot; );</span>
+<span class="nc" id="L116">        _logger.debug( &quot;Get in CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L123">            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L124">            command = CommandFactory.createDeleteCoordenadaZonaSeguridadCommand( entity );</span>
-<span class="nc" id="L125">            command.execute();</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L127">                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L121">            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L122">            command = CommandFactory.createDeleteCoordenadaZonaSeguridadCommand( entity );</span>
+<span class="nc" id="L123">            command.execute();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L125">                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L129">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L127">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L132">        catch ( Exception e )</span>
+<span class="nc" id="L130">        catch ( Exception e )</span>
         {
-<span class="nc" id="L134">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Coordenada &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L132">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Coordenada &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L139" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L140">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L138">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L143">        _logger.debug( &quot;Leaving CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad&quot; );</span>
-<span class="nc" id="L144">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L141">        _logger.debug( &quot;Leaving CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad&quot; );</span>
+<span class="nc" id="L142">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -151,41 +149,41 @@ import javax.ws.rs.core.Response;
     {
         CoordenadaZonaSeguridad entity;
         CoordenadaZonaSeguridadDto response;
-<span class="nc" id="L154">        UpdateCoordenadaZonaSeguridadCommand command = null;</span>
-<span class="nc" id="L155">        CoordenadaZonaSeguridadDao base = new CoordenadaZonaSeguridadDao();</span>
+<span class="nc" id="L152">        UpdateCoordenadaZonaSeguridadCommand command = null;</span>
+<span class="nc" id="L153">        CoordenadaZonaSeguridadDao base = new CoordenadaZonaSeguridadDao();</span>
 
         //region Instrumentation DEBUG
-<span class="nc" id="L158">        _logger.debug( &quot;Get in CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad&quot; );</span>
+<span class="nc" id="L156">        _logger.debug( &quot;Get in CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc bnc" id="L163" title="All 2 branches missed.">            if (base.find(userDto.getId(), CoordenadaZonaSeguridad.class) == null){</span>
-<span class="nc" id="L164">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if (base.find(userDto.getId(), CoordenadaZonaSeguridad.class) == null){</span>
+<span class="nc" id="L162">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
 
             }
-<span class="nc" id="L167">            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L168">            command = CommandFactory.createUpdateCoordenadaZonaSeguridadCommand( entity );</span>
-<span class="nc" id="L169">            command.execute();</span>
-<span class="nc bnc" id="L170" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L171">                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L165">            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L166">            command = CommandFactory.createUpdateCoordenadaZonaSeguridadCommand( entity );</span>
+<span class="nc" id="L167">            command.execute();</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L169">                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L173">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L171">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L176">        catch ( Exception e )</span>
+<span class="nc" id="L174">        catch ( Exception e )</span>
         {
-<span class="nc" id="L178">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Alerta &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L176">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Alerta &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L183" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L184">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L182">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L187">        _logger.debug( &quot;Leaving CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad&quot; );</span>
-<span class="nc" id="L188">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L185">        _logger.debug( &quot;Leaving CoordenadaZonaSeguridadService.deleteCoordenadaZonaSeguridad&quot; );</span>
+<span class="nc" id="L186">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

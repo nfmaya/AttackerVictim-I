@@ -118,11 +118,11 @@ public class UsuarioService extends BaseService
 
         try
         {
-            entity = UsuarioMapperInsert.mapDtoToEntity( userDto );
+            entity = UsuarioMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreateUsuarioCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = UsuarioMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }

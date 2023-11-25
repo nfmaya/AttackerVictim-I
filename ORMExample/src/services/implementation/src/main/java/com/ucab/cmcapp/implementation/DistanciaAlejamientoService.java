@@ -128,11 +128,11 @@ public class DistanciaAlejamientoService extends BaseService
 
         try
         {
-            entity = DistanciaAlejamientoMapperInsert.mapDtoToEntity( distanciaDto );
+            entity = DistanciaAlejamientoMapper.mapDtoToEntityInsert( distanciaDto );
             command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = DistanciaAlejamientoMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + distanciaDto.getId())).build();
             }

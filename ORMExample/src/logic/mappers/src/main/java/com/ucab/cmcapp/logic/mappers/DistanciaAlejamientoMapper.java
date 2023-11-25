@@ -48,6 +48,34 @@ public class DistanciaAlejamientoMapper extends BaseMapper
         return entity;
     }
 
+    public static DistanciaAlejamiento mapDtoToEntityInsert(DistanciaAlejamientoDto dto ) throws ParseException
+    {
+        DistanciaAlejamiento entity = EntityFactory.createDistanciaAlejamiento();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in DistanciaAlejamientoMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.set_distanciaMinima( dto.get_distanciaMinima() );
+
+        if ( Objects.nonNull( dto.get_agresor() ) )
+        {
+            entity.set_agresor( UsuarioMapper.mapDtoToEntity( dto.get_agresor() ) );
+        }
+
+        if ( Objects.nonNull( dto.get_victima() ) )
+        {
+            entity.set_victima( UsuarioMapper.mapDtoToEntity( dto.get_victima() ) );
+        }
+
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving DistanciaAlejamientoMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static DistanciaAlejamientoDto mapEntityToDto( DistanciaAlejamiento entity )
     {
         final DistanciaAlejamientoDto dto = new DistanciaAlejamientoDto();
