@@ -6,7 +6,6 @@ import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
-import com.ucab.cmcapp.logic.mappers.UsuarioMapperInsert;
 import org.junit.Test;
 
 import java.text.ParseException;

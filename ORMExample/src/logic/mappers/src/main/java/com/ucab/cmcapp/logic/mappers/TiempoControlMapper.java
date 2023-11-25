@@ -30,6 +30,24 @@ public class TiempoControlMapper extends BaseMapper
         return entity;
     }
 
+    public static TiempoControl mapDtoToEntityInsert(TiempoControlDto dto ) throws ParseException
+    {
+        TiempoControl entity = EntityFactory.createTiempoControl();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in TiempoControlMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.setTiempoControl( dto.getTiempoControl());
+        entity.setTipoTiempoControl(dto.getTipoTiempoControl());
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving TiempoControlMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static TiempoControlDto mapEntityToDto( TiempoControl entity )
     {
         final TiempoControlDto dto = new TiempoControlDto();

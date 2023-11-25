@@ -9,9 +9,7 @@ import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
 import com.ucab.cmcapp.logic.dtos.UserTypeDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.UserTypeMapper;
-import com.ucab.cmcapp.logic.mappers.UserTypeMapperInsert;
 import com.ucab.cmcapp.persistence.dao.UserTypeDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,11 +78,11 @@ public class UserTypeService extends BaseService
 
         try
         {
-            entity = UserTypeMapperInsert.mapDtoToEntity( userDto );
+            entity = UserTypeMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreateUserTypeCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = UserTypeMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = UserTypeMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }

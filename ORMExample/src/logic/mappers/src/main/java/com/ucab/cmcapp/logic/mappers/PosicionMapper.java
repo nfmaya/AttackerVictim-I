@@ -41,6 +41,28 @@ public class PosicionMapper extends BaseMapper
         return entity;
     }
 
+    public static Posicion mapDtoToEntityInsert(PosicionDto dto ) throws ParseException
+    {
+        Posicion entity = EntityFactory.createPosicion();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in PosicionMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.setCoordenadaX( dto.getCoordenadaX());
+        entity.setCoordenadaY(dto.getCoordenadaY());
+        entity.setFechaHora(dto.getFechaHora());
+        if ( Objects.nonNull( dto.getUsuario() ) )
+        {
+            entity.setUsuario( UsuarioMapper.mapDtoToEntity( dto.getUsuario() ) );
+        }
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving PosicionMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static PosicionDto mapEntityToDto( Posicion entity )
     {
         final PosicionDto dto = new PosicionDto();

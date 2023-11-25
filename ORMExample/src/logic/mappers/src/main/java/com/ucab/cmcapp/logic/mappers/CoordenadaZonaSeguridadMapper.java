@@ -38,6 +38,29 @@ public class CoordenadaZonaSeguridadMapper extends BaseMapper
         return entity;
     }
 
+    public static CoordenadaZonaSeguridad mapDtoToEntityInsert(CoordenadaZonaSeguridadDto dto ) throws ParseException
+    {
+        CoordenadaZonaSeguridad entity = EntityFactory.createCoordenadaZonaSeguridad();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in CoordenadaZonaSeguridadMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.setCoordenadaX( dto.getCoordenadaX());
+        entity.setCoordenadaY(dto.getCoordenadaY());
+        if ( Objects.nonNull( dto.getZonaSeguridad() ) )
+        {
+            entity.setZonaSeguridad( ZonaSeguridadMapper.mapDtoToEntity( dto.getZonaSeguridad() ) );
+        }
+
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving CoordenadaZonaSeguridadMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static CoordenadaZonaSeguridadDto mapEntityToDto( CoordenadaZonaSeguridad entity )
     {
         final CoordenadaZonaSeguridadDto dto = new CoordenadaZonaSeguridadDto();

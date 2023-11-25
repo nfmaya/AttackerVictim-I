@@ -51,6 +51,39 @@ public class UsuarioMapper extends BaseMapper
         return entity;
     }
 
+
+    public static Usuario mapDtoToEntityInsert(UsuarioDto dto ) throws ParseException
+    {
+        Usuario entity = EntityFactory.createUsuario();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.set_Username( dto.get_Username() );
+        entity.set_Nombre(dto.get_Nombre());
+        entity.setDocIdentidad(dto.getDocIdentidad());
+        entity.setIMEI(dto.getIMEI());
+        entity.setEstatus(dto.isEstatus());
+
+        if ( Objects.nonNull( dto.getUsuarioTypeDto() ) )
+        {
+            entity.set_userType( UserTypeMapper.mapDtoToEntity( dto.getUsuarioTypeDto() ) );
+        }
+/*
+        if (Objects.nonNull(dto.getAlertas())) {
+            entity.setAlertas(AlertaMapper.mapDtosToEntities(dto.getAlertas()));
+        }
+
+ */
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving UsuarioMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static UsuarioDto mapEntityToDto( Usuario entity )
     {
         final UsuarioDto dto = new UsuarioDto();

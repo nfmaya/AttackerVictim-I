@@ -41,6 +41,30 @@ public class AlertaMapper extends BaseMapper
         return entity;
     }
 
+    public static Alerta mapDtoToEntityInsert(AlertaDto dto ) throws ParseException
+    {
+        Alerta entity = EntityFactory.createAlerta();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in AlertaMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.set_tipoAlerta( dto.get_tipoAlerta());
+        entity.set_fechaHora(dto.get_fechaHora());
+        if ( Objects.nonNull( dto.getUsuario() ) )
+        {
+            entity.setUsuario( UsuarioMapper.mapDtoToEntity( dto.getUsuario() ) );
+        }
+
+
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving AlertaMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static AlertaDto mapEntityToDto( Alerta entity )
     {
         final AlertaDto dto = new AlertaDto();

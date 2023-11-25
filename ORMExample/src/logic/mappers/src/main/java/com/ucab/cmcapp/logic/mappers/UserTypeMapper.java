@@ -29,6 +29,23 @@ public class UserTypeMapper extends BaseMapper
         return entity;
     }
 
+    public static UserType mapDtoToEntityInsert(UserTypeDto dto ) throws ParseException
+    {
+        UserType entity = EntityFactory.createUserType();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UserTypeMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.setName( dto.getName());
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving UserTypeMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static UserTypeDto mapEntityToDto( UserType entity )
     {
         final UserTypeDto dto = new UserTypeDto();

@@ -51,4 +51,63 @@ public class AlertaServiceTest {
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualAlerta.getStatus());
     }
+
+
+    @Test
+    public void addAlertaReturnsExpectedAlertaWhenAlertaIsAdded() {
+        when(alertaService.addAlerta(alertaDto)).thenReturn(Response.status(Response.Status.OK).entity(alertaDto).build());
+
+        Response actualAlerta = alertaService.addAlerta(alertaDto);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualAlerta.getStatus());
+        assertEquals(alertaDto, actualAlerta.getEntity());
+    }
+
+    @Test
+    public void addAlertaReturnsServerErrorWhenExceptionOccurs() {
+        when(alertaService.addAlerta(alertaDto)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+
+        Response actualAlerta = alertaService.addAlerta(alertaDto);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualAlerta.getStatus());
+    }
+
+    @Test
+    public void addAlertaReturnsNotFoundWhenAlertaCannotBeAdded() {
+        when(alertaService.addAlerta(alertaDto)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualAlerta = alertaService.addAlerta(alertaDto);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualAlerta.getStatus());
+    }
+
+
+
+    @Test
+    public void updateAlertaReturnsExpectedAlertaWhenAlertaIsUpdated() {
+        when(alertaService.updateAlerta(alertaDto)).thenReturn(Response.status(Response.Status.OK).entity(alertaDto).build());
+
+        Response actualAlerta = alertaService.updateAlerta(alertaDto);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualAlerta.getStatus());
+        assertEquals(alertaDto, actualAlerta.getEntity());
+    }
+
+    @Test
+    public void updateAlertaReturnsServerErrorWhenExceptionOccurs() {
+        when(alertaService.updateAlerta(alertaDto)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+
+        Response actualAlerta = alertaService.updateAlerta(alertaDto);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualAlerta.getStatus());
+    }
+
+    @Test
+    public void updateAlertaReturnsNotFoundWhenAlertaCannotBeUpdated() {
+        when(alertaService.updateAlerta(alertaDto)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualAlerta = alertaService.updateAlerta(alertaDto);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualAlerta.getStatus());
+    }
 }

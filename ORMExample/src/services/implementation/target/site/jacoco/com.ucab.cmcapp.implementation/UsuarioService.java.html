@@ -118,11 +118,11 @@ import javax.ws.rs.core.Response;
 
         try
         {
-<span class="nc" id="L121">            entity = UsuarioMapperInsert.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L121">            entity = UsuarioMapper.mapDtoToEntityInsert( userDto );</span>
 <span class="nc" id="L122">            command = CommandFactory.createCreateUsuarioCommand( entity );</span>
 <span class="nc" id="L123">            command.execute();</span>
 <span class="nc bnc" id="L124" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L125">                response = UsuarioMapperInsert.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L125">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
 <span class="nc" id="L127">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
             }

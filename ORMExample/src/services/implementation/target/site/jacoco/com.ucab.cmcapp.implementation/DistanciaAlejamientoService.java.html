@@ -128,11 +128,11 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
 
         try
         {
-<span class="nc" id="L131">            entity = DistanciaAlejamientoMapperInsert.mapDtoToEntity( distanciaDto );</span>
+<span class="nc" id="L131">            entity = DistanciaAlejamientoMapper.mapDtoToEntityInsert( distanciaDto );</span>
 <span class="nc" id="L132">            command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );</span>
 <span class="nc" id="L133">            command.execute();</span>
 <span class="nc bnc" id="L134" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L135">                response = DistanciaAlejamientoMapperInsert.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L135">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
 <span class="nc" id="L137">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + distanciaDto.getId())).build();</span>
             }

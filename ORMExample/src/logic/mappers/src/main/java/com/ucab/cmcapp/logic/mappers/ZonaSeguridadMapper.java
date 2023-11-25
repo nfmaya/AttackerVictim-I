@@ -29,6 +29,24 @@ public class ZonaSeguridadMapper extends BaseMapper
         return entity;
     }
 
+
+    public static ZonaSeguridad mapDtoToEntityInsert(ZonaSeguridadDto dto ) throws ParseException
+    {
+        ZonaSeguridad entity = EntityFactory.createZonaSeguridad();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadMapper.mapDtoToEntity: dto {}", dto );
+        //endregion
+
+        entity.setNombreZona( dto.getNombreZona());
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Leaving ZonaSeguridadMapper.mapDtoToEntity: entity {}", entity );
+        //endregion
+
+        return entity;
+    }
+
     public static ZonaSeguridadDto mapEntityToDto( ZonaSeguridad entity )
     {
         final ZonaSeguridadDto dto = new ZonaSeguridadDto();

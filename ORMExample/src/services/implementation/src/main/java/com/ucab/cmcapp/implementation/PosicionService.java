@@ -9,9 +9,7 @@ import com.ucab.cmcapp.logic.commands.posicion.composite.GetPosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.UpdatePosicionCommand;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
-import com.ucab.cmcapp.logic.mappers.AlertaMapperInsert;
 import com.ucab.cmcapp.logic.mappers.PosicionMapper;
-import com.ucab.cmcapp.logic.mappers.PosicionMapperInsert;
 import com.ucab.cmcapp.persistence.dao.PosicionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,11 +78,11 @@ public class PosicionService extends BaseService
 
         try
         {
-            entity = PosicionMapperInsert.mapDtoToEntity( userDto );
+            entity = PosicionMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreatePosicionCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = PosicionMapperInsert.mapEntityToDto(command.getReturnParam());
+                response = PosicionMapper.mapEntityToDto(command.getReturnParam());
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }
