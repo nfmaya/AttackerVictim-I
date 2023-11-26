@@ -155,7 +155,7 @@ public class DistanciaAlejamientoService extends BaseService
     //ESTE ES EL DELETE DE LA BD
     @DELETE
     @Path("/delete")
-    public Response deleteDistancia( DistanciaAlejamientoDto userDto )
+    public Response deleteDistanciaAlejamiento( DistanciaAlejamientoDto userDto )
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
@@ -193,7 +193,7 @@ public class DistanciaAlejamientoService extends BaseService
 
     @PUT
     @Path("/update")
-    public Response updateUsuario( DistanciaAlejamientoDto userDto )
+    public Response updateDistanciaAlejamiento( DistanciaAlejamientoDto userDto )
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;

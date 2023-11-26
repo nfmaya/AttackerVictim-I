@@ -1,3 +1,9 @@
+DistanciaAlejamientoServiceTest.class
 UsuarioServiceTest.class
 AlertaServiceTest.class
+PuntoControlServiceTest.class
 PosicionServiceTest.class
+UserTypeServiceTest.class
+ZonaSeguridadServiceTest.class
+TiempoControlServiceTest.class
+CoordenadaZonaSeguridadServiceTest.class
