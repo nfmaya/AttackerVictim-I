@@ -1,124 +1,113 @@
-
 import com.ucab.cmcapp.common.entities.Posicion;
 import com.ucab.cmcapp.implementation.PosicionService;
-import com.ucab.cmcapp.logic.commands.posicion.composite.*;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import com.ucab.cmcapp.logic.mappers.PosicionMapper;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class PosicionServiceTest {
-    /*
-@Test
-public void testGetPosicion() {
 
-    long posicionId = 1L;
-    Posicion posicion = new Posicion();
-    PosicionDto expectedDto = new PosicionDto();
+    private PosicionService PosicionService;
+    private PosicionDto PosicionDto;
 
-    // Create mock objects
-    GetPosicionCommand getPosicionCommand = mock(GetPosicionCommand.class);
-    PosicionService posicionService = new PosicionService();
-
-    // Stub method calls using Mockito.when()
-    when(getPosicionCommand.getReturnParam()).thenReturn(posicion);
-    when(PosicionMapper.mapEntityToDto(any(Posicion.class))).thenReturn(expectedDto);
-
-    // Call the method under test
-    PosicionDto result = null;
-    try {
-        result = posicionService.getPosicion(posicionId);
-    } catch (NullPointerException e) {
-        fail("NullPointerException thrown: " + e.getMessage());
-    }
-
-    // Verify method invocations
-    verify(getPosicionCommand).execute();
-    verify(getPosicionCommand).closeHandlerSession();
-    verifyNoMoreInteractions(getPosicionCommand);
-
-    // Assertions
-    assertEquals(expectedDto, result);
-}
-
-    @Test
-    public void testAddPosicion() {
-        PosicionDto inputDto = new PosicionDto();
-        Posicion posicion = new Posicion();
-        PosicionDto expectedDto = new PosicionDto();
-
-        // Create mock objects
-        CreatePosicionCommand createPosicionCommand = mock(CreatePosicionCommand.class);
-        PosicionService posicionService = new PosicionService();
-
-        // Stub method calls using Mockito.when()
-        when(createPosicionCommand.getReturnParam()).thenReturn(posicion);
-        when(PosicionMapperInsert.mapEntityToDto(any(Posicion.class))).thenReturn(expectedDto);
-
-        PosicionDto result = posicionService.addPosicion(inputDto);
-
-        // Verify method invocations
-        verify(createPosicionCommand).execute();
-        verify(createPosicionCommand).closeHandlerSession();
-        verifyNoMoreInteractions(createPosicionCommand);
-
-        // Assertions
-        assertEquals(expectedDto, result);
+    @Before
+    public void setUp() {
+        PosicionService = Mockito.mock(PosicionService.class);
+        PosicionDto = new PosicionDto();
+        PosicionDto.setId(1L);
     }
 
     @Test
-    public void testDeletePosicion() {
-        PosicionDto inputDto = new PosicionDto();
-        Posicion posicion = new Posicion();
-        PosicionDto expectedDto = new PosicionDto();
+    public void getPosicionReturnsExpectedPosicionWhenPosicionExists() {
+        when(PosicionService.getPosicion(1L)).thenReturn(Response.status(Response.Status.OK).entity(PosicionDto).build());
 
-        // Create mock objects
-        DeletePosicionCommand deletePosicionCommand = mock(DeletePosicionCommand.class);
-        PosicionService posicionService = new PosicionService();
+        Response actualPosicion = PosicionService.getPosicion(1L);
 
-        // Stub method calls using Mockito.when()
-        when(deletePosicionCommand.getReturnParam()).thenReturn(posicion);
-        when(PosicionMapper.mapEntityToDto(any(Posicion.class))).thenReturn(expectedDto);
+        assertEquals(Response.Status.OK.getStatusCode(), actualPosicion.getStatus());
+        assertEquals(PosicionDto, actualPosicion.getEntity());
+    }
 
-        PosicionDto result = posicionService.deletePosicion(inputDto);
 
-        // Verify method invocations
-        verify(deletePosicionCommand).execute();
-        verify(deletePosicionCommand).closeHandlerSession();
-        verifyNoMoreInteractions(deletePosicionCommand);
+    @Test
+    public void getPosicionReturnsNotFoundWhenPosicionDoesNotExist() {
+        when(PosicionService.getPosicion(2L)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
 
-        // Assertions
-        assertEquals(expectedDto, result);
+        Response actualPosicion = PosicionService.getPosicion(2L);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualPosicion.getStatus());
     }
 
     @Test
-    public void testUpdatePosicion() {
-        PosicionDto inputDto = new PosicionDto();
-        Posicion posicion = new Posicion();
-        PosicionDto expectedDto = new PosicionDto();
+    public void getPosicionReturnsServerErrorWhenExceptionOccurs() {
+        when(PosicionService.getPosicion(3L)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 
-        // Create mock objects
-        UpdatePosicionCommand updatePosicionCommand = mock(UpdatePosicionCommand.class);
-        PosicionService posicionService = new PosicionService();
+        Response actualPosicion = PosicionService.getPosicion(3L);
 
-        // Stub method calls using Mockito.when()
-        when(updatePosicionCommand.getReturnParam()).thenReturn(posicion);
-        when(PosicionMapper.mapEntityToDto(any(Posicion.class))).thenReturn(expectedDto);
-
-        PosicionDto result = posicionService.updatePosicion(inputDto);
-
-        // Verify method invocations
-        verify(updatePosicionCommand).execute();
-        verify(updatePosicionCommand).closeHandlerSession();
-        verifyNoMoreInteractions(updatePosicionCommand);
-
-        // Assertions
-        assertEquals(expectedDto, result);
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualPosicion.getStatus());
     }
 
-     */
+
+    @Test
+    public void addPosicionReturnsExpectedPosicionWhenPosicionIsAdded() {
+        when(PosicionService.addPosicion(PosicionDto)).thenReturn(Response.status(Response.Status.OK).entity(PosicionDto).build());
+
+        Response actualPosicion = PosicionService.addPosicion(PosicionDto);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualPosicion.getStatus());
+        assertEquals(PosicionDto, actualPosicion.getEntity());
+    }
+
+    @Test
+    public void addPosicionReturnsServerErrorWhenExceptionOccurs() {
+        when(PosicionService.addPosicion(PosicionDto)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+
+        Response actualPosicion = PosicionService.addPosicion(PosicionDto);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualPosicion.getStatus());
+    }
+
+    @Test
+    public void addPosicionReturnsNotFoundWhenPosicionCannotBeAdded() {
+        when(PosicionService.addPosicion(PosicionDto)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualPosicion = PosicionService.addPosicion(PosicionDto);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualPosicion.getStatus());
+    }
+
+
+
+    @Test
+    public void updatePosicionReturnsExpectedPosicionWhenPosicionIsUpdated() {
+        when(PosicionService.updatePosicion(PosicionDto)).thenReturn(Response.status(Response.Status.OK).entity(PosicionDto).build());
+
+        Response actualPosicion = PosicionService.updatePosicion(PosicionDto);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualPosicion.getStatus());
+        assertEquals(PosicionDto, actualPosicion.getEntity());
+    }
+
+    @Test
+    public void updatePosicionReturnsServerErrorWhenExceptionOccurs() {
+        when(PosicionService.updatePosicion(PosicionDto)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+
+        Response actualPosicion = PosicionService.updatePosicion(PosicionDto);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualPosicion.getStatus());
+    }
+
+    @Test
+    public void updatePosicionReturnsNotFoundWhenPosicionCannotBeUpdated() {
+        when(PosicionService.updatePosicion(PosicionDto)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualPosicion = PosicionService.updatePosicion(PosicionDto);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualPosicion.getStatus());
+    }
 }

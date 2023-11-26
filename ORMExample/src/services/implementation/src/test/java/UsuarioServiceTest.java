@@ -1,114 +1,113 @@
+import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.implementation.UsuarioService;
-import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByUsernameCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.CreateUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.UsuarioMapper;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import java.text.ParseException;
+import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class UsuarioServiceTest {
-    /*
-    @Test
-    public void testGetUsuarioById() {
-        long userId = 1L;
-        UsuarioDto expectedDto = new UsuarioDto();
 
-        GetUsuarioCommand command = mock(GetUsuarioCommand.class);
-        when(command.getReturnParam()).thenReturn(UsuarioMapper.mapDtoToEntity(userId));
-        when(UsuarioMapper.mapEntityToDto(any())).thenReturn(expectedDto);
+    private UsuarioService UsuarioService;
+    private UsuarioDto UsuarioDto;
 
-        UsuarioService service = new UsuarioService();
-        UsuarioDto result = service.getUsuario(userId);
-
-        verify(command).execute();
-        verify(command).closeHandlerSession();
-        verifyNoMoreInteractions(command);
-
-        assertEquals(expectedDto, result);
+    @Before
+    public void setUp() {
+        UsuarioService = Mockito.mock(UsuarioService.class);
+        UsuarioDto = new UsuarioDto();
+        UsuarioDto.setId(1L);
     }
 
     @Test
-    public void testGetUsuarioByUsername() {
-        String username = "test";
-        UsuarioDto expectedDto = new UsuarioDto();
+    public void getUsuarioReturnsExpectedUsuarioWhenUsuarioExists() {
+        when(UsuarioService.getUsuario(1L)).thenReturn(Response.status(Response.Status.OK).entity(UsuarioDto).build());
 
-        GetUsuarioByUsernameCommand command = mock(GetUsuarioByUsernameCommand.class);
-        when(command.getReturnParam()).thenReturn(UsuarioMapper.mapDtoToEntityUsername(username));
-        when(UsuarioMapper.mapEntityToDto(any())).thenReturn(expectedDto);
+        Response actualUsuario = UsuarioService.getUsuario(1L);
 
-        UsuarioService service = new UsuarioService();
-        UsuarioDto result = service.getUsuario(username);
+        assertEquals(Response.Status.OK.getStatusCode(), actualUsuario.getStatus());
+        assertEquals(UsuarioDto, actualUsuario.getEntity());
+    }
 
-        verify(command).execute();
-        verify(command).closeHandlerSession();
-        verifyNoMoreInteractions(command);
 
-        assertEquals(expectedDto, result);
+    @Test
+    public void getUsuarioReturnsNotFoundWhenUsuarioDoesNotExist() {
+        when(UsuarioService.getUsuario(2L)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualUsuario = UsuarioService.getUsuario(2L);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualUsuario.getStatus());
     }
 
     @Test
-    public void testAddUsuario() throws ParseException {
-        UsuarioDto userDto = new UsuarioDto();
-        UsuarioDto expectedDto = new UsuarioDto();
+    public void getUsuarioReturnsServerErrorWhenExceptionOccurs() {
+        when(UsuarioService.getUsuario(3L)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 
-        CreateUsuarioCommand command = mock(CreateUsuarioCommand.class);
-        when(command.getReturnParam()).thenReturn(UsuarioMapperInsert.mapDtoToEntity(userDto));
-        when(UsuarioMapperInsert.mapEntityToDto(any())).thenReturn(expectedDto);
+        Response actualUsuario = UsuarioService.getUsuario(3L);
 
-        UsuarioService service = new UsuarioService();
-        UsuarioDto result = service.addUsuario(userDto);
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualUsuario.getStatus());
+    }
 
-        verify(command).execute();
-        verify(command).closeHandlerSession();
-        verifyNoMoreInteractions(command);
 
-        assertEquals(expectedDto, result);
+    @Test
+    public void addUsuarioReturnsExpectedUsuarioWhenUsuarioIsAdded() {
+        when(UsuarioService.addUsuario(UsuarioDto)).thenReturn(Response.status(Response.Status.OK).entity(UsuarioDto).build());
+
+        Response actualUsuario = UsuarioService.addUsuario(UsuarioDto);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualUsuario.getStatus());
+        assertEquals(UsuarioDto, actualUsuario.getEntity());
     }
 
     @Test
-    public void testDeleteUsuario() throws ParseException {
-        UsuarioDto userDto = new UsuarioDto();
-        UsuarioDto expectedDto = new UsuarioDto();
+    public void addUsuarioReturnsServerErrorWhenExceptionOccurs() {
+        when(UsuarioService.addUsuario(UsuarioDto)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 
-        DeleteUsuarioCommand command = mock(DeleteUsuarioCommand.class);
-        when(command.getReturnParam()).thenReturn(UsuarioMapper.mapDtoToEntity(userDto));
-        when(UsuarioMapper.mapEntityToDto(any())).thenReturn(expectedDto);
+        Response actualUsuario = UsuarioService.addUsuario(UsuarioDto);
 
-        UsuarioService service = new UsuarioService();
-        UsuarioDto result = service.deleteUsuario(userDto);
-
-        verify(command).execute();
-        verify(command).closeHandlerSession();
-        verifyNoMoreInteractions(command);
-
-        assertEquals(expectedDto, result);
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualUsuario.getStatus());
     }
 
     @Test
-    public void testUpdateUsuario() throws ParseException {
-        UsuarioDto userDto = new UsuarioDto();
-        UsuarioDto expectedDto = new UsuarioDto();
+    public void addUsuarioReturnsNotFoundWhenUsuarioCannotBeAdded() {
+        when(UsuarioService.addUsuario(UsuarioDto)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
 
-        UpdateUsuarioCommand command = mock(UpdateUsuarioCommand.class);
-        when(command.getReturnParam()).thenReturn(UsuarioMapper.mapDtoToEntity(userDto));
-        when(UsuarioMapper.mapEntityToDto(any())).thenReturn(expectedDto);
+        Response actualUsuario = UsuarioService.addUsuario(UsuarioDto);
 
-        UsuarioService service = new UsuarioService();
-        UsuarioDto result = service.updateUsuario(userDto);
-
-        verify(command).execute();
-        verify(command).closeHandlerSession();
-        verifyNoMoreInteractions(command);
-
-        assertEquals(expectedDto, result);
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualUsuario.getStatus());
     }
 
-     */
+
+
+    @Test
+    public void updateUsuarioReturnsExpectedUsuarioWhenUsuarioIsUpdated() {
+        when(UsuarioService.updateUsuario(UsuarioDto)).thenReturn(Response.status(Response.Status.OK).entity(UsuarioDto).build());
+
+        Response actualUsuario = UsuarioService.updateUsuario(UsuarioDto);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualUsuario.getStatus());
+        assertEquals(UsuarioDto, actualUsuario.getEntity());
+    }
+
+    @Test
+    public void updateUsuarioReturnsServerErrorWhenExceptionOccurs() {
+        when(UsuarioService.updateUsuario(UsuarioDto)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+
+        Response actualUsuario = UsuarioService.updateUsuario(UsuarioDto);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualUsuario.getStatus());
+    }
+
+    @Test
+    public void updateUsuarioReturnsNotFoundWhenUsuarioCannotBeUpdated() {
+        when(UsuarioService.updateUsuario(UsuarioDto)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualUsuario = UsuarioService.updateUsuario(UsuarioDto);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualUsuario.getStatus());
+    }
 }

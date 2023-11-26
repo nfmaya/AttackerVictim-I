@@ -155,7 +155,7 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
     //ESTE ES EL DELETE DE LA BD
     @DELETE
     @Path(&quot;/delete&quot;)
-    public Response deleteDistancia( DistanciaAlejamientoDto userDto )
+    public Response deleteDistanciaAlejamiento( DistanciaAlejamientoDto userDto )
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
@@ -193,7 +193,7 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
 
     @PUT
     @Path(&quot;/update&quot;)
-    public Response updateUsuario( DistanciaAlejamientoDto userDto )
+    public Response updateDistanciaAlejamiento( DistanciaAlejamientoDto userDto )
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
