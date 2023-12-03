@@ -6,4 +6,5 @@ PosicionServiceTest.class
 UserTypeServiceTest.class
 ZonaSeguridadServiceTest.class
 TiempoControlServiceTest.class
+AlertaServiceTestpr.class
 CoordenadaZonaSeguridadServiceTest.class

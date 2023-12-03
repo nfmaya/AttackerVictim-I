@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -114,6 +115,16 @@ public class UsuarioMapper extends BaseMapper
         //endregion
         return dto;
     }
+
+
+    public static List<UsuarioDto> mapListEntityToDto(List<Usuario> entities) {
+        List<UsuarioDto> dtos = new ArrayList<>();
+        for (Usuario entity : entities) {
+            dtos.add(mapEntityToDto(entity));
+        }
+        return dtos;
+    }
+
 
     public static Usuario mapDtoToEntity( long id )
     {

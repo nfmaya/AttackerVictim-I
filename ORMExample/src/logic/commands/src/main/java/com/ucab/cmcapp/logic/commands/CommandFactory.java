@@ -65,11 +65,10 @@ import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.*;
-import com.ucab.cmcapp.logic.commands.usuario.composite.CreateUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.*;
 import com.ucab.cmcapp.persistence.DBHandler;
+
+import java.util.List;
 
 public class CommandFactory
 {
@@ -115,6 +114,18 @@ public class CommandFactory
     {
         return new GetUsuarioCommand(user);
     }
+
+    public static GetAllUsuarioCommand createGetAllUsuarioCommand()
+    {
+        return new GetAllUsuarioCommand();
+    }
+
+    public static GetAllUsuarioByIdCommand createGetAllUsuarioByIdCommand (DBHandler handler )
+    {
+        return new GetAllUsuarioByIdCommand(handler);
+    }
+
+
 
     public static GetUsuarioByUsernameCommand createGetUsuarioByUsernameCommand(Usuario user)
     {
