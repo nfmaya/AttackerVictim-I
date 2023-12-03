@@ -67,6 +67,6 @@ public class CoordenadaZonaSeguridadDao extends BaseDao<CoordenadaZonaSeguridad>
 
         return result;
     }
-hokj
+hokjj
  */
 }
