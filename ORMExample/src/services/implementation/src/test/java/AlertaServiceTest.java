@@ -110,4 +110,62 @@ public class AlertaServiceTest {
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualAlerta.getStatus());
     }
+
+    @Test
+    public void deleteAlertaReturnsExpectedAlertaWhenAlertaIsDeleted() {
+        when(alertaService.deleteAlerta(alertaDto)).thenReturn(Response.status(Response.Status.OK).entity(alertaDto).build());
+
+        Response actualAlerta = alertaService.deleteAlerta(alertaDto);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualAlerta.getStatus());
+        assertEquals(alertaDto, actualAlerta.getEntity());
+    }
+
+    @Test
+    public void deleteAlertaReturnsServerErrorWhenExceptionOccurs() {
+        when(alertaService.deleteAlerta(alertaDto)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+
+        Response actualAlerta = alertaService.deleteAlerta(alertaDto);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualAlerta.getStatus());
+    }
+
+    @Test
+    public void deleteAlertaReturnsNotFoundWhenAlertaCannotBeDeleted() {
+        when(alertaService.deleteAlerta(alertaDto)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualAlerta = alertaService.deleteAlerta(alertaDto);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualAlerta.getStatus());
+    }
+
+    @Test
+    public void deleteAlerta2ReturnsExpectedAlertaWhenAlertaIsDeleted() {
+        when(alertaService.deleteAlerta2(alertaDto)).thenReturn(Response.status(Response.Status.OK).entity(alertaDto).build());
+
+        Response actualAlerta = alertaService.deleteAlerta2(alertaDto);
+
+        assertEquals(Response.Status.OK.getStatusCode(), actualAlerta.getStatus());
+        assertEquals(alertaDto, actualAlerta.getEntity());
+    }
+
+    @Test
+    public void deleteAlerta2ReturnsServerErrorWhenExceptionOccurs() {
+        when(alertaService.deleteAlerta2(alertaDto)).thenReturn(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+
+        Response actualAlerta = alertaService.deleteAlerta2(alertaDto);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualAlerta.getStatus());
+    }
+
+    @Test
+    public void deleteAlerta2ReturnsNotFoundWhenAlertaCannotBeDeleted() {
+        when(alertaService.deleteAlerta2(alertaDto)).thenReturn(Response.status(Response.Status.NOT_FOUND).build());
+
+        Response actualAlerta = alertaService.deleteAlerta2(alertaDto);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualAlerta.getStatus());
+    }
+
+
 }

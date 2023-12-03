@@ -8,10 +8,7 @@ import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByUsernameCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.CreateUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.GetUsuarioCommand;
-import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.*;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.*;
@@ -22,6 +19,9 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import java.util.List;
+
 
 @Path( "/usuarios" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -67,6 +67,41 @@ public class UsuarioService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Usuario: " + userId)).build();
     }
 
+
+    @GET
+    @Path( "/findAll" )
+    public Response getAllUsuario()
+    {
+        List<UsuarioDto> response;
+        GetAllUsuarioCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioService.getUsuario" );
+        //endregion
+
+        try
+        {
+            command = CommandFactory.createGetAllUsuarioCommand();
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = UsuarioMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario ")).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving UsuarioService.getUsuario" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Usuario: " )).build();
+    }
 
     @GET
     @Path( "username/{username}" )
