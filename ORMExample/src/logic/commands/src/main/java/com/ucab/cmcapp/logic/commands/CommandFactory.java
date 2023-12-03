@@ -4,18 +4,9 @@ import com.ucab.cmcapp.common.entities.*;
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.*;
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.*;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.*;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.AddTiempoControlCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.DeleteTiempoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.GetTiempoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.UpdateTiempoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.composite.CreateTiempoControlCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.composite.DeleteTiempoControlCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetTiempoControlCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.composite.UpdateTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.*;
+import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.*;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.*;
 import com.ucab.cmcapp.logic.commands.UserType.atomic.AddUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.atomic.DeleteUserTypeByIdCommand;
 import com.ucab.cmcapp.logic.commands.UserType.atomic.GetUserTypeByIdCommand;
@@ -313,6 +304,17 @@ public class CommandFactory
     public static UpdateDistanciaCommand createUpdateDistanciaCommand(DistanciaAlejamiento user)
     {
         return new UpdateDistanciaCommand(user);
+    }
+
+    public static GetAllDistanciaAlejamientoCommand createGetAllDistanciaAlejamientoCommand()
+    {
+        return new GetAllDistanciaAlejamientoCommand();
+    }
+
+
+    public static GetAllDistanciaAlejamientoByIdCommand createGetAllDistanciaAlejamientoByIdCommand (DBHandler handler )
+    {
+        return new GetAllDistanciaAlejamientoByIdCommand(handler);
     }
 
 
@@ -640,8 +642,20 @@ public class CommandFactory
     {
         return new UpdateTiempoControlCommand(user);
     }
-    
-    
+
+    public static GetAllTiempoControlCommand createGetAllTiempoControlCommand()
+    {
+        return new GetAllTiempoControlCommand();
+    }
+
+
+    public static GetAllTiempoControlByIdCommand createGetAllTiempoControlByIdCommand (DBHandler handler )
+    {
+        return new GetAllTiempoControlByIdCommand(handler);
+    }
+
+
+
     //UserType
     public static GetUserTypeCommand createGetUserTypeCommand(UserType UserType)
     {

@@ -2,11 +2,15 @@ package com.ucab.cmcapp.logic.mappers;
 
 import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.TiempoControl;
+import com.ucab.cmcapp.common.entities.TiempoControl;
+import com.ucab.cmcapp.logic.dtos.TiempoControlDto;
 import com.ucab.cmcapp.logic.dtos.TiempoControlDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TiempoControlMapper extends BaseMapper
 {
@@ -87,7 +91,13 @@ public class TiempoControlMapper extends BaseMapper
     }
 
 
-
+    public static List<TiempoControlDto> mapListEntityToDto(List<TiempoControl> entities) {
+        List<TiempoControlDto> dtos = new ArrayList<>();
+        for (TiempoControl entity : entities) {
+            dtos.add(mapEntityToDto(entity));
+        }
+        return dtos;
+    }
 
 
 }

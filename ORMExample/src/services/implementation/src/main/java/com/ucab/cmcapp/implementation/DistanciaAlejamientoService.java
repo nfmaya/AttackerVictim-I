@@ -10,12 +10,14 @@ import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDista
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetAllDistanciaAlejamientoCommand;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
 import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByIdCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
+import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
@@ -29,6 +31,8 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import java.util.List;
 
 import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioByIdCommand;
 
@@ -77,30 +81,30 @@ public class DistanciaAlejamientoService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Distancia: " + distanciaId)).build();
     }
 
-/*
     @GET
-    @Path("usuarios/{Victima_id}/{Agresor_id}")
-    public DistanciaAlejamientoDto getDistanciaAlejamiento(@PathParam("Victima_id") long Victima_id, @PathParam("Agresor_id") long Agresor_id) {
-        DistanciaAlejamiento entity;
-        DistanciaAlejamientoDto response;
-        GetDistanciaAlejamientoByUsuariosCommand command = null;
+    @Path( "/findAll" )
+    public Response getAllDistanciaAlejamiento()
+    {
+        List<DistanciaAlejamientoDto> response;
+        GetAllDistanciaAlejamientoCommand command = null;
         //region Instrumentation DEBUG
         _logger.debug( "Get in DistanciaAlejamientoService.getDistanciaAlejamiento" );
         //endregion
 
         try
         {
-            entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaId );
-            command = CommandFactory.createGetDistanciaAlejamientoByUsuariosCommand( entity );
+            command = CommandFactory.createGetAllDistanciaAlejamientoCommand();
             command.execute();
-            response = DistanciaAlejamientoMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getDistanciaAlejamiento: {} ", response );
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
         }
         catch ( Exception e )
         {
-            _logger.error("error {} getting DistanciaAlejamiento {}: {}", e.getMessage(), distanciaId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en DistanciaAlejamiento ")).build();
+
         }
         finally
         {
@@ -109,10 +113,8 @@ public class DistanciaAlejamientoService extends BaseService
         }
 
         _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamiento" );
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id DistanciaAlejamiento: " )).build();
     }
-*/
-
 
 
     @POST

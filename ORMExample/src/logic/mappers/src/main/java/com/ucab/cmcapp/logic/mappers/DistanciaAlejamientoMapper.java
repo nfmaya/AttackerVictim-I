@@ -2,14 +2,18 @@ package com.ucab.cmcapp.logic.mappers;
 
 import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
+import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
+import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DistanciaAlejamientoMapper extends BaseMapper
@@ -139,5 +143,14 @@ public class DistanciaAlejamientoMapper extends BaseMapper
 
         return entity;
     }
+
+    public static List<DistanciaAlejamientoDto> mapListEntityToDto(List<DistanciaAlejamiento> entities) {
+        List<DistanciaAlejamientoDto> dtos = new ArrayList<>();
+        for (DistanciaAlejamiento entity : entities) {
+            dtos.add(mapEntityToDto(entity));
+        }
+        return dtos;
+    }
+
 
 }

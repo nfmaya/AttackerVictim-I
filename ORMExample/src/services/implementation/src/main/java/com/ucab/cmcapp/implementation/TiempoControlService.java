@@ -7,8 +7,11 @@ import com.ucab.cmcapp.logic.commands.TiempoControl.composite.CreateTiempoContro
 import com.ucab.cmcapp.logic.commands.TiempoControl.composite.DeleteTiempoControlCommand;
 import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetTiempoControlCommand;
 import com.ucab.cmcapp.logic.commands.TiempoControl.composite.UpdateTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetAllTiempoControlCommand;
+import com.ucab.cmcapp.logic.dtos.TiempoControlDto;
 import com.ucab.cmcapp.logic.dtos.TiempoControlDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.TiempoControlMapper;
 import com.ucab.cmcapp.logic.mappers.TiempoControlMapper;
 import com.ucab.cmcapp.persistence.dao.TiempoControlDao;
 import org.slf4j.Logger;
@@ -17,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path( "/tiempos" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -63,7 +67,40 @@ public class TiempoControlService extends BaseService
     }
 
 
+    @GET
+    @Path( "/findAll" )
+    public Response getAllTiempoControl()
+    {
+        List<TiempoControlDto> response;
+        GetAllTiempoControlCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in TiempoControlService.getTiempoControl" );
+        //endregion
 
+        try
+        {
+            command = CommandFactory.createGetAllTiempoControlCommand();
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = TiempoControlMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en TiempoControl ")).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving TiempoControlService.getTiempoControl" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id TiempoControl: " )).build();
+    }
 
     @POST
     @Path("/insert")
