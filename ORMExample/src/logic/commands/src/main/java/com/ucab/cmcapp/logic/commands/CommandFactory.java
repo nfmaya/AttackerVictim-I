@@ -30,14 +30,8 @@ import com.ucab.cmcapp.logic.commands.UserType.composite.CreateUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.DeleteUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
-import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.AddZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.DeleteZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.GetZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.UpdateZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.CreateZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.DeleteZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.UpdateZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.*;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.*;
 import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
@@ -522,6 +516,17 @@ public class CommandFactory
     public static GetZonaSeguridadByIdCommand createGetZonaSeguridadByIdCommand (DBHandler handler, long ZonaSeguridadId )
     {
         return new GetZonaSeguridadByIdCommand(handler, ZonaSeguridadId);
+    }
+
+    public static GetAllZonaSeguridadCommand createGetAllZonaSeguridadCommand()
+    {
+        return new GetAllZonaSeguridadCommand();
+    }
+
+
+    public static GetAllZonaSeguridadByIdCommand createGetAllZonaSeguridadByIdCommand (DBHandler handler )
+    {
+        return new GetAllZonaSeguridadByIdCommand(handler);
     }
 
     public static AddZonaSeguridadCommand createAddZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad, DBHandler handler)

@@ -33,6 +33,7 @@ com\ucab\cmcapp\logic\commands\posicion\composite\UpdatePosicionCommand.class
 com\ucab\cmcapp\logic\commands\user\composite\CreateUserCommand.class
 com\ucab\cmcapp\logic\commands\usuario\composite\CreateUsuarioCommand.class
 com\ucab\cmcapp\logic\commands\user\atomic\GetUserByEmailCommand.class
+com\ucab\cmcapp\logic\commands\ZonaSeguridad\atomic\GetAllZonaSeguridadByIdCommand.class
 com\ucab\cmcapp\logic\commands\ZonaSeguridad\atomic\DeleteZonaSeguridadByIdCommand.class
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\composite\DeleteCoordenadaZonaSeguridadCommand.class
 com\ucab\cmcapp\logic\commands\puntoControl\composite\DeletePuntoControlCommand.class
@@ -74,6 +75,7 @@ com\ucab\cmcapp\logic\commands\usuario\composite\GetAllUsuarioCommand.class
 com\ucab\cmcapp\logic\commands\alerta\atomic\UpdateAlertaByIdCommand.class
 com\ucab\cmcapp\logic\commands\ZonaSeguridad\composite\UpdateZonaSeguridadCommand.class
 com\ucab\cmcapp\logic\commands\posicion\atomic\UpdatePosicionByIdCommand.class
+com\ucab\cmcapp\logic\commands\ZonaSeguridad\composite\GetAllZonaSeguridadCommand.class
 com\ucab\cmcapp\logic\commands\UserType\composite\UpdateUserTypeCommand.class
 com\ucab\cmcapp\logic\commands\UserType\atomic\UpdateUserTypeByIdCommand.class
 com\ucab\cmcapp\logic\commands\usuario\atomic\GetUsuarioByUsernameCommand.class
