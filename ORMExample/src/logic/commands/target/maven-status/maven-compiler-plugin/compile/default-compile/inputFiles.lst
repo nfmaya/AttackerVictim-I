@@ -56,8 +56,10 @@ C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\comman
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\usuario\composite\CreateUsuarioCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\ZonaSeguridad\composite\GetZonaSeguridadCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\UserType\composite\GetUserTypeCommand.java
+C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\ZonaSeguridad\atomic\GetAllZonaSeguridadByIdCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\composite\CreateCoordenadaZonaSeguridadCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\TiempoControl\composite\GetTiempoControlCommand.java
+C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\ZonaSeguridad\composite\GetAllZonaSeguridadCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\UserType\atomic\DeleteUserTypeByIdCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\ZonaSeguridad\composite\CreateZonaSeguridadCommand.java
 C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\logic\commands\src\main\java\com\ucab\cmcapp\logic\commands\user\atomic\AddUserCommand.java

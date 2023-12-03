@@ -2,6 +2,7 @@ package com.ucab.cmcapp.implementation;
 
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad;
+import com.ucab.cmcapp.common.entities.ZonaSeguridad;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.CreateCoordenadaZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.DeleteCoordenadaZonaSeguridadCommand;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path( "/coordenadas" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -63,7 +65,24 @@ public class CoordenadaZonaSeguridadService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Coordenada: " + userId)).build();
     }
 
+//  FIND BY IdZona -> para buscar las coordenadas de una zona de seguridad
+/*
+    @GET
+    @Path("/zona/{idZona}")
+    public Response findByZonaId(@PathParam("idZona") long idZona) {
+        Session session = getHandler().getSession();
+        Query<CoordenadaZonaSeguridad> query = session.createQuery("FROM CoordenadaZonaSeguridad WHERE zonaSeguridad.id = :idZona", CoordenadaZonaSeguridad.class);
+        query.setParameter("idZona", idZona);
+        List<CoordenadaZonaSeguridad> results = query.list();
 
+        if (results.isEmpty()) {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No entities found for idZona: " + idZona)).build();
+        } else {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>(results, "Entities found for idZona: " + idZona)).build();
+        }
+    }
+
+ */
 
 
     @POST
