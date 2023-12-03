@@ -1,9 +1,6 @@
 package com.ucab.cmcapp.persistence.dao;
 
-import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad;
-import com.ucab.cmcapp.common.entities.Posicion;
-import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.common.exceptions.CupraException;
 import com.ucab.cmcapp.persistence.DBHandler;
 import org.slf4j.Logger;
@@ -24,7 +21,6 @@ public class CoordenadaZonaSeguridadDao extends BaseDao<CoordenadaZonaSeguridad>
     private EntityManager _em;
     private CriteriaBuilder _builder;
 
-
     public CoordenadaZonaSeguridadDao()
     {
         super();
@@ -37,20 +33,19 @@ public class CoordenadaZonaSeguridadDao extends BaseDao<CoordenadaZonaSeguridad>
         _em = getDBHandler().getSession();
         _builder = _em.getCriteriaBuilder();
     }
-/*
+
     public List<CoordenadaZonaSeguridad> getCoordenadaZonaSeguridadByIdZona(long id)
     {
-        CoordenadaZonaSeguridad result = EntityFactory.createCoordenadaZonaSeguridad();
+         List<CoordenadaZonaSeguridad> result = null;
         _logger.debug( String.format( "Get in UsuarioDao.getUsuarioByUsername: parameter {%s}", id ) );
         try
         {
-            CriteriaQuery<CoordenadaZonaSeguridad> query = _builder.createQuery( CoordenadaZonaSeguridad.class );
-            Root<CoordenadaZonaSeguridad> root = query.from( CoordenadaZonaSeguridad.class );
+            CriteriaQuery<CoordenadaZonaSeguridad> criteriaQuery = _builder.createQuery( CoordenadaZonaSeguridad.class );
+            Root<CoordenadaZonaSeguridad> root = criteriaQuery.from( CoordenadaZonaSeguridad.class );
 
-            Query query = _builder.createQuery("FROM CoordenadaZonaSeguridad WHERE zonaSeguridad.id = :idZona", CoordenadaZonaSeguridad.class);
-            query.setParameter("idZona", idZona);
-
-            result = _em.createQuery( query ).getSingleResult();
+            Query query = _em.createQuery("FROM CoordenadaZonaSeguridad WHERE zonaSeguridad.id = :idZona", CoordenadaZonaSeguridad.class);
+            query.setParameter("idZona", id);
+            result = query.getResultList();
         }
         catch ( NoResultException e )
         {
@@ -67,6 +62,4 @@ public class CoordenadaZonaSeguridadDao extends BaseDao<CoordenadaZonaSeguridad>
 
         return result;
     }
-n
- */
 }

@@ -1,9 +1,11 @@
+com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\composite\GetAllCoordenadaZonaSeguridadCommand.class
 com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\atomic\AddDistanciaAlejamientoCommand.class
 com\ucab\cmcapp\logic\commands\alerta\composite\UpdateAlertaCommand.class
 com\ucab\cmcapp\logic\commands\ZonaSeguridad\atomic\GetZonaSeguridadByIdCommand.class
 com\ucab\cmcapp\logic\commands\alerta\composite\DeleteAlertaCommand.class
 com\ucab\cmcapp\logic\commands\TiempoControl\composite\CreateTiempoControlCommand.class
 com\ucab\cmcapp\logic\commands\ZonaSeguridad\composite\CreateZonaSeguridadCommand.class
+com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\atomic\GetAllCoordenadaZonaSeguridadByIdZonaCommand.class
 com\ucab\cmcapp\logic\commands\TiempoControl\atomic\UpdateTiempoControlByIdCommand.class
 com\ucab\cmcapp\logic\commands\usuario\atomic\GetAllUsuarioByIdCommand.class
 com\ucab\cmcapp\logic\commands\usuario\composite\GetUsuarioCommand.class

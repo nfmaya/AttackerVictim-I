@@ -1,14 +1,8 @@
 package com.ucab.cmcapp.logic.commands;
 
 import com.ucab.cmcapp.common.entities.*;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.AddCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.DeleteCoordenadaZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.GetCoordenadaZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.UpdateCoordenadaZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.CreateCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.DeleteCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.GetCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.UpdateCoordenadaZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.*;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.*;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.*;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
@@ -503,6 +497,17 @@ public class CommandFactory
         return new UpdateCoordenadaZonaSeguridadCommand(user);
     }
 
+
+    public static GetAllCoordenadaZonaSeguridadCommand createGetAllCoordenadaZonaSeguridadCommand(long id)
+    {
+        return new GetAllCoordenadaZonaSeguridadCommand(id);
+    }
+
+
+    public static GetAllCoordenadaZonaSeguridadByIdZonaCommand createGetAllCoordenadaZonaSeguridadByIdZonaCommand (DBHandler handler ,long id)
+    {
+        return new GetAllCoordenadaZonaSeguridadByIdZonaCommand(handler,id);
+    }
 
 
     //ZonaSeguridad 
