@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class CoordenadaZonaSeguridadTest {
 
@@ -20,7 +21,28 @@ public class CoordenadaZonaSeguridadTest {
         coordenadaZonaSeguridad.setCoordenadaY(1.0f);
         coordenadaZonaSeguridad.setZonaSeguridad(zonaSeguridadMock);
     }
+    @Test
+    public void testDefaultConstructor() {
+        CoordenadaZonaSeguridad defaultCoordenada = new CoordenadaZonaSeguridad();
+        assertEquals(0.0, defaultCoordenada.getCoordenadaX(), 0.001);
+        assertEquals(0.0, defaultCoordenada.getCoordenadaY(), 0.001);
+        assertNull(defaultCoordenada.getZonaSeguridad());
+    }
 
+    @Test
+    public void testCopyConstructor() {
+        CoordenadaZonaSeguridad copy = new CoordenadaZonaSeguridad(coordenadaZonaSeguridad);
+        assertEquals(coordenadaZonaSeguridad.getCoordenadaX(), copy.getCoordenadaX(), 0.001);
+        assertEquals(coordenadaZonaSeguridad.getCoordenadaY(), copy.getCoordenadaY(), 0.001);
+        assertEquals(coordenadaZonaSeguridad.getZonaSeguridad(), copy.getZonaSeguridad());
+    }
+
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        CoordenadaZonaSeguridad idCoordenada = new CoordenadaZonaSeguridad(id);
+        assertEquals(id, idCoordenada.getIdCoor());
+    }
     @Test
     public void testGetIdCoor() {
         assertEquals(1, coordenadaZonaSeguridad.getIdCoor());

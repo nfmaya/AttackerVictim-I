@@ -32,16 +32,11 @@ public class CoordenadaZonaSeguridad {
 
     }
 
-
     public CoordenadaZonaSeguridad(CoordenadaZonaSeguridad coordenadaZonaSeguridad) {
         zonaSeguridad = coordenadaZonaSeguridad.zonaSeguridad;
         coordenadaX = coordenadaZonaSeguridad.coordenadaX;
         coordenadaY = coordenadaZonaSeguridad.coordenadaY;
     }
-
-
-
-
 
     public CoordenadaZonaSeguridad (long id){
         IdCoor = id;

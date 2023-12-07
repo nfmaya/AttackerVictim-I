@@ -6,6 +6,7 @@ import com.ucab.cmcapp.common.entities.Posicion;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PosicionTest {
 
@@ -24,7 +25,31 @@ public class PosicionTest {
         posicion.setFechaHora(date);
         posicion.setUsuario(usuarioMock);
     }
+    @Test
+    public void testDefaultConstructor() {
+        Posicion defaultPosicion = new Posicion();
+        assertEquals(0, defaultPosicion.getIdPos());
+        assertEquals(0.0f, defaultPosicion.getCoordenadaX(), 0.001);
+        assertEquals(0.0f, defaultPosicion.getCoordenadaY(), 0.001);
+        assertNull(defaultPosicion.getFechaHora());
+        assertNull(defaultPosicion.getUsuario());
+    }
 
+    @Test
+    public void testCopyConstructor() {
+        Posicion copy = new Posicion(posicion);
+        assertEquals(posicion.getCoordenadaX(), copy.getCoordenadaX(), 0.001);
+        assertEquals(posicion.getCoordenadaY(), copy.getCoordenadaY(), 0.001);
+        assertEquals(posicion.getFechaHora(), copy.getFechaHora());
+        assertEquals(posicion.getUsuario(), copy.getUsuario());
+    }
+
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        Posicion idPosicion = new Posicion(id);
+        assertEquals(id, idPosicion.getIdPos());
+    }
     @Test
     public void testGetIdPos() {
         assertEquals(1, posicion.getIdPos());

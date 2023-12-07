@@ -23,7 +23,43 @@ public class UsuarioTest {
         usuario.setEstatus(true);
         usuario.set_userType(userTypeMock);
     }
+    @Test
+    public void testDefaultConstructor() {
+        Usuario usuario = new Usuario();
+        assertEquals(0, usuario.get_idUsuario());
+        assertNull(usuario.get_Username());
+        assertNull(usuario.get_Nombre());
+        assertNull(usuario.getDocIdentidad());
+        assertNull(usuario.getIMEI());
+        assertFalse(usuario.isEstatus());
+        assertNull(usuario.get_userType());
+    }
 
+    @Test
+    public void testCopyConstructor() {
+        Usuario original = new Usuario();
+        original.set_Username("Test");
+        original.set_Nombre("Test Name");
+        original.setDocIdentidad("123456");
+        original.setIMEI("123456789");
+        original.setEstatus(true);
+        original.set_userType(new UserType());
+
+        Usuario copy = new Usuario(original);
+        assertEquals(original.get_Username(), copy.get_Username());
+        assertEquals(original.get_Nombre(), copy.get_Nombre());
+        assertEquals(original.getDocIdentidad(), copy.getDocIdentidad());
+        assertEquals(original.getIMEI(), copy.getIMEI());
+        assertEquals(original.isEstatus(), copy.isEstatus());
+        assertEquals(original.get_userType(), copy.get_userType());
+    }
+
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        Usuario usuario = new Usuario(id);
+        assertEquals(id, usuario.get_idUsuario());
+    }
     @Test
     public void testGetIdUsuario() {
         assertEquals(1, usuario.get_idUsuario());

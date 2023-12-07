@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class AlertaTest {
 
@@ -23,6 +24,28 @@ public class AlertaTest {
         alerta.set_tipoAlerta("Test");
         alerta.set_fechaHora(date);
         alerta.setUsuario(usuarioMock);
+    }
+    @Test
+    public void testDefaultConstructor() {
+        Alerta defaultAlerta = new Alerta();
+        assertNull(defaultAlerta.get_tipoAlerta());
+        assertNull(defaultAlerta.get_fechaHora());
+        assertNull(defaultAlerta.getUsuario());
+    }
+
+    @Test
+    public void testCopyConstructor() {
+        Alerta copy = new Alerta(alerta);
+        assertEquals(alerta.get_tipoAlerta(), copy.get_tipoAlerta());
+        assertEquals(alerta.get_fechaHora(), copy.get_fechaHora());
+        assertEquals(alerta.getUsuario(), copy.getUsuario());
+    }
+
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        Alerta idAlerta = new Alerta(id);
+        assertEquals(id, idAlerta.get_IdAlerta());
     }
 
     @Test

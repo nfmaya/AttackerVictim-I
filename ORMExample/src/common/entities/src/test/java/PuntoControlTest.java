@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PuntoControlTest {
 
@@ -24,6 +25,30 @@ public class PuntoControlTest {
         puntoControl.setCoordenadaY(1.0f);
         puntoControl.setFechaHora(date);
         puntoControl.setUsuario(usuarioMock);
+    }
+    @Test
+    public void testDefaultConstructor() {
+        PuntoControl defaultPuntoControl = new PuntoControl();
+        assertEquals(0.0, defaultPuntoControl.getCoordenadaX(), 0.001);
+        assertEquals(0.0, defaultPuntoControl.getCoordenadaY(), 0.001);
+        assertNull(defaultPuntoControl.getFechaHora());
+        assertNull(defaultPuntoControl.getUsuario());
+    }
+
+    @Test
+    public void testCopyConstructor() {
+        PuntoControl copy = new PuntoControl(puntoControl);
+        assertEquals(puntoControl.getCoordenadaX(), copy.getCoordenadaX(), 0.001);
+        assertEquals(puntoControl.getCoordenadaY(), copy.getCoordenadaY(), 0.001);
+        assertEquals(puntoControl.getFechaHora(), copy.getFechaHora());
+        assertEquals(puntoControl.getUsuario(), copy.getUsuario());
+    }
+
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        PuntoControl idPuntoControl = new PuntoControl(id);
+        assertEquals(id, idPuntoControl.getIdPos());
     }
 
     @Test
