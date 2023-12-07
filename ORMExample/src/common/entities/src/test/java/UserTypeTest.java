@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class UserTypeTest {
 
@@ -14,7 +15,18 @@ public class UserTypeTest {
         userType.setId(1);
         userType.setName("Test");
     }
+    @Test
+    public void testDefaultConstructor() {
+        UserType defaultUserType = new UserType();
+        assertNull(defaultUserType.getName());
+    }
 
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        UserType idUserType = new UserType(id);
+        assertEquals(id, idUserType.getId());
+    }
     @Test
     public void testGetId() {
         assertEquals(1, userType.getId());

@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TiempoControlTest {
 
@@ -15,7 +16,28 @@ public class TiempoControlTest {
         tiempoControl.setTipoTiempoControl("Test");
         tiempoControl.setTiempoControl(1.0f);
     }
+    @Test
+    public void testDefaultConstructor() {
+        TiempoControl defaultTiempoControl = new TiempoControl();
+        assertEquals(0.0, defaultTiempoControl.getTiempoControl(), 0.001);
+        assertNull(defaultTiempoControl.getTipoTiempoControl());
+    }
 
+    @Test
+    public void testTiempoTipoConstructor() {
+        float tiempoControl = 1.0f;
+        String tipoTiempoControl = "Test";
+        TiempoControl tiempoTipoTiempoControl = new TiempoControl(tiempoControl, tipoTiempoControl);
+        assertEquals(tiempoControl, tiempoTipoTiempoControl.getTiempoControl(), 0.001);
+        assertEquals(tipoTiempoControl, tiempoTipoTiempoControl.getTipoTiempoControl());
+    }
+
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        TiempoControl idTiempoControl = new TiempoControl(id);
+        assertEquals(id, idTiempoControl.getIdTiempo());
+    }
     @Test
     public void testGetIdTiempo() {
         assertEquals(1, tiempoControl.getIdTiempo());

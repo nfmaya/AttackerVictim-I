@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class UserTest {
 
@@ -27,7 +28,31 @@ public class UserTest {
         user.setCreateAt(date);
         user.setUserType(userTypeMock);
     }
+    @Test
+    public void testDefaultConstructor() {
+        User defaultUser = new User();
+        assertNull(defaultUser.getEmail());
+        assertNull(defaultUser.getUid());
+        assertNull(defaultUser.getTermCondition());
+        assertNull(defaultUser.getCreateAt());
+        assertNull(defaultUser.getUserType());
+    }
 
+    @Test
+    public void testCopyConstructor() {
+        User copy = new User(user);
+        assertEquals(user.getEmail(), copy.getEmail());
+        assertEquals(user.getTermCondition(), copy.getTermCondition());
+        assertEquals(user.getCreateAt(), copy.getCreateAt());
+        assertEquals(user.getUserType(), copy.getUserType());
+    }
+
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        User idUser = new User(id);
+        assertEquals(id, idUser.getId());
+    }
     @Test
     public void testGetId() {
         assertEquals(1, user.getId());

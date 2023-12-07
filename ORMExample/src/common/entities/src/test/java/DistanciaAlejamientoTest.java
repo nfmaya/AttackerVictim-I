@@ -1,4 +1,5 @@
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
+import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,27 @@ public class DistanciaAlejamientoTest {
         distanciaAlejamiento.set_distanciaMinima(1.0f);
         distanciaAlejamiento.set_victima(victimaMock);
         distanciaAlejamiento.set_agresor(agresorMock);
+    }
+    @Test
+    public void testCopyConstructor() {
+
+        distanciaAlejamiento.set_distanciaMinima(1.0f);
+        Usuario victimaMock = Mockito.mock(Usuario.class);
+        distanciaAlejamiento.set_victima(victimaMock);
+        Usuario agresorMock = Mockito.mock(Usuario.class);
+        distanciaAlejamiento.set_agresor(agresorMock);
+
+        DistanciaAlejamiento copy = new DistanciaAlejamiento(distanciaAlejamiento);
+        assertEquals(distanciaAlejamiento.get_distanciaMinima(), copy.get_distanciaMinima(), 0.001);
+        assertEquals(distanciaAlejamiento.get_victima(), copy.get_victima());
+        assertEquals(distanciaAlejamiento.get_agresor(), copy.get_agresor());
+    }
+
+    @Test
+    public void testIdConstructor() {
+        long id = 1L;
+        DistanciaAlejamiento distancia = new DistanciaAlejamiento(id);
+        assertEquals(id, distancia.get_IdAlej());
     }
 
     @Test
