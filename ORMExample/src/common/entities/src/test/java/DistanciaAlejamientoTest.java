@@ -1,5 +1,4 @@
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
-import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
 import org.junit.Before;
 import org.junit.Test;
