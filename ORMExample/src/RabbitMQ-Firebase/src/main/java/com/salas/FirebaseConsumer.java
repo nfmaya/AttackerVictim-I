@@ -85,6 +85,6 @@ public class FirebaseConsumer {
         return null;
     }
     public static void main(String[] args) throws IOException, TimeoutException {
-        FirebaseConsumer.consume(Main.COLA, Main.credencialFirebase);
+        FirebaseConsumer.consume( Sender.COLA,Main.credencialFirebase);
     }
 }
