@@ -1,27 +1,12 @@
 package com.ucab.cmcapp.logic.commands;
 
 import com.ucab.cmcapp.common.entities.*;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.AddCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.DeleteCoordenadaZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.GetCoordenadaZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.UpdateCoordenadaZonaSeguridadByIdCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.CreateCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.DeleteCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.GetCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.UpdateCoordenadaZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.*;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.*;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.*;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.AddTiempoControlCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.DeleteTiempoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.GetTiempoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.UpdateTiempoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.composite.CreateTiempoControlCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.composite.DeleteTiempoControlCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetTiempoControlCommand;
-import com.ucab.cmcapp.logic.commands.TiempoControl.composite.UpdateTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.*;
+import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.*;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.*;
 import com.ucab.cmcapp.logic.commands.UserType.atomic.AddUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.atomic.DeleteUserTypeByIdCommand;
 import com.ucab.cmcapp.logic.commands.UserType.atomic.GetUserTypeByIdCommand;
@@ -321,6 +306,17 @@ public class CommandFactory
         return new UpdateDistanciaCommand(user);
     }
 
+    public static GetAllDistanciaAlejamientoCommand createGetAllDistanciaAlejamientoCommand()
+    {
+        return new GetAllDistanciaAlejamientoCommand();
+    }
+
+
+    public static GetAllDistanciaAlejamientoByIdCommand createGetAllDistanciaAlejamientoByIdCommand (DBHandler handler )
+    {
+        return new GetAllDistanciaAlejamientoByIdCommand(handler);
+    }
+
 
     //Posicion
     public static GetPosicionCommand createGetPosicionCommand(Posicion Posicion)
@@ -504,6 +500,17 @@ public class CommandFactory
     }
 
 
+    public static GetAllCoordenadaZonaSeguridadCommand createGetAllCoordenadaZonaSeguridadCommand(long id)
+    {
+        return new GetAllCoordenadaZonaSeguridadCommand(id);
+    }
+
+
+    public static GetAllCoordenadaZonaSeguridadByIdZonaCommand createGetAllCoordenadaZonaSeguridadByIdZonaCommand (DBHandler handler ,long id)
+    {
+        return new GetAllCoordenadaZonaSeguridadByIdZonaCommand(handler,id);
+    }
+
 
     //ZonaSeguridad 
 
@@ -635,8 +642,20 @@ public class CommandFactory
     {
         return new UpdateTiempoControlCommand(user);
     }
-    
-    
+
+    public static GetAllTiempoControlCommand createGetAllTiempoControlCommand()
+    {
+        return new GetAllTiempoControlCommand();
+    }
+
+
+    public static GetAllTiempoControlByIdCommand createGetAllTiempoControlByIdCommand (DBHandler handler )
+    {
+        return new GetAllTiempoControlByIdCommand(handler);
+    }
+
+
+
     //UserType
     public static GetUserTypeCommand createGetUserTypeCommand(UserType UserType)
     {

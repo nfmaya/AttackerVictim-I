@@ -7,8 +7,11 @@ import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.CreateZonaSegurida
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.DeleteZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.UpdateZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetAllZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
 import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapper;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapper;
 import com.ucab.cmcapp.persistence.dao.ZonaSeguridadDao;
 import org.slf4j.Logger;
@@ -17,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path( "/zonas" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -63,7 +67,40 @@ public class ZonaSeguridadService extends BaseService
     }
 
 
+    @GET
+    @Path( "/findAll" )
+    public Response getAllZonaSeguridad()
+    {
+        List<ZonaSeguridadDto> response;
+        GetAllZonaSeguridadCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadService.getZonaSeguridad" );
+        //endregion
 
+        try
+        {
+            command = CommandFactory.createGetAllZonaSeguridadCommand();
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = ZonaSeguridadMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad ")).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id ZonaSeguridad: " )).build();
+    }
 
     @POST
     @Path("/insert")

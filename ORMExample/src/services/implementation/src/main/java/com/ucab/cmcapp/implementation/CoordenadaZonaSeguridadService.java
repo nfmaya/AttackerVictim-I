@@ -4,13 +4,13 @@ import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad;
 import com.ucab.cmcapp.common.entities.ZonaSeguridad;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.CreateCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.DeleteCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.GetCoordenadaZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.UpdateCoordenadaZonaSeguridadCommand;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetAllZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.dtos.CoordenadaZonaSeguridadDto;
+import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
 import com.ucab.cmcapp.logic.mappers.CoordenadaZonaSeguridadMapper;
+import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapper;
 import com.ucab.cmcapp.persistence.dao.AlertaDao;
 import com.ucab.cmcapp.persistence.dao.CoordenadaZonaSeguridadDao;
 import org.slf4j.Logger;
@@ -65,25 +65,41 @@ public class CoordenadaZonaSeguridadService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Coordenada: " + userId)).build();
     }
 
-//  FIND BY IdZona -> para buscar las coordenadas de una zona de seguridad
-/*
+
     @GET
-    @Path("/zona/{idZona}")
-    public Response findByZonaId(@PathParam("idZona") long idZona) {
-        Session session = getHandler().getSession();
-        Query<CoordenadaZonaSeguridad> query = session.createQuery("FROM CoordenadaZonaSeguridad WHERE zonaSeguridad.id = :idZona", CoordenadaZonaSeguridad.class);
-        query.setParameter("idZona", idZona);
-        List<CoordenadaZonaSeguridad> results = query.list();
+    @Path( "/findAll/{id}")
+    public Response getCoordenadaAllZonaSeguridad(@PathParam( "id" ) long userId)
+    {
+        List<CoordenadaZonaSeguridadDto> response;
+        GetAllCoordenadaZonaSeguridadCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadService.getZonaSeguridad" );
+        //endregion
 
-        if (results.isEmpty()) {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No entities found for idZona: " + idZona)).build();
-        } else {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>(results, "Entities found for idZona: " + idZona)).build();
+        try
+        {
+            command = CommandFactory.createGetAllCoordenadaZonaSeguridadCommand(userId);
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = CoordenadaZonaSeguridadMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
         }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad ")).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id ZonaSeguridad: " )).build();
     }
-
- */
-
 
     @POST
     @Path("/insert")

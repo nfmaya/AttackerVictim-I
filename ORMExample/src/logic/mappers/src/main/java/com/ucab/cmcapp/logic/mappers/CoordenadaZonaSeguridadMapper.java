@@ -4,10 +4,13 @@ import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad;
 import com.ucab.cmcapp.common.entities.ZonaSeguridad;
 import com.ucab.cmcapp.logic.dtos.CoordenadaZonaSeguridadDto;
+import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CoordenadaZonaSeguridadMapper extends BaseMapper
@@ -102,7 +105,13 @@ public class CoordenadaZonaSeguridadMapper extends BaseMapper
     }
 
 
-
+    public static List<CoordenadaZonaSeguridadDto> mapListEntityToDto(List<CoordenadaZonaSeguridad> entities) {
+        List<CoordenadaZonaSeguridadDto> dtos = new ArrayList<>();
+        for (CoordenadaZonaSeguridad entity : entities) {
+            dtos.add(mapEntityToDto(entity));
+        }
+        return dtos;
+    }
 
 
 }
