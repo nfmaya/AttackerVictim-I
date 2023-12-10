@@ -1,5 +1,8 @@
 package com.ucab.cmcapp.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.TiempoControl;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
@@ -17,52 +20,50 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
+
 
 @Path( "/tiempos" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-public class TiempoControlService extends BaseService
-{
-    private static Logger _logger = LoggerFactory.getLogger( TiempoControlService.class );
+public class TiempoControlService extends BaseService {
+    private static Logger _logger = LoggerFactory.getLogger(TiempoControlService.class);
 
-    @GET
-    @Path( "/{id}" )
-    public Response getTiempoControl(@PathParam( "id" ) long userId )
-    {
+    @GET//Arreglado ya envía al rabbitmq
+    @Path("/{id}")
+    public void getTiempoControl(@PathParam("id") long userId) {
         TiempoControl entity;
-        TiempoControlDto response;
+        TiempoControlDto response = null;
         GetTiempoControlCommand command = null;
-        //region Instrumentation DEBUG
-        _logger.debug( "Get in TiempoControlService.getTiempoControl" );
-        //endregion
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in TiempoControlService.getTiempoControl");
 
-        try
-        {
-            entity = TiempoControlMapper.mapDtoToEntity( userId );
-            command = CommandFactory.createGetTiempoControlCommand( entity );
+        try {
+            entity = TiempoControlMapper.mapDtoToEntity(userId);
+            command = CommandFactory.createGetTiempoControlCommand(entity);
             command.execute();
-            if(command.getReturnParam() != null){
+            if (command.getReturnParam() != null) {
                 response = TiempoControlMapper.mapEntityToDto(command.getReturnParam());
-            }else{
-                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Alerta: " + userId));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
             }
-        }
-        catch ( Exception e )
-        {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Tiempo Control " + userId)).build();
-
-        }
-        finally
-        {
-            if (command != null)
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Tiempo Control " + userId)).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
                 command.closeHandlerSession();
+            }
+            _logger.debug("Leaving TiempoControlService.getTiempoControl");
         }
-
-        _logger.debug( "Leaving TiempoControlService.getTiempoControl" );
-        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Tiempo Control: " + userId)).build();
     }
-
-
 
 
     @POST
