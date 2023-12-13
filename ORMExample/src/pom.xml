@@ -23,6 +23,8 @@
         <module>persistence</module>
         <module>logic</module>
         <module>services</module>
+        <module>RabbitMQ--Firebase</module>
+        <module>LDAP-users</module>
     </modules>
 
     <dependencies>
