@@ -1,5 +1,7 @@
 package com.ucab.cmcapp.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.ZonaSeguridad;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
@@ -20,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.List;
 
 @Path( "/zonas" )
@@ -30,77 +33,75 @@ public class ZonaSeguridadService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( ZonaSeguridadService.class );
 
     @GET
-    @Path( "/{id}" )
-    public Response getZonaSeguridad(@PathParam( "id" ) long userId )
-    {
+    @Path("/{id}")
+    public void getZonaSeguridad(@PathParam("id") long userId) {
         ZonaSeguridad entity;
-        ZonaSeguridadDto response;
+        ZonaSeguridadDto response = null;
         GetZonaSeguridadCommand command = null;
-        //region Instrumentation DEBUG
-        _logger.debug( "Get in ZonaSeguridadService.getZonaSeguridad" );
-        //endregion
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in ZonaSeguridadService.getZonaSeguridad");
 
-        try
-        {
-            entity = ZonaSeguridadMapper.mapDtoToEntity( userId );
-            command = CommandFactory.createGetZonaSeguridadCommand( entity );
+        try {
+            entity = ZonaSeguridadMapper.mapDtoToEntity(userId);
+            command = CommandFactory.createGetZonaSeguridadCommand(entity);
             command.execute();
-            if(command.getReturnParam() != null){
+            if (command.getReturnParam() != null) {
                 response = ZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
-            }else{
-                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Zona Seguridad: " + userId));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
             }
-        }
-        catch ( Exception e )
-        {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userId)).build();
-
-        }
-        finally
-        {
-            if (command != null)
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userId)).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
                 command.closeHandlerSession();
+            }
+            _logger.debug("Leaving ZonaSeguridadService.getZonaSeguridad");
         }
-
-        _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
-        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Zona Seguridad: " + userId)).build();
     }
-
 
     @GET
-    @Path( "/findAll" )
-    public Response getAllZonaSeguridad()
-    {
+    @Path("/findAll")
+    public void getAllZonaSeguridad() {
         List<ZonaSeguridadDto> response;
         GetAllZonaSeguridadCommand command = null;
-        //region Instrumentation DEBUG
-        _logger.debug( "Get in ZonaSeguridadService.getZonaSeguridad" );
-        //endregion
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in ZonaSeguridadService.getZonaSeguridad");
 
-        try
-        {
+        try {
             command = CommandFactory.createGetAllZonaSeguridadCommand();
             command.execute();
-            if(command.getReturnParam() != null){
+            if (command.getReturnParam() != null) {
                 response = ZonaSeguridadMapper.mapListEntityToDto(command.getReturnParam());
-            }else{
-                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id ZonaSeguridad: "));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build());
             }
-        }
-        catch ( Exception e )
-        {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad ")).build();
-
-        }
-        finally
-        {
-            if (command != null)
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad")).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
                 command.closeHandlerSession();
+            }
+            _logger.debug("Leaving ZonaSeguridadService.getZonaSeguridad");
         }
-
-        _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
-        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id ZonaSeguridad: " )).build();
     }
+
 
     @POST
     @Path("/insert")

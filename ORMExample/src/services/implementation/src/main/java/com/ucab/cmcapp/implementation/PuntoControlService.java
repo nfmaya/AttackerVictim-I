@@ -1,5 +1,7 @@
 package com.ucab.cmcapp.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.PuntoControl;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
@@ -17,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 @Path( "/puntos" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -26,41 +29,41 @@ public class PuntoControlService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( PuntoControlService.class );
 
     @GET
-    @Path( "/{id}" )
-    public Response getPuntoControl(@PathParam( "id" ) long userId )
-    {
+    @Path("/{id}")
+    public void getPuntoControl(@PathParam("id") long userId) {
         PuntoControl entity;
-        PuntoControlDto response;
+        PuntoControlDto response = null;
         GetPuntoControlCommand command = null;
-        //region Instrumentation DEBUG
-        _logger.debug( "Get in PuntoControlService.getPuntoControl" );
-        //endregion
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in PuntoControlService.getPuntoControl");
 
-        try
-        {
-            entity = PuntoControlMapper.mapDtoToEntity( userId );
-            command = CommandFactory.createGetPuntoControlCommand( entity );
+        try {
+            entity = PuntoControlMapper.mapDtoToEntity(userId);
+            command = CommandFactory.createGetPuntoControlCommand(entity);
             command.execute();
-            if(command.getReturnParam() != null){
+            if (command.getReturnParam() != null) {
                 response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());
-            }else{
-                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Punto Control: " + userId));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
             }
-        }
-        catch ( Exception e )
-        {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Punto Control " + userId)).build();
-
-        }
-        finally
-        {
-            if (command != null)
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Punto Control " + userId)).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
                 command.closeHandlerSession();
+            }
+            _logger.debug("Leaving PuntoControlService.getPuntoControl");
         }
-
-        _logger.debug( "Leaving PuntoControlService.getPuntoControl" );
-        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Punto Control: " + userId)).build();
     }
+
 
 
 
