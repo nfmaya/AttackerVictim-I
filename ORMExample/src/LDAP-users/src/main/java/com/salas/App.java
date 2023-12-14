@@ -9,6 +9,7 @@ import javax.naming.directory.*;
 public class App{
 	DirContext connection;
 	//Para conectarse con LDAP
+	//
 	public void NewConnection() {
 
 		Properties env = new Properties();
