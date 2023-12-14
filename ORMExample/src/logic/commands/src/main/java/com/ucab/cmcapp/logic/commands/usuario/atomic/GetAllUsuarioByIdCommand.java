@@ -1,11 +1,9 @@
 package com.ucab.cmcapp.logic.commands.usuario.atomic;
 
-import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.commands.Command;
 import com.ucab.cmcapp.persistence.DBHandler;
 import com.ucab.cmcapp.persistence.DaoFactory;
-import com.ucab.cmcapp.persistence.dao.UserDao;
 import com.ucab.cmcapp.persistence.dao.UsuarioDao;
 
 import java.util.List;

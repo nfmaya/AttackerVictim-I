@@ -6,10 +6,6 @@ public class DaoFactory
 {
     private DaoFactory() {}
 
-    public static UserDao createUserDao( DBHandler handler )
-    {
-        return new UserDao( handler );
-    }
 
     public static UsuarioDao createUsuarioDao( DBHandler handler )
     {
