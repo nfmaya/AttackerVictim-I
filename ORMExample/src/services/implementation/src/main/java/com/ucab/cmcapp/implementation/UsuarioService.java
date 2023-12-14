@@ -28,7 +28,7 @@ import java.util.List;
 public class UsuarioService extends BaseService
 {
     private static Logger _logger = LoggerFactory.getLogger( UsuarioService.class );
-
+//
     @GET
     @Path("/{id}")
     public void getUsuario(@PathParam("id") long userId) {
