@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetAlertaByTipoAlertaCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">command</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.logic.commands.alerta.atomic</a> &gt; <span class="el_source">GetAlertaByTipoAlertaCommand.java</span></div><h1>GetAlertaByTipoAlertaCommand.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.logic.commands.alerta.atomic;
+
+import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.logic.commands.Command;
+import com.ucab.cmcapp.persistence.DBHandler;
+import com.ucab.cmcapp.persistence.DaoFactory;
+import com.ucab.cmcapp.persistence.dao.AlertaDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+public class GetAlertaByTipoAlertaCommand extends Command&lt;Alerta&gt;
+{
+<span class="nc" id="L15">    private static Logger _logger = LoggerFactory.getLogger( GetAlertaByTipoAlertaCommand.class );</span>
+    private Alerta _alerta;
+    private AlertaDao _dao;
+
+    public GetAlertaByTipoAlertaCommand(Alerta alerta )
+<span class="nc" id="L20">    {</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L22">        _logger.debug( String.format( &quot;Get in GetAlertaByTipoAlertaCommand.ctor: parameter {%s}&quot;, alerta.toString() ) );</span>
+<span class="nc" id="L23">        _alerta = alerta;</span>
+<span class="nc" id="L24">        setHandler(new DBHandler());</span>
+<span class="nc" id="L25">        _dao = DaoFactory.createAlertaDao(getHandler());</span>
+
+        //region Instrumentation DEBUG
+<span class="nc" id="L28">        _logger.debug( String.format( &quot;Leavin GetAlertaByTipoAlertaCommand.ctor: atribute {%s}&quot;, _alerta.toString() ) );</span>
+        //endregion
+<span class="nc" id="L30">    }</span>
+
+    public GetAlertaByTipoAlertaCommand(Alerta alerta, DBHandler handler )
+<span class="nc" id="L33">    {</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L35">        _logger.debug( String.format( &quot;Get in GetAlertaByTipoAlertaCommand.ctor: parameter {%s}&quot;, alerta.toString() ) );</span>
+<span class="nc" id="L36">        _alerta = alerta;</span>
+<span class="nc" id="L37">        setHandler(handler);</span>
+<span class="nc" id="L38">        _dao = DaoFactory.createAlertaDao(getHandler());</span>
+
+        //region Instrumentation DEBUG
+<span class="nc" id="L41">        _logger.debug( String.format( &quot;Leavin GetAlertaByTipoAlertaCommand.ctor: atribute {%s}&quot;, _alerta.toString() ) );</span>
+        //endregion
+<span class="nc" id="L43">    }</span>
+
+    @Override
+    public void execute()
+    {
+        //region Instrumentation DEBUG
+<span class="nc" id="L49">        _logger.debug( &quot;Get in  GetAlertaByTipoAlertaCommand.execute&quot; );</span>
+        //endregion
+<span class="nc" id="L51">        _alerta = _dao.getAlertaByTipoAlerta(_alerta.get_tipoAlerta());</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L53">        _logger.debug( &quot;Leavin  GetAlertaByTipoAlertaCommand.execute&quot; );</span>
+        //endregion
+<span class="nc" id="L55">    }</span>
+
+    @Override
+    public Alerta getReturnParam()
+    {
+<span class="nc" id="L60">        return _alerta;</span>
+    }
+
+    @Override
+    public void closeHandlerSession()
+    {
+<span class="nc" id="L66">        getHandler().closeSession();</span>
+<span class="nc" id="L67">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
