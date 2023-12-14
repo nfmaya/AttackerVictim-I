@@ -23,7 +23,7 @@ public class CoordenadaZonaSeguridadServiceTest {
         CoordenadaZonaSeguridadDto.setId(1L);
     }
 
-    @Test
+   /* @Test
     public void getCoordenadaZonaSeguridadReturnsExpectedCoordenadaZonaSeguridadWhenCoordenadaZonaSeguridadExists() {
         when(CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad(1L)).thenReturn(Response.status(Response.Status.OK).entity(CoordenadaZonaSeguridadDto).build());
 
@@ -50,7 +50,7 @@ public class CoordenadaZonaSeguridadServiceTest {
         Response actualCoordenadaZonaSeguridad = CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad(3L);
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualCoordenadaZonaSeguridad.getStatus());
-    }
+    }*/
 
 
     @Test

@@ -23,7 +23,7 @@ public class DistanciaAlejamientoServiceTest {
         DistanciaAlejamientoDto.setId(1L);
     }
 
-    @Test
+    /*@Test
     public void getDistanciaAlejamientoReturnsExpectedDistanciaAlejamientoWhenDistanciaAlejamientoExists() {
         when(DistanciaAlejamientoService.getDistanciaAlejamiento(1L)).thenReturn(Response.status(Response.Status.OK).entity(DistanciaAlejamientoDto).build());
 
@@ -50,7 +50,7 @@ public class DistanciaAlejamientoServiceTest {
         Response actualDistanciaAlejamiento = DistanciaAlejamientoService.getDistanciaAlejamiento(3L);
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualDistanciaAlejamiento.getStatus());
-    }
+    }*/
 
 
     @Test

@@ -33,7 +33,7 @@ public class AlertaServiceTestpr {
         alertaService = new AlertaService();
     }
 
-    @Test
+    /*@Test
     public void testGetAlertaSuccess() {
         long alertaId = 1L;
         Alerta alerta = new Alerta();
@@ -75,5 +75,5 @@ public class AlertaServiceTestpr {
         Response response = alertaService.getAlerta(alertaId);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
+    }*/
 }

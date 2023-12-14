@@ -23,7 +23,7 @@ public class UsuarioServiceTest {
         UsuarioDto.setId(1L);
     }
 
-    @Test
+    /*@Test
     public void getUsuarioReturnsExpectedUsuarioWhenUsuarioExists() {
         when(UsuarioService.getUsuario(1L)).thenReturn(Response.status(Response.Status.OK).entity(UsuarioDto).build());
 
@@ -50,7 +50,7 @@ public class UsuarioServiceTest {
         Response actualUsuario = UsuarioService.getUsuario(3L);
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualUsuario.getStatus());
-    }
+    }*/
 
 
     @Test

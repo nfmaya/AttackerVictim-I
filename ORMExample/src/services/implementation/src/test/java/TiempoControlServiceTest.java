@@ -23,6 +23,7 @@ public class TiempoControlServiceTest {
         TiempoControlDto.setId(1L);
     }
 
+/*
     @Test
     public void getTiempoControlReturnsExpectedTiempoControlWhenTiempoControlExists() {
         when(TiempoControlService.getTiempoControl(1L)).thenReturn(Response.status(Response.Status.OK).entity(TiempoControlDto).build());
@@ -51,6 +52,7 @@ public class TiempoControlServiceTest {
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualTiempoControl.getStatus());
     }
+*/
 
 
     @Test

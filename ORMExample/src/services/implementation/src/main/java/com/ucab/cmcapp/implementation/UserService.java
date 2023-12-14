@@ -1,5 +1,7 @@
 package com.ucab.cmcapp.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
@@ -19,6 +21,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 @Path( "/users" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -28,75 +31,77 @@ public class UserService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( UserService.class );
 
     @GET
-    @Path( "/{id}" )
-    public UserDto getUser(@PathParam( "id" ) long userId )
-    {
+    @Path("/{id}")
+    public void getUser(@PathParam("id") long userId) {
         User entity;
-        UserDto response;
+        UserDto response = null;
         GetUserCommand command = null;
-        //region Instrumentation DEBUG
-        _logger.debug( "Get in UserService.getUser" );
-        //endregion
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in UserService.getUser");
 
-        try
-        {
-            entity = UserMapper.mapDtoToEntity( userId );
-            command = CommandFactory.createGetUserCommand( entity );
+        try {
+            entity = UserMapper.mapDtoToEntity(userId);
+            command = CommandFactory.createGetUserCommand(entity);
             command.execute();
-            response = UserMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getUser: {} ", response );
-        }
-        catch ( Exception e )
-        {
-            _logger.error("error {} getting user {}: {}", e.getMessage(), userId, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
-        }
-        finally
-        {
-            if (command != null)
+            if (command.getReturnParam() != null) {
+                response = UserMapper.mapEntityToDto(command.getReturnParam());
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Usuario: " + userId));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
+            }
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + userId)).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
                 command.closeHandlerSession();
+            }
+            _logger.debug("Leaving UserService.getUser");
         }
-
-        _logger.debug( "Leaving UserService.getUser" );
-        return response;
     }
-
 
     @GET
-    @Path( "email/{email}" )
-    public UserDto getUser(@PathParam( "email" ) String email )
-    {
+    @Path("email/{email}")
+    public void getUser(@PathParam("email") String email) {
         User entity;
-        UserDto response;
+        UserDto response = null;
         GetUserByEmailCommand command = null;
-        //region Instrumentation DEBUG
-        _logger.debug( "Get in UserService.getUser" );
-        //endregion
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in UserService.getUser");
 
-        try
-        {
-            entity = UserMapper.mapDtoToEntityEmail( email );
-            command = CommandFactory.createGetUserByEmailCommand( entity );
+        try {
+            entity = UserMapper.mapDtoToEntityEmail(email);
+            command = CommandFactory.createGetUserByEmailCommand(entity);
             command.execute();
-            response = UserMapper.mapEntityToDto( command.getReturnParam() );
-            _logger.info( "Response getUser: {} ", response );
-        }
-        catch ( Exception e )
-        {
-            _logger.error("error {} getting user {}: {}", e.getMessage(), email, e.getCause());
-            throw new WebApplicationException( Response.status( Response.Status.INTERNAL_SERVER_ERROR ).
-                    entity( e ).build() );
-        }
-        finally
-        {
-            if (command != null)
+            if (command.getReturnParam() != null) {
+                response = UserMapper.mapEntityToDto(command.getReturnParam());
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Email Usuario: " + email));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + email)).build());
+            }
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + email)).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
                 command.closeHandlerSession();
+            }
+            _logger.debug("Leaving UserService.getUser");
         }
-
-        _logger.debug( "Leaving UserService.getUser" );
-        return response;
     }
+
 
     @POST
     public UserDto addUser( UserDto userDto )

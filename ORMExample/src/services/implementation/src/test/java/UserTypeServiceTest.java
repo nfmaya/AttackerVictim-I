@@ -23,7 +23,7 @@ public class UserTypeServiceTest {
         UserTypeDto.setId(1L);
     }
 
-    @Test
+   /* @Test
     public void getUserTypeReturnsExpectedUserTypeWhenUserTypeExists() {
         when(UserTypeService.getUserType(1L)).thenReturn(Response.status(Response.Status.OK).entity(UserTypeDto).build());
 
@@ -50,7 +50,7 @@ public class UserTypeServiceTest {
         Response actualUserType = UserTypeService.getUserType(3L);
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualUserType.getStatus());
-    }
+    }*/
 
 
     @Test

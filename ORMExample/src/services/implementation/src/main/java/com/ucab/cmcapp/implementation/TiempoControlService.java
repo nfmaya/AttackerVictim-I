@@ -73,27 +73,35 @@ public class TiempoControlService extends BaseService {
 
     @GET
     @Path( "/findAll" )
-    public Response getAllTiempoControl()
+    public void getAllTiempoControl()
     {
         List<TiempoControlDto> response;
         GetAllTiempoControlCommand command = null;
         //region Instrumentation DEBUG
         _logger.debug( "Get in TiempoControlService.getTiempoControl" );
         //endregion
-
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
         try
         {
             command = CommandFactory.createGetAllTiempoControlCommand();
             command.execute();
             if(command.getReturnParam() != null){
                 response = TiempoControlMapper.mapListEntityToDto(command.getReturnParam());
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda de todos los controles de tiempo"));
             }else{
-                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build());
             }
+            Sender.send(jsonString);
         }
         catch ( Exception e )
         {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en TiempoControl ")).build();
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en TiempoControl ")).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
 
         }
         finally
@@ -103,7 +111,7 @@ public class TiempoControlService extends BaseService {
         }
 
         _logger.debug( "Leaving TiempoControlService.getTiempoControl" );
-        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id TiempoControl: " )).build();
+
     }
 
     @POST

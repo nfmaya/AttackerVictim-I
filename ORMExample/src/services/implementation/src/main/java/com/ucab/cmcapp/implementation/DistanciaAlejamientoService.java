@@ -1,5 +1,7 @@
 package com.ucab.cmcapp.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
 import com.ucab.cmcapp.common.entities.User;
@@ -32,6 +34,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioByIdCommand;
@@ -45,76 +48,75 @@ public class DistanciaAlejamientoService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( DistanciaAlejamientoService.class );
 
     @GET
-    @Path( "/{IdAlej}" )
-    public Response getDistanciaAlejamiento(@PathParam( "IdAlej" ) long distanciaId )
-    {
+    @Path("/{IdAlej}")
+    public void getDistanciaAlejamiento(@PathParam("IdAlej") long distanciaId) {
         DistanciaAlejamiento entity;
-        DistanciaAlejamientoDto response;
+        DistanciaAlejamientoDto response = null;
         GetDistanciaAlejamientoCommand command = null;
-        //region Instrumentation DEBUG
-        _logger.debug( "Get in DistanciaAlejamientoService.getDistanciaAlejamiento" );
-        //endregion
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in DistanciaAlejamientoService.getDistanciaAlejamiento");
 
-        try
-        {
-            entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaId );
-            command = CommandFactory.createGetDistanciaAlejamientoCommand( entity );
+        try {
+            entity = DistanciaAlejamientoMapper.mapDtoToEntity(distanciaId);
+            command = CommandFactory.createGetDistanciaAlejamientoCommand(entity);
             command.execute();
-            if(command.getReturnParam() != null){
+            if (command.getReturnParam() != null) {
                 response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
-            }else{
-                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + distanciaId)).build();
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Distancia: " + distanciaId));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + distanciaId)).build());
             }
-        }
-        catch ( Exception e )
-        {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia" + distanciaId)).build();
-
-        }
-        finally
-        {
-            if (command != null)
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia" + distanciaId)).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
                 command.closeHandlerSession();
+            }
+            _logger.debug("Leaving DistanciaAlejamientoService.getDistanciaAlejamiento");
         }
-
-        _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamiento" );
-        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Distancia: " + distanciaId)).build();
     }
 
     @GET
-    @Path( "/findAll" )
-    public Response getAllDistanciaAlejamiento()
-    {
+    @Path("/findAll")
+    public void getAllDistanciaAlejamiento() {
         List<DistanciaAlejamientoDto> response;
         GetAllDistanciaAlejamientoCommand command = null;
-        //region Instrumentation DEBUG
-        _logger.debug( "Get in DistanciaAlejamientoService.getDistanciaAlejamiento" );
-        //endregion
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in DistanciaAlejamientoService.getDistanciaAlejamiento");
 
-        try
-        {
+        try {
             command = CommandFactory.createGetAllDistanciaAlejamientoCommand();
             command.execute();
-            if(command.getReturnParam() != null){
+            if (command.getReturnParam() != null) {
                 response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
-            }else{
-                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id DistanciaAlejamiento: "));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build());
             }
-        }
-        catch ( Exception e )
-        {
-            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en DistanciaAlejamiento ")).build();
-
-        }
-        finally
-        {
-            if (command != null)
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en DistanciaAlejamiento")).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
                 command.closeHandlerSession();
+            }
+            _logger.debug("Leaving DistanciaAlejamientoService.getDistanciaAlejamiento");
         }
-
-        _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamiento" );
-        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id DistanciaAlejamiento: " )).build();
     }
+
 
 
     @POST
