@@ -702,6 +702,21 @@ public class CommandFactory
         return new GetAllZonaSeguridadUsuarioByIdCommand(handler);
     }
 
+
+
+
+    public static GetAllZonaSeguridadUsuarioByIdUsuarioCommand createGetAllZonaSeguridadUsuarioByIdUsuarioCommand(DBHandler handler, long id)
+    {
+        return new GetAllZonaSeguridadUsuarioByIdUsuarioCommand(handler,id);
+    }
+
+
+    public static GetAllZonaSeguridadUsuarioByUsuarioCommand createGetAllZonaSeguridadUsuarioByUsuarioCommand (long id )
+    {
+        return new GetAllZonaSeguridadUsuarioByUsuarioCommand(id);
+    }
+
+
     public static AddZonaSeguridadUsuarioCommand createAddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario, DBHandler handler)
     {
         return new AddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario, handler);

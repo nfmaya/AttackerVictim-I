@@ -4,8 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.GetAllZonaSeguridadUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.*;
 import com.ucab.cmcapp.logic.dtos.ZonaSeguridadUsuarioDto;
+import com.ucab.cmcapp.logic.dtos.ZonaSeguridadUsuarioDto;
+import com.ucab.cmcapp.logic.mappers.ZonaSeguridadUsuarioMapper;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadUsuarioMapper;
 import com.ucab.cmcapp.persistence.dao.ZonaSeguridadUsuarioDao;
 import org.slf4j.Logger;
@@ -94,6 +97,39 @@ public class ZonaSeguridadUsuarioService extends BaseService
         }
     }
 
+    @GET
+    @Path("/findAll/{id}")
+    public void getUsuarioAllZonaSeguridad(@PathParam("id") long userId) {
+        List<ZonaSeguridadUsuarioDto> response;
+        GetAllZonaSeguridadUsuarioByUsuarioCommand command = null;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in ZonaSeguridadService.getZonaSeguridad");
+
+        try {
+            command = CommandFactory.createGetAllZonaSeguridadUsuarioByUsuarioCommand(userId);
+            command.execute();
+            if (command.getReturnParam() != null) {
+                response = ZonaSeguridadUsuarioMapper.mapListEntityToDto(command.getReturnParam());
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id ZonaSeguridad: "));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build());
+            }
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad")).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
+                command.closeHandlerSession();
+            }
+            _logger.debug("Leaving ZonaSeguridadService.getZonaSeguridad");
+        }
+    }
 
     @POST
     @Path("/insert")

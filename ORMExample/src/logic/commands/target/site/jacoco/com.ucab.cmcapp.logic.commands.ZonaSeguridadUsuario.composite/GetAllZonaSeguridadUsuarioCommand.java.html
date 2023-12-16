@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetAllZonaSeguridadUsuarioCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">command</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite</a> &gt; <span class="el_source">GetAllZonaSeguridadUsuarioCommand.java</span></div><h1>GetAllZonaSeguridadUsuarioCommand.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite;
+
+import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
+import com.ucab.cmcapp.logic.commands.Command;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.atomic.GetAllZonaSeguridadUsuarioByIdCommand;
+import com.ucab.cmcapp.persistence.DBHandler;
+
+import java.util.List;
+
+public class GetAllZonaSeguridadUsuarioCommand extends Command&lt;ZonaSeguridadUsuario&gt; {
+
+    private List&lt;ZonaSeguridadUsuario&gt; _ZonaSeguridadUsuario;
+    private GetAllZonaSeguridadUsuarioByIdCommand _getAllZonaSeguridadUsuarioListCommand;
+
+<span class="nc" id="L16">    public GetAllZonaSeguridadUsuarioCommand() {</span>
+<span class="nc" id="L17">        setHandler(new DBHandler());</span>
+<span class="nc" id="L18">    }</span>
+
+    @Override
+    public void execute() {
+        try {
+<span class="nc" id="L23">            _getAllZonaSeguridadUsuarioListCommand = CommandFactory.createGetAllZonaSeguridadUsuarioByIdCommand(getHandler());</span>
+<span class="nc" id="L24">            _getAllZonaSeguridadUsuarioListCommand.execute();</span>
+<span class="nc" id="L25">            _ZonaSeguridadUsuario = _getAllZonaSeguridadUsuarioListCommand.getReturnParam();</span>
+<span class="nc" id="L26">        } catch (Exception e) {</span>
+<span class="nc" id="L27">            getHandler().rollbackTransaction();</span>
+<span class="nc" id="L28">            getHandler().closeSession();</span>
+<span class="nc" id="L29">            throw e;</span>
+<span class="nc" id="L30">        }</span>
+<span class="nc" id="L31">    }</span>
+
+    @Override
+    public List&lt;ZonaSeguridadUsuario&gt; getReturnParam() {
+<span class="nc" id="L35">        return _ZonaSeguridadUsuario;</span>
+    }
+
+    @Override
+    public void closeHandlerSession() {
+<span class="nc" id="L40">        getHandler().closeSession();</span>
+<span class="nc" id="L41">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

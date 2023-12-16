@@ -1,6 +1,7 @@
 com\ucab\cmcapp\common\entities\Posicion.class
 com\ucab\cmcapp\common\entities\PuntoControl.class
 com\ucab\cmcapp\common\EntityFactory.class
+com\ucab\cmcapp\common\entities\ZonaSeguridadUsuario.class
 com\ucab\cmcapp\common\entities\Alerta.class
 com\ucab\cmcapp\common\entities\DistanciaAlejamiento.class
 com\ucab\cmcapp\common\entities\Usuario.class

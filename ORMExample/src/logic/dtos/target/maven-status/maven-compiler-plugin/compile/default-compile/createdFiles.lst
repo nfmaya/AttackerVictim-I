@@ -6,5 +6,6 @@ com\ucab\cmcapp\logic\dtos\PuntoControlDto.class
 com\ucab\cmcapp\logic\dtos\TiempoControlDto.class
 com\ucab\cmcapp\logic\dtos\PosicionDto.class
 com\ucab\cmcapp\logic\dtos\UsuarioDto.class
+com\ucab\cmcapp\logic\dtos\ZonaSeguridadUsuarioDto.class
 com\ucab\cmcapp\logic\dtos\BaseDto.class
 com\ucab\cmcapp\logic\dtos\ZonaSeguridadDto.class
