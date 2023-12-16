@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 
 @Path( "/usuarios" )
@@ -113,14 +114,21 @@ public class UsuarioService extends BaseService
             entity = UsuarioMapper.mapDtoToEntityUsername(Username);
             command = CommandFactory.createGetUsuarioByUsernameCommand(entity);
             command.execute();
-            if (command.getReturnParam() != null) {
-                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
+            Optional<Usuario> optionalUsuario = Optional.ofNullable(command.getReturnParam());
+
+            if (optionalUsuario.isPresent()){
+            //if (command.getReturnParam() != null) {
+                //response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
+                response = UsuarioMapper.mapEntityToDto(optionalUsuario.get());
+
                 jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Username Usuario: " + Username));
             } else {
                 jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + Username)).build());
             }
             Sender.send(jsonString);
-        } catch (Exception e) {
+        }
+
+        catch (Exception e) {
             try {
                 jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + Username)).build());
                 Sender.send(jsonString);

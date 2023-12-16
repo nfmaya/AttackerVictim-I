@@ -14,7 +14,7 @@
         <class>com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad</class>
         <class>com.ucab.cmcapp.common.entities.ZonaSeguridad</class>
         <class>com.ucab.cmcapp.common.entities.TiempoControl</class>
-
+        <class>com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario</class>
 
         <properties>
             <property name="hibernate.generate_statistics" value="true"/>

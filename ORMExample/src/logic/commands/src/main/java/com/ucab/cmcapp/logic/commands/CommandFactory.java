@@ -17,6 +17,8 @@ import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.*;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.atomic.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.*;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.*;
 import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
@@ -676,6 +678,75 @@ public class CommandFactory
         return new UpdateUserTypeCommand(user);
     }
     
+    //ZonaSeguridadUsuario
 
+    public static GetZonaSeguridadUsuarioCommand createGetZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+        return new GetZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);
+    }
+
+
+    public static GetZonaSeguridadUsuarioByIdCommand createGetZonaSeguridadUsuarioByIdCommand (DBHandler handler, long ZonaSeguridadUsuarioId )
+    {
+        return new GetZonaSeguridadUsuarioByIdCommand(handler, ZonaSeguridadUsuarioId);
+    }
+
+    public static GetAllZonaSeguridadUsuarioCommand createGetAllZonaSeguridadUsuarioCommand()
+    {
+        return new GetAllZonaSeguridadUsuarioCommand();
+    }
+
+
+    public static GetAllZonaSeguridadUsuarioByIdCommand createGetAllZonaSeguridadUsuarioByIdCommand (DBHandler handler )
+    {
+        return new GetAllZonaSeguridadUsuarioByIdCommand(handler);
+    }
+
+    public static AddZonaSeguridadUsuarioCommand createAddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario, DBHandler handler)
+    {
+        return new AddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario, handler);
+    }
+
+    public static AddZonaSeguridadUsuarioCommand createAddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+        return new AddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);
+    }
+
+    public static CreateZonaSeguridadUsuarioCommand createCreateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+        return new CreateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);
+    }
+
+
+
+    public static DeleteZonaSeguridadUsuarioByIdCommand createDeleteZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user, DBHandler handler)
+    {
+        return new DeleteZonaSeguridadUsuarioByIdCommand(user, handler);
+    }
+
+    public static DeleteZonaSeguridadUsuarioByIdCommand createDeleteZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user)
+    {
+        return new DeleteZonaSeguridadUsuarioByIdCommand(user);
+    }
+
+    public static DeleteZonaSeguridadUsuarioCommand createDeleteZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario user)
+    {
+        return new DeleteZonaSeguridadUsuarioCommand(user);
+    }
+
+    public static UpdateZonaSeguridadUsuarioByIdCommand createUpdateZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user, DBHandler handler)
+    {
+        return new UpdateZonaSeguridadUsuarioByIdCommand(user, handler);
+    }
+
+    public static UpdateZonaSeguridadUsuarioByIdCommand createUpdateZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user)
+    {
+        return new UpdateZonaSeguridadUsuarioByIdCommand(user);
+    }
+
+    public static UpdateZonaSeguridadUsuarioCommand createUpdateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario user)
+    {
+        return new UpdateZonaSeguridadUsuarioCommand(user);
+    }
 
 }

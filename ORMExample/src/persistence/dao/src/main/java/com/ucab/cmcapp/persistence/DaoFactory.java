@@ -54,5 +54,9 @@ public class DaoFactory
         return new UserTypeDao( handler );
     }
 
+    public static ZonaSeguridadUsuarioDao createZonaSeguridadUsuarioDao( DBHandler handler )
+    {
+        return new ZonaSeguridadUsuarioDao( handler );
+    }
 
 }

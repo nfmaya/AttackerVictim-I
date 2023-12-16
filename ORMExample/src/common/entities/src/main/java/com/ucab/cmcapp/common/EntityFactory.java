@@ -113,4 +113,17 @@ public class EntityFactory
     {
         return new TiempoControl (id);
     }
+
+    public static ZonaSeguridadUsuario createZonaSeguridadUsuario()
+    {
+        return new ZonaSeguridadUsuario();
+    }
+
+    /**
+     * Method that returns an instance of User class
+     */
+    public static ZonaSeguridadUsuario createZonaSeguridadUsuario(long id)
+    {
+        return new ZonaSeguridadUsuario(id);
+    }
 }
