@@ -29,76 +29,77 @@ import java.io.IOException;
 <span class="nc" id="L29">    private static Logger _logger = LoggerFactory.getLogger( PosicionService.class );</span>
 
     @GET
-    @Path(&quot;/{id}&quot;)
-    public void getPosicion(@PathParam(&quot;id&quot;) long userId) {
+    @Path( &quot;/{id}&quot; )
+    public Response getPosicion(@PathParam( &quot;id&quot; ) long userId )
+    {
         Posicion entity;
-<span class="nc" id="L35">        PosicionDto response = null;</span>
-<span class="nc" id="L36">        GetPosicionCommand command = null;</span>
-<span class="nc" id="L37">        ObjectMapper mapper = new ObjectMapper();</span>
-<span class="nc" id="L38">        String jsonString = null;</span>
-<span class="nc" id="L39">        _logger.debug(&quot;Get in PosicionService.getPosicion&quot;);</span>
+        PosicionDto response;
+<span class="nc" id="L37">        GetPosicionCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L39">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
+        //endregion
 
-        try {
-<span class="nc" id="L42">            entity = PosicionMapper.mapDtoToEntity(userId);</span>
-<span class="nc" id="L43">            command = CommandFactory.createGetPosicionCommand(entity);</span>
-<span class="nc" id="L44">            command.execute();</span>
-<span class="nc bnc" id="L45" title="All 2 branches missed.">            if (command.getReturnParam() != null) {</span>
-<span class="nc" id="L46">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
-<span class="nc" id="L47">                jsonString = mapper.writeValueAsString(new CustomResponse&lt;&gt;(response, &quot;Busqueda por Id Posicion: &quot; + userId));</span>
-            } else {
-<span class="nc" id="L49">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build());</span>
+        try
+        {
+<span class="nc" id="L44">            entity = PosicionMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L45">            command = CommandFactory.createGetPosicionCommand( entity );</span>
+<span class="nc" id="L46">            command.execute();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L48">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L50">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
             }
-<span class="nc" id="L51">            Sender.send(jsonString);</span>
-<span class="nc" id="L52">        } catch (Exception e) {</span>
-            try {
-<span class="nc" id="L54">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userId)).build());</span>
-<span class="nc" id="L55">                Sender.send(jsonString);</span>
-<span class="nc" id="L56">            } catch (IOException ex) {</span>
-<span class="nc" id="L57">                throw new RuntimeException(ex);</span>
-<span class="nc" id="L58">            }</span>
-        } finally {
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (command != null) {</span>
-<span class="nc" id="L61">                command.closeHandlerSession();</span>
-            }
-<span class="nc" id="L63">            _logger.debug(&quot;Leaving PosicionService.getPosicion&quot;);</span>
         }
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L53">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L55">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userId)).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L61">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L64">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L65">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Posicion: &quot; + userId)).build();</span>
+    }
 
     @POST
     @Path(&quot;/insert&quot;)
     public void addPosicion(PosicionDto userDto) {
         Posicion entity;
-<span class="nc" id="L71">        PosicionDto response = null;</span>
-<span class="nc" id="L72">        CreatePosicionCommand command = null;</span>
-<span class="nc" id="L73">        ObjectMapper mapper = new ObjectMapper();</span>
-<span class="nc" id="L74">        String jsonString = null;</span>
-<span class="nc" id="L75">        _logger.debug(&quot;Get in PosicionService.addPosicion&quot;);</span>
+<span class="nc" id="L72">        PosicionDto response = null;</span>
+<span class="nc" id="L73">        CreatePosicionCommand command = null;</span>
+<span class="nc" id="L74">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L75">        String jsonString = null;</span>
+<span class="nc" id="L76">        _logger.debug(&quot;Get in PosicionService.addPosicion&quot;);</span>
 
         try {
-<span class="nc" id="L78">            entity = PosicionMapper.mapDtoToEntityInsert(userDto);</span>
-<span class="nc" id="L79">            command = CommandFactory.createCreatePosicionCommand(entity);</span>
-<span class="nc" id="L80">            command.execute();</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (command.getReturnParam() != null) {</span>
-<span class="nc" id="L82">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
-<span class="nc" id="L83">                jsonString = mapper.writeValueAsString(new CustomResponse&lt;&gt;(response, &quot;Insertado: &quot; + userDto.getId()));</span>
+<span class="nc" id="L79">            entity = PosicionMapper.mapDtoToEntityInsert(userDto);</span>
+<span class="nc" id="L80">            command = CommandFactory.createCreatePosicionCommand(entity);</span>
+<span class="nc" id="L81">            command.execute();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (command.getReturnParam() != null) {</span>
+<span class="nc" id="L83">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L84">                jsonString = mapper.writeValueAsString(new CustomResponse&lt;&gt;(response, &quot;Insertado: &quot; + userDto.getId()));</span>
             } else {
-<span class="nc" id="L85">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build());</span>
+<span class="nc" id="L86">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build());</span>
             }
-<span class="nc" id="L87">            Sender.send(jsonString);</span>
-<span class="nc" id="L88">        } catch (Exception e) {</span>
+<span class="nc" id="L88">            Sender.send(jsonString);</span>
+<span class="nc" id="L89">        } catch (Exception e) {</span>
             try {
-<span class="nc" id="L90">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build());</span>
-<span class="nc" id="L91">                Sender.send(jsonString);</span>
-<span class="nc" id="L92">            } catch (IOException ex) {</span>
-<span class="nc" id="L93">                throw new RuntimeException(ex);</span>
-<span class="nc" id="L94">            }</span>
+<span class="nc" id="L91">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build());</span>
+<span class="nc" id="L92">                Sender.send(jsonString);</span>
+<span class="nc" id="L93">            } catch (IOException ex) {</span>
+<span class="nc" id="L94">                throw new RuntimeException(ex);</span>
+<span class="nc" id="L95">            }</span>
         } finally {
-<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (command != null) {</span>
-<span class="nc" id="L97">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (command != null) {</span>
+<span class="nc" id="L98">                command.closeHandlerSession();</span>
             }
-<span class="nc" id="L99">            _logger.debug(&quot;Leaving PosicionService.addPosicion&quot;);</span>
+<span class="nc" id="L100">            _logger.debug(&quot;Leaving PosicionService.addPosicion&quot;);</span>
         }
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L102">    }</span>
 
 
     @DELETE
@@ -107,35 +108,35 @@ import java.io.IOException;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L110">        DeletePosicionCommand command = null;</span>
+<span class="nc" id="L111">        DeletePosicionCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L112">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L113">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L117">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L118">            command = CommandFactory.createDeletePosicionCommand( entity );</span>
-<span class="nc" id="L119">            command.execute();</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L121">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L118">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L119">            command = CommandFactory.createDeletePosicionCommand( entity );</span>
+<span class="nc" id="L120">            command.execute();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L122">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L123">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L124">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L126">        catch ( Exception e )</span>
+<span class="nc" id="L127">        catch ( Exception e )</span>
         {
-<span class="nc" id="L128">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L129">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L133" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L134">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L135">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L137">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
-<span class="nc" id="L138">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L138">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L139">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -145,40 +146,40 @@ import java.io.IOException;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L148">        UpdatePosicionCommand command = null;</span>
-<span class="nc" id="L149">        PosicionDao base = new PosicionDao();</span>
+<span class="nc" id="L149">        UpdatePosicionCommand command = null;</span>
+<span class="nc" id="L150">        PosicionDao base = new PosicionDao();</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L151">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L152">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (base.find(userDto.getId(), Posicion.class) == null){</span>
-<span class="nc" id="L157">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if (base.find(userDto.getId(), Posicion.class) == null){</span>
+<span class="nc" id="L158">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
 
             }
-<span class="nc" id="L160">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L161">            command = CommandFactory.createUpdatePosicionCommand( entity );</span>
-<span class="nc" id="L162">            command.execute();</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L164">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L161">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L162">            command = CommandFactory.createUpdatePosicionCommand( entity );</span>
+<span class="nc" id="L163">            command.execute();</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L165">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L166">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L167">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L169">        catch ( Exception e )</span>
+<span class="nc" id="L170">        catch ( Exception e )</span>
         {
-<span class="nc" id="L171">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L172">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L176" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L177">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L178">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L180">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
-<span class="nc" id="L181">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L181">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L182">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

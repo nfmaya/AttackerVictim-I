@@ -33,75 +33,77 @@ public class ZonaSeguridadService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( ZonaSeguridadService.class );
 
     @GET
-    @Path("/{id}")
-    public void getZonaSeguridad(@PathParam("id") long userId) {
+    @Path( "/{id}" )
+    public Response getZonaSeguridad(@PathParam( "id" ) long userId )
+    {
         ZonaSeguridad entity;
-        ZonaSeguridadDto response = null;
+        ZonaSeguridadDto response;
         GetZonaSeguridadCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in ZonaSeguridadService.getZonaSeguridad");
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadService.getZonaSeguridad" );
+        //endregion
 
-        try {
-            entity = ZonaSeguridadMapper.mapDtoToEntity(userId);
-            command = CommandFactory.createGetZonaSeguridadCommand(entity);
+        try
+        {
+            entity = ZonaSeguridadMapper.mapDtoToEntity( userId );
+            command = CommandFactory.createGetZonaSeguridadCommand( entity );
             command.execute();
-            if (command.getReturnParam() != null) {
+            if(command.getReturnParam() != null){
                 response = ZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Zona Seguridad: " + userId));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
             }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userId)).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving ZonaSeguridadService.getZonaSeguridad");
         }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userId)).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Zona Seguridad: " + userId)).build();
     }
+
 
     @GET
-    @Path("/findAll")
-    public void getAllZonaSeguridad() {
+    @Path( "/findAll" )
+    public Response getAllZonaSeguridad()
+    {
         List<ZonaSeguridadDto> response;
         GetAllZonaSeguridadCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in ZonaSeguridadService.getZonaSeguridad");
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadService.getZonaSeguridad" );
+        //endregion
 
-        try {
+        try
+        {
             command = CommandFactory.createGetAllZonaSeguridadCommand();
             command.execute();
-            if (command.getReturnParam() != null) {
+            if(command.getReturnParam() != null){
                 response = ZonaSeguridadMapper.mapListEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id ZonaSeguridad: "));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
             }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad")).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving ZonaSeguridadService.getZonaSeguridad");
         }
-    }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad ")).build();
 
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id ZonaSeguridad: " )).build();
+    }
 
     @POST
     @Path("/insert")

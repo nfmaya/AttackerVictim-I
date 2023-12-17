@@ -29,39 +29,40 @@ public class PosicionService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( PosicionService.class );
 
     @GET
-    @Path("/{id}")
-    public void getPosicion(@PathParam("id") long userId) {
+    @Path( "/{id}" )
+    public Response getPosicion(@PathParam( "id" ) long userId )
+    {
         Posicion entity;
-        PosicionDto response = null;
+        PosicionDto response;
         GetPosicionCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in PosicionService.getPosicion");
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in PosicionService.getPosicion" );
+        //endregion
 
-        try {
-            entity = PosicionMapper.mapDtoToEntity(userId);
-            command = CommandFactory.createGetPosicionCommand(entity);
+        try
+        {
+            entity = PosicionMapper.mapDtoToEntity( userId );
+            command = CommandFactory.createGetPosicionCommand( entity );
             command.execute();
-            if (command.getReturnParam() != null) {
+            if(command.getReturnParam() != null){
                 response = PosicionMapper.mapEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Posicion: " + userId));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
             }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userId)).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving PosicionService.getPosicion");
         }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userId)).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving PosicionService.getPosicion" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Posicion: " + userId)).build();
     }
 
     @POST

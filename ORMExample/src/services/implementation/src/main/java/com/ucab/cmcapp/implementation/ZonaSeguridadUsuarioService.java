@@ -2,12 +2,16 @@ package com.ucab.cmcapp.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.salas.Sender;
+import com.ucab.cmcapp.common.entities.ZonaSeguridad;
 import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.GetAllZonaSeguridadUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.*;
+import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
 import com.ucab.cmcapp.logic.dtos.ZonaSeguridadUsuarioDto;
 import com.ucab.cmcapp.logic.dtos.ZonaSeguridadUsuarioDto;
+import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapper;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadUsuarioMapper;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadUsuarioMapper;
 import com.ucab.cmcapp.persistence.dao.ZonaSeguridadUsuarioDao;
@@ -28,48 +32,48 @@ public class ZonaSeguridadUsuarioService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( ZonaSeguridadUsuarioService.class );
 
     @GET
-    @Path("/{id}")
-    public void getZonaSeguridadUsuario(@PathParam("id") long userId) {
+    @Path( "/{id}" )
+    public Response getZonaSeguridadUsuario(@PathParam( "id" ) long userId )
+    {
         ZonaSeguridadUsuario entity;
-        ZonaSeguridadUsuarioDto response = null;
+        ZonaSeguridadUsuarioDto response;
         GetZonaSeguridadUsuarioCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in ZonaSeguridadUsuarioService.getZonaSeguridadUsuario");
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadUsuarioService.getZonaSeguridadUsuario" );
+        //endregion
 
-        try {
-            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntity(userId);
-            command = CommandFactory.createGetZonaSeguridadUsuarioCommand(entity);
+        try
+        {
+            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntity( userId );
+            command = CommandFactory.createGetZonaSeguridadUsuarioCommand( entity );
             command.execute();
-            if (command.getReturnParam() != null) {
+            if(command.getReturnParam() != null){
                 response = ZonaSeguridadUsuarioMapper.mapEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Zona Seguridad: " + userId));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
             }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userId)).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving ZonaSeguridadUsuarioService.getZonaSeguridadUsuario");
         }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " + userId)).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadUsuarioService.getZonaSeguridadUsuario" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Zona Seguridad: " + userId)).build();
     }
 
     @GET
     @Path("/findAll")
-    public void getAllZonaSeguridadUsuario() {
+    public Response getAllZonaSeguridadUsuario() {
         List<ZonaSeguridadUsuarioDto> response;
         GetAllZonaSeguridadUsuarioCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
+
         _logger.debug("Get in ZonaSeguridadUsuarioService.getZonaSeguridadUsuario");
 
         try {
@@ -77,29 +81,26 @@ public class ZonaSeguridadUsuarioService extends BaseService
             command.execute();
             if (command.getReturnParam() != null) {
                 response = ZonaSeguridadUsuarioMapper.mapListEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id ZonaSeguridadUsuario: "));
             } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build());
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
             }
-            Sender.send(jsonString);
         } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridadUsuario")).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " )).build();
+
         } finally {
             if (command != null) {
                 command.closeHandlerSession();
             }
-            _logger.debug("Leaving ZonaSeguridadUsuarioService.getZonaSeguridadUsuario");
+
         }
+        _logger.debug("Leaving ZonaSeguridadUsuarioService.getZonaSeguridadUsuario");
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Zona Seguridad: ")).build();
+
     }
 
     @GET
     @Path("/findAll/{id}")
-    public void getUsuarioAllZonaSeguridad(@PathParam("id") long userId) {
+    public Response getUsuarioAllZonaSeguridad(@PathParam("id") long userId) {
         List<ZonaSeguridadUsuarioDto> response;
         GetAllZonaSeguridadUsuarioByUsuarioCommand command = null;
         ObjectMapper mapper = new ObjectMapper();
@@ -111,26 +112,22 @@ public class ZonaSeguridadUsuarioService extends BaseService
             command.execute();
             if (command.getReturnParam() != null) {
                 response = ZonaSeguridadUsuarioMapper.mapListEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id ZonaSeguridad: "));
             } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build());
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
             }
-            Sender.send(jsonString);
         } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad")).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Zona Seguridad " )).build();
+
         } finally {
             if (command != null) {
                 command.closeHandlerSession();
             }
-            _logger.debug("Leaving ZonaSeguridadService.getZonaSeguridad");
-        }
-    }
 
+        }
+        _logger.debug("Leaving ZonaSeguridadUsuarioService.getZonaSeguridadUsuario");
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Zona Seguridad: ")).build();
+
+    }
     @POST
     @Path("/insert")
     public Response addZonaSeguridadUsuario( ZonaSeguridadUsuarioDto userDto )

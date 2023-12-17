@@ -32,73 +32,76 @@ public class CoordenadaZonaSeguridadService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( CoordenadaZonaSeguridadService.class );
 
     @GET
-    @Path("/{id}")
-    public void getCoordenadaZonaSeguridad(@PathParam("id") long userId) {
+    @Path( "/{id}" )
+    public Response getCoordenadaZonaSeguridad(@PathParam( "id" ) long userId )
+    {
         CoordenadaZonaSeguridad entity;
-        CoordenadaZonaSeguridadDto response = null;
+        CoordenadaZonaSeguridadDto response;
         GetCoordenadaZonaSeguridadCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad");
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad" );
+        //endregion
 
-        try {
-            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity(userId);
-            command = CommandFactory.createGetCoordenadaZonaSeguridadCommand(entity);
+        try
+        {
+            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntity( userId );
+            command = CommandFactory.createGetCoordenadaZonaSeguridadCommand( entity );
             command.execute();
-            if (command.getReturnParam() != null) {
+            if(command.getReturnParam() != null){
                 response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Coordenada: " + userId));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
             }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en CoordenadaSeg " + userId)).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad");
         }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en CoordenadaSeg " + userId)).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving CoordenadaZonaSeguridadService.getCoordenadaZonaSeguridad" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Coordenada: " + userId)).build();
     }
 
+
     @GET
-    @Path("/findAll/{id}")
-    public void getCoordenadaAllZonaSeguridad(@PathParam("id") long userId) {
+    @Path( "/findAll/{id}")
+    public Response getCoordenadaAllZonaSeguridad(@PathParam( "id" ) long userId)
+    {
         List<CoordenadaZonaSeguridadDto> response;
         GetAllCoordenadaZonaSeguridadCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in ZonaSeguridadService.getZonaSeguridad");
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadService.getZonaSeguridad" );
+        //endregion
 
-        try {
+        try
+        {
             command = CommandFactory.createGetAllCoordenadaZonaSeguridadCommand(userId);
             command.execute();
-            if (command.getReturnParam() != null) {
+            if(command.getReturnParam() != null){
                 response = CoordenadaZonaSeguridadMapper.mapListEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id ZonaSeguridad: "));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
             }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad")).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving ZonaSeguridadService.getZonaSeguridad");
         }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en ZonaSeguridad ")).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id ZonaSeguridad: " )).build();
     }
 
 
