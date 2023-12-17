@@ -208,14 +208,14 @@ import java.util.List;
 <span class="nc" id="L208">        return new GetDistanciaAlejamientoCommand(distancia);</span>
     }
 
-    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DistanciaAlejamiento distancia)
+    public static GetDistanciaAlejamientoUsuariosCommand createGetDistanciaAlejamientoUsuariosCommand(long id)
     {
-<span class="nc" id="L213">        return new GetDistanciaAlejamientoByUsuariosCommand(distancia);</span>
+<span class="nc" id="L213">        return new GetDistanciaAlejamientoUsuariosCommand(id);</span>
     }
 
-    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DistanciaAlejamiento distancia, DBHandler handler)
+    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DBHandler handler,long id)
     {
-<span class="nc" id="L218">        return new GetDistanciaAlejamientoByUsuariosCommand(distancia, handler);</span>
+<span class="nc" id="L218">        return new GetDistanciaAlejamientoByUsuariosCommand(handler, id);</span>
     }
 
     public static GetDistanciaAlejamientoByIdCommand createGetDistanciaAlejamientoByIdCommand (DBHandler handler, long distanciaId )

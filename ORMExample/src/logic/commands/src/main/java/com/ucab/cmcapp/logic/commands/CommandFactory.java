@@ -208,14 +208,14 @@ public class CommandFactory
         return new GetDistanciaAlejamientoCommand(distancia);
     }
 
-    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DistanciaAlejamiento distancia)
+    public static GetDistanciaAlejamientoUsuariosCommand createGetDistanciaAlejamientoUsuariosCommand(long id)
     {
-        return new GetDistanciaAlejamientoByUsuariosCommand(distancia);
+        return new GetDistanciaAlejamientoUsuariosCommand(id);
     }
 
-    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DistanciaAlejamiento distancia, DBHandler handler)
+    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DBHandler handler,long id)
     {
-        return new GetDistanciaAlejamientoByUsuariosCommand(distancia, handler);
+        return new GetDistanciaAlejamientoByUsuariosCommand(handler, id);
     }
 
     public static GetDistanciaAlejamientoByIdCommand createGetDistanciaAlejamientoByIdCommand (DBHandler handler, long distanciaId )

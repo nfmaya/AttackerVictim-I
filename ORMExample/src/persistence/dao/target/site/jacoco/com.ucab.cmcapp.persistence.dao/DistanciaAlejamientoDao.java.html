@@ -9,45 +9,45 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 
 public class DistanciaAlejamientoDao extends BaseDao&lt;DistanciaAlejamiento&gt;
 {
-<span class="nc" id="L19">    private static Logger _logger = LoggerFactory.getLogger( DistanciaAlejamientoDao.class );</span>
+<span class="nc" id="L21">    private static Logger _logger = LoggerFactory.getLogger( DistanciaAlejamientoDao.class );</span>
     private EntityManager _em;
     private CriteriaBuilder _builder;
 
 
     public DistanciaAlejamientoDao()
     {
-<span class="nc" id="L26">        super();</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L28">        super();</span>
+<span class="nc" id="L29">    }</span>
 
     public DistanciaAlejamientoDao( DBHandler handler )
     {
-<span class="nc" id="L31">        super( handler );</span>
+<span class="nc" id="L33">        super( handler );</span>
 
-<span class="nc" id="L33">        _em = getDBHandler().getSession();</span>
-<span class="nc" id="L34">        _builder = _em.getCriteriaBuilder();</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L35">        _em = getDBHandler().getSession();</span>
+<span class="nc" id="L36">        _builder = _em.getCriteriaBuilder();</span>
+<span class="nc" id="L37">    }</span>
 
-    public DistanciaAlejamiento getDistanciaAlejamientoByUsuarios(long Victima_id, long Agresor_id) {
-<span class="nc" id="L38">        DistanciaAlejamiento result = EntityFactory.createDistanciaAlejamiento();</span>
-<span class="nc" id="L39">        _logger.debug(String.format(&quot;Get in DistanciaAlejamientoDao.getDistanciaAlejamientoByUsuarios: parameters (Victima_id: %d, Agresor_id: %d)&quot;, Victima_id, Agresor_id));</span>
+    public List&lt;DistanciaAlejamiento&gt; getDistanciaAlejamientoByUsuarios(long id) {
+<span class="nc" id="L40">        List&lt;DistanciaAlejamiento&gt; result = null;</span>
+<span class="nc" id="L41">        _logger.debug(String.format(&quot;Get in DistanciaAlejamientoDao.getDistanciaAlejamientoByUsuarios: parameters &quot;, id));</span>
         try {
-<span class="nc" id="L41">            CriteriaQuery&lt;DistanciaAlejamiento&gt; query = _builder.createQuery(DistanciaAlejamiento.class);</span>
-<span class="nc" id="L42">            Root&lt;DistanciaAlejamiento&gt; root = query.from(DistanciaAlejamiento.class);</span>
+<span class="nc" id="L43">            CriteriaQuery&lt;DistanciaAlejamiento&gt; criteriaQuery = _builder.createQuery(DistanciaAlejamiento.class);</span>
+<span class="nc" id="L44">            Root&lt;DistanciaAlejamiento&gt; root = criteriaQuery.from(DistanciaAlejamiento.class);</span>
 
-<span class="nc" id="L44">            query.select(root);</span>
-<span class="nc" id="L45">            query.where(_builder.and(</span>
-<span class="nc" id="L46">                    _builder.equal(root.get(&quot;_victima&quot;), Victima_id),</span>
-<span class="nc" id="L47">                    _builder.equal(root.get(&quot;_agresor&quot;), Agresor_id)</span>
-            ));
+<span class="nc" id="L46">            Query query = _em.createQuery(&quot;FROM DistanciaAlejamiento WHERE _victima.id = :idUsuario&quot;, DistanciaAlejamiento.class);</span>
+<span class="nc" id="L47">            query.setParameter(&quot;idUsuario&quot;, id);</span>
 
-<span class="nc" id="L50">            result = _em.createQuery(query).getSingleResult();</span>
+<span class="nc" id="L49">            result = query.getResultList();</span>
+
 <span class="nc" id="L51">        } catch (NoResultException e) {</span>
 <span class="nc" id="L52">            _logger.error(String.format(&quot;Error DistanciaAlejamientoDao.getDistanciaAlejamientoByUsuarios: No Result {%s}&quot;, e.getMessage()));</span>
 <span class="nc" id="L53">        } catch (Exception e) {</span>

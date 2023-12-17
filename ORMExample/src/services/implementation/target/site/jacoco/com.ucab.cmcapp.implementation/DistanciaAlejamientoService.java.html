@@ -7,11 +7,7 @@ import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
 import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByUsuariosCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
-import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetAllDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.*;
 
 import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByIdCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
@@ -39,9 +35,9 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
 @Path( &quot;/distancias&quot; )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-<span class="nc" id="L42">public class DistanciaAlejamientoService extends BaseService</span>
+<span class="nc" id="L38">public class DistanciaAlejamientoService extends BaseService</span>
 {
-<span class="nc" id="L44">    private static Logger _logger = LoggerFactory.getLogger( DistanciaAlejamientoService.class );</span>
+<span class="nc" id="L40">    private static Logger _logger = LoggerFactory.getLogger( DistanciaAlejamientoService.class );</span>
 
     @GET
     @Path( &quot;/{IdAlej}&quot; )
@@ -49,35 +45,73 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
-<span class="nc" id="L52">        GetDistanciaAlejamientoCommand command = null;</span>
+<span class="nc" id="L48">        GetDistanciaAlejamientoCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L54">        _logger.debug( &quot;Get in DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L50">        _logger.debug( &quot;Get in DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L59">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaId );</span>
-<span class="nc" id="L60">            command = CommandFactory.createGetDistanciaAlejamientoCommand( entity );</span>
-<span class="nc" id="L61">            command.execute();</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L63">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L55">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( distanciaId );</span>
+<span class="nc" id="L56">            command = CommandFactory.createGetDistanciaAlejamientoCommand( entity );</span>
+<span class="nc" id="L57">            command.execute();</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L59">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L65">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + distanciaId)).build();</span>
+<span class="nc" id="L61">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + distanciaId)).build();</span>
             }
         }
-<span class="nc" id="L68">        catch ( Exception e )</span>
+<span class="nc" id="L64">        catch ( Exception e )</span>
         {
-<span class="nc" id="L70">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia&quot; + distanciaId)).build();</span>
+<span class="nc" id="L66">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia&quot; + distanciaId)).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L76">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L72">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L79">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
-<span class="nc" id="L80">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Distancia: &quot; + distanciaId)).build();</span>
+<span class="nc" id="L75">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L76">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Distancia: &quot; + distanciaId)).build();</span>
+    }
+
+    @GET
+    @Path( &quot;/usuario/{id}&quot; )
+    public Response getDistanciaAlejamientoUsuario(@PathParam( &quot;id&quot; ) long distanciaId )
+    {
+        List&lt;DistanciaAlejamientoDto&gt; response;
+<span class="nc" id="L84">        GetDistanciaAlejamientoUsuariosCommand command = null;</span>
+<span class="nc" id="L85">        _logger.debug( &quot;Get in DistanciaAlejamientoService.getDistanciaAlejamientoUsuario&quot; );</span>
+
+        try
+        {
+<span class="nc" id="L89">            _logger.debug(&quot;Creating GetDistanciaAlejamientoUsuariosCommand with IdUsuario: &quot; + distanciaId);</span>
+<span class="nc" id="L90">            command = CommandFactory.createGetDistanciaAlejamientoUsuariosCommand(distanciaId);</span>
+<span class="nc" id="L91">            _logger.debug(&quot;Executing GetDistanciaAlejamientoUsuariosCommand&quot;);</span>
+<span class="nc" id="L92">            command.execute();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L94">                _logger.debug(&quot;Mapping entities to DTOs&quot;);</span>
+<span class="nc" id="L95">                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L97">                _logger.debug(&quot;No entities found for IdUsuario: &quot; + distanciaId);</span>
+<span class="nc" id="L98">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + distanciaId)).build();</span>
+            }
+        }
+<span class="nc" id="L101">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L103">            _logger.debug(String.format(&quot;error: %s&quot;, e));</span>
+<span class="nc" id="L104">            _logger.error(&quot;An error occurred&quot;, e);</span>
+<span class="nc" id="L105">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia&quot; + distanciaId)).build();</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L110">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L113">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.getDistanciaAlejamientoUsuario&quot; );</span>
+<span class="nc" id="L114">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Distancia: &quot; + distanciaId)).build();</span>
     }
 
     @GET
@@ -85,34 +119,34 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
     public Response getAllDistanciaAlejamiento()
     {
         List&lt;DistanciaAlejamientoDto&gt; response;
-<span class="nc" id="L88">        GetAllDistanciaAlejamientoCommand command = null;</span>
+<span class="nc" id="L122">        GetAllDistanciaAlejamientoCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L90">        _logger.debug( &quot;Get in DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L124">        _logger.debug( &quot;Get in DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L95">            command = CommandFactory.createGetAllDistanciaAlejamientoCommand();</span>
-<span class="nc" id="L96">            command.execute();</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L98">                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L129">            command = CommandFactory.createGetAllDistanciaAlejamientoCommand();</span>
+<span class="nc" id="L130">            command.execute();</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L132">                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L100">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
+<span class="nc" id="L134">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
             }
         }
-<span class="nc" id="L103">        catch ( Exception e )</span>
+<span class="nc" id="L137">        catch ( Exception e )</span>
         {
-<span class="nc" id="L105">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en DistanciaAlejamiento &quot;)).build();</span>
+<span class="nc" id="L139">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en DistanciaAlejamiento &quot;)).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L111">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L145">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L114">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
-<span class="nc" id="L115">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id DistanciaAlejamiento: &quot; )).build();</span>
+<span class="nc" id="L148">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.getDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L149">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id DistanciaAlejamiento: &quot; )).build();</span>
     }
 
 
@@ -123,35 +157,35 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
-<span class="nc" id="L126">        CreateDistanciaAlejamientoCommand command = null;</span>
+<span class="nc" id="L160">        CreateDistanciaAlejamientoCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L128">        _logger.debug( &quot;Get in DistanciaAlejamientoService.addDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L162">        _logger.debug( &quot;Get in DistanciaAlejamientoService.addDistanciaAlejamiento&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L133">            entity = DistanciaAlejamientoMapper.mapDtoToEntityInsert( distanciaDto );</span>
-<span class="nc" id="L134">            command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );</span>
-<span class="nc" id="L135">            command.execute();</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L137">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L167">            entity = DistanciaAlejamientoMapper.mapDtoToEntityInsert( distanciaDto );</span>
+<span class="nc" id="L168">            command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );</span>
+<span class="nc" id="L169">            command.execute();</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L171">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L139">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + distanciaDto.getId())).build();</span>
+<span class="nc" id="L173">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + distanciaDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L142">        catch ( Exception e )</span>
+<span class="nc" id="L176">        catch ( Exception e )</span>
         {
-<span class="nc" id="L144">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia &quot; + distanciaDto.getId())).build();</span>
+<span class="nc" id="L178">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia &quot; + distanciaDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L149" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L150">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L184">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L153">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.addDistanciaAlejamiento&quot; );</span>
-<span class="nc" id="L154">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + distanciaDto.getId())).build();</span>
+<span class="nc" id="L187">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.addDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L188">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + distanciaDto.getId())).build();</span>
     }
 
     //ESTE ES EL DELETE DE LA BD
@@ -161,35 +195,35 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
-<span class="nc" id="L164">        DeleteDistanciaCommand command = null;</span>
+<span class="nc" id="L198">        DeleteDistanciaCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L166">        _logger.debug( &quot;Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L200">        _logger.debug( &quot;Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L171">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L172">            command = CommandFactory.createDeleteDistanciaCommand( entity );</span>
-<span class="nc" id="L173">            command.execute();</span>
-<span class="nc bnc" id="L174" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L175">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L205">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L206">            command = CommandFactory.createDeleteDistanciaCommand( entity );</span>
+<span class="nc" id="L207">            command.execute();</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L209">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L177">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L211">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L180">        catch ( Exception e )</span>
+<span class="nc" id="L214">        catch ( Exception e )</span>
         {
-<span class="nc" id="L182">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L216">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L187" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L188">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L222">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L191">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
-<span class="nc" id="L192">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L225">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L226">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -199,42 +233,42 @@ import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioById
     {
         DistanciaAlejamiento entity;
         DistanciaAlejamientoDto response;
-<span class="nc" id="L202">        UpdateDistanciaCommand command = null;</span>
-<span class="nc" id="L203">        DistanciaAlejamientoDao base = new DistanciaAlejamientoDao();</span>
+<span class="nc" id="L236">        UpdateDistanciaCommand command = null;</span>
+<span class="nc" id="L237">        DistanciaAlejamientoDao base = new DistanciaAlejamientoDao();</span>
 
         //region Instrumentation DEBUG
-<span class="nc" id="L206">        _logger.debug( &quot;Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L240">        _logger.debug( &quot;Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc bnc" id="L211" title="All 2 branches missed.">            if (base.find(userDto.getId(), DistanciaAlejamiento.class) == null){</span>
-<span class="nc" id="L212">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            if (base.find(userDto.getId(), DistanciaAlejamiento.class) == null){</span>
+<span class="nc" id="L246">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
 
             }
-<span class="nc" id="L215">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L216">            command = CommandFactory.createUpdateDistanciaCommand( entity );</span>
-<span class="nc" id="L217">            command.execute();</span>
+<span class="nc" id="L249">            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L250">            command = CommandFactory.createUpdateDistanciaCommand( entity );</span>
+<span class="nc" id="L251">            command.execute();</span>
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L220">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L254">                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L222">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L256">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L225">        catch ( Exception e )</span>
+<span class="nc" id="L259">        catch ( Exception e )</span>
         {
-<span class="nc" id="L227">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L261">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Distancia &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L232" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L233">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L267">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L236">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
-<span class="nc" id="L237">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L270">        _logger.debug( &quot;Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento&quot; );</span>
+<span class="nc" id="L271">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 
 }

@@ -10,4 +10,4 @@ implementation,com.ucab.cmcapp.implementation,PosicionService,392,0,18,0,70,0,15
 implementation,com.ucab.cmcapp.implementation,ZonaSeguridadService,431,0,22,0,74,0,18,0,7,0
 implementation,com.ucab.cmcapp.implementation,PuntoControlService,374,0,18,0,61,0,15,0,6,0
 implementation,com.ucab.cmcapp.implementation,BaseService,62,0,2,0,18,0,8,0,7,0
-implementation,com.ucab.cmcapp.implementation,DistanciaAlejamientoService,431,0,22,0,74,0,18,0,7,0
+implementation,com.ucab.cmcapp.implementation,DistanciaAlejamientoService,550,0,26,0,93,0,21,0,8,0
