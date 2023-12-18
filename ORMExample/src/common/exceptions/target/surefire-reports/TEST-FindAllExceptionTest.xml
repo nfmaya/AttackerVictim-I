@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="FindAllExceptionTest" time="0.033" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="FindAllExceptionTest" time="0.047" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -19,7 +19,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_351\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\nesto\AppData\Local\Temp\surefire4405858640392987378\surefirebooter6847962465738891095.jar C:\Users\nesto\AppData\Local\Temp\surefire4405858640392987378 2023-12-18T12-19-04_313-jvmRun1 surefire8724109069961737984tmp surefire_21653626679506860881tmp"/>
+    <property name="sun.java.command" value="C:\Users\nesto\AppData\Local\Temp\surefire803475921440544881\surefirebooter2939911705572537857.jar C:\Users\nesto\AppData\Local\Temp\surefire803475921440544881 2023-12-18T16-01-53_569-jvmRun1 surefire1770398280090358589tmp surefire_2219135959473866309tmp"/>
     <property name="surefire.test.class.path" value="C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\common\exceptions\target\test-classes;C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\common\exceptions\target\classes;C:\Users\nesto\Documents\9 SEM\Desarrollo\ORMExample\ORMExample\src\common\properties\target\properties-1.0.jar;C:\Users\nesto\.m2\repository\javax\javaee-api\8.0.1\javaee-api-8.0.1.jar;C:\Users\nesto\.m2\repository\com\sun\mail\javax.mail\1.6.2\javax.mail-1.6.2.jar;C:\Users\nesto\.m2\repository\javax\activation\activation\1.1\activation-1.1.jar;C:\Users\nesto\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.8.2\junit-jupiter-engine-5.8.2.jar;C:\Users\nesto\.m2\repository\org\junit\platform\junit-platform-engine\1.8.2\junit-platform-engine-1.8.2.jar;C:\Users\nesto\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\nesto\.m2\repository\org\junit\platform\junit-platform-commons\1.8.2\junit-platform-commons-1.8.2.jar;C:\Users\nesto\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.8.2\junit-jupiter-api-5.8.2.jar;C:\Users\nesto\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\nesto\.m2\repository\org\hamcrest\hamcrest-library\2.2\hamcrest-library-2.2.jar;C:\Users\nesto\.m2\repository\org\hamcrest\hamcrest-core\2.2\hamcrest-core-2.2.jar;C:\Users\nesto\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\nesto\.m2\repository\ch\qos\logback\logback-classic\1.2.11\logback-classic-1.2.11.jar;C:\Users\nesto\.m2\repository\ch\qos\logback\logback-core\1.2.11\logback-core-1.2.11.jar;C:\Users\nesto\.m2\repository\org\slf4j\slf4j-api\1.7.32\slf4j-api-1.7.32.jar;C:\Users\nesto\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\nesto\.m2\repository\org\mockito\mockito-core\3.4.0\mockito-core-3.4.0.jar;C:\Users\nesto\.m2\repository\net\bytebuddy\byte-buddy\1.10.10\byte-buddy-1.10.10.jar;C:\Users\nesto\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.10\byte-buddy-agent-1.10.10.jar;C:\Users\nesto\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\nesto\.m2\repository\com\rabbitmq\amqp-client\5.16.0\amqp-client-5.16.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\nesto"/>
@@ -32,7 +32,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\nesto\AppData\Local\Temp\surefire4405858640392987378\surefirebooter6847962465738891095.jar;C:\\Users\\nesto\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.7\\org.jacoco.agent-0.8.7-runtime.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\nesto\AppData\Local\Temp\surefire803475921440544881\surefirebooter2939911705572537857.jar;C:\\Users\\nesto\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.7\\org.jacoco.agent-0.8.7-runtime.jar"/>
     <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_351\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_351\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_351\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_351\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_351\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_351\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_351\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -64,5 +64,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="testConstructor" classname="FindAllExceptionTest" time="0.025"/>
+  <testcase name="testConstructor" classname="FindAllExceptionTest" time="0.037"/>
 </testsuite>

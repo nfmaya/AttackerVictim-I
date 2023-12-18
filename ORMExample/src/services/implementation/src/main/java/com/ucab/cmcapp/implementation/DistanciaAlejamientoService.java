@@ -159,7 +159,38 @@ return 0;            }
         return id;
     }
 
+    public float getDistanciaAlejamientoUsuarioDistanciaMin(long distanciaId )
+    {
+        List<DistanciaAlejamientoDto> response;
+        GetDistanciaAlejamientoUsuariosCommand command = null;
+        _logger.debug( "Get in DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
+        float distanciaMin;
 
+        try
+        {
+            command = CommandFactory.createGetDistanciaAlejamientoUsuariosCommand(distanciaId);
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
+                distanciaMin = response.get(0).get_distanciaMinima();
+            }else{
+                return 0;            }
+        }
+        catch ( Exception e )
+        {
+            return 0;
+        }
+
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
+        return distanciaMin;
+    }
 
 
     @GET

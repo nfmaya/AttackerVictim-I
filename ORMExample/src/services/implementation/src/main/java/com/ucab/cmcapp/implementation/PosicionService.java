@@ -10,6 +10,8 @@ import com.ucab.cmcapp.logic.commands.posicion.composite.CreatePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.DeletePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.GetPosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.UpdatePosicionCommand;
+import com.ucab.cmcapp.logic.dtos.AlertaDto;
+import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
@@ -23,6 +25,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Path( "/posicion" )
@@ -220,15 +223,16 @@ return distance;
         Posicion entity;
         PosicionDto response;
         CreatePosicionCommand command = null;
+        Response customResponse = null;
         DistanciaAlejamientoService distanciaAlejamientoService = new DistanciaAlejamientoService();
         long idAgresor;
         double distancia = 0.0;
+        double distanciaMin = 0.0;
         //region Instrumentation DEBUG
         _logger.debug( "Get in PosicionService.addPosicion" );
         //endregion
 
-        try
-        {
+        try{
             entity = PosicionMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreatePosicionCommand( entity );
             command.execute();
@@ -236,11 +240,29 @@ return distance;
                 response = PosicionMapper.mapEntityToDto(command.getReturnParam());
 
                 idAgresor = distanciaAlejamientoService.getDistanciaAlejamientoUsuarioAgresorId(userDto.getId());
+                distanciaMin = distanciaAlejamientoService.getDistanciaAlejamientoUsuarioDistanciaMin(userDto.getId());
                 if (idAgresor != 0){
                     distancia = getAllPosicionUsuarioLastCalc2(userDto.getId(), idAgresor);
 
-                    //if (distancia > 100){
-                    //}
+                    if (distancia <= distanciaMin){
+
+                    //aqui se construye el objeto de alerta
+
+                        // Create an instance of AlertaDto
+                        AlertaDto alertaDto = new AlertaDto();
+                        // Set the properties of alertaDto as needed
+                        alertaDto.set_tipoAlerta("Dentro radio");
+                        alertaDto.set_fechaHora(new Date());
+                        alertaDto.setUsuario(userDto.getUsuario());
+
+                        // Create an instance of AlertaService
+                        AlertaService alertaService = new AlertaService();
+                        // Call the method to insert the alert
+                        alertaService.addAlerta(alertaDto);
+
+                        //TAMBIEN SE VA A LLAMAR AL FIREBASE
+
+                    }
                 }
 
             }else{
