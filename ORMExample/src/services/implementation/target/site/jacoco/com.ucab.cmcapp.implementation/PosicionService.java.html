@@ -118,7 +118,7 @@ import java.util.List;
 
     @GET
     @Path( &quot;/usuario/{id1}/{id2}&quot; )
-    public Response getAllPosicionUsuarioLast2(@PathParam( &quot;id1&quot; ) long id1, @PathParam( &quot;id2&quot; ) long id2 )
+    public Response getAllPosicionUsuarioLastCalc(@PathParam( &quot;id1&quot; ) long id1, @PathParam( &quot;id2&quot; ) long id2 )
     {
         List&lt;PosicionDto&gt; response1, response2;
 <span class="nc" id="L124">        PosicionDto lastResponse1 = null, lastResponse2 = null;</span>
@@ -162,9 +162,56 @@ import java.util.List;
         }
 
 <span class="nc" id="L164">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
-<span class="nc" id="L165">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Busqueda por Id Posicion: &quot; + &quot; Distance between last positions: &quot; + distance)).build();</span>
+<span class="nc" id="L165">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;&quot;+distance)).build();</span>
     }
-    
+
+
+    public double getAllPosicionUsuarioLastCalc2(long id1, long id2 )
+    {
+        List&lt;PosicionDto&gt; response1, response2;
+<span class="nc" id="L172">        PosicionDto lastResponse1 = null, lastResponse2 = null;</span>
+<span class="nc" id="L173">        GetAllPosicionCommand command1 = null, command2 = null;</span>
+<span class="nc" id="L174">        double distance = 0.0;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L176">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L181">            command1 = CommandFactory.createGetAllPosicionCommand(id1);</span>
+<span class="nc" id="L182">            command1.execute();</span>
+<span class="nc" id="L183">            command2 = CommandFactory.createGetAllPosicionCommand(id2);</span>
+<span class="nc" id="L184">            command2.execute();</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">            if(command1.getReturnParam() != null &amp;&amp; command2.getReturnParam() != null){</span>
+<span class="nc" id="L186">                response1 = PosicionMapper.mapListEntityToDto(command1.getReturnParam());</span>
+<span class="nc" id="L187">                response2 = PosicionMapper.mapListEntityToDto(command2.getReturnParam());</span>
+<span class="nc bnc" id="L188" title="All 4 branches missed.">                if (!response1.isEmpty() &amp;&amp; !response2.isEmpty()) {</span>
+<span class="nc" id="L189">                    lastResponse1 = response1.get(response1.size() - 1);</span>
+<span class="nc" id="L190">                    lastResponse2 = response2.get(response2.size() - 1);</span>
+<span class="nc" id="L191">                    distance = calculateDistance(lastResponse1, lastResponse2);</span>
+                } else {
+<span class="nc" id="L193">                return 0.0;                }</span>
+            }else{
+<span class="nc" id="L195">return 0.0;            }</span>
+        }
+<span class="nc" id="L197">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L199">return 0.0;</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L203" title="All 2 branches missed.">            if (command1 != null)</span>
+<span class="nc" id="L204">                command1.closeHandlerSession();</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">            if (command2 != null)</span>
+<span class="nc" id="L206">                command2.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L209">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L210">return distance;</span>
+    }
+
+
+
 
     @POST
     @Path(&quot;/insert&quot;)
@@ -172,35 +219,35 @@ import java.util.List;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L175">        CreatePosicionCommand command = null;</span>
+<span class="nc" id="L222">        CreatePosicionCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L177">        _logger.debug( &quot;Get in PosicionService.addPosicion&quot; );</span>
+<span class="nc" id="L224">        _logger.debug( &quot;Get in PosicionService.addPosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L182">            entity = PosicionMapper.mapDtoToEntityInsert( userDto );</span>
-<span class="nc" id="L183">            command = CommandFactory.createCreatePosicionCommand( entity );</span>
-<span class="nc" id="L184">            command.execute();</span>
-<span class="nc bnc" id="L185" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L186">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L229">            entity = PosicionMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L230">            command = CommandFactory.createCreatePosicionCommand( entity );</span>
+<span class="nc" id="L231">            command.execute();</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L233">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L188">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L235">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L191">        catch ( Exception e )</span>
+<span class="nc" id="L238">        catch ( Exception e )</span>
         {
-<span class="nc" id="L193">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L240">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L198" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L199">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L246">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L202">        _logger.debug( &quot;Leaving PosicionService.addPosicion&quot; );</span>
-<span class="nc" id="L203">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L249">        _logger.debug( &quot;Leaving PosicionService.addPosicion&quot; );</span>
+<span class="nc" id="L250">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -210,35 +257,35 @@ import java.util.List;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L213">        DeletePosicionCommand command = null;</span>
+<span class="nc" id="L260">        DeletePosicionCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L215">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L262">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L220">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L221">            command = CommandFactory.createDeletePosicionCommand( entity );</span>
-<span class="nc" id="L222">            command.execute();</span>
-<span class="nc bnc" id="L223" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L224">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L267">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L268">            command = CommandFactory.createDeletePosicionCommand( entity );</span>
+<span class="nc" id="L269">            command.execute();</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L271">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L226">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L273">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L229">        catch ( Exception e )</span>
+<span class="nc" id="L276">        catch ( Exception e )</span>
         {
-<span class="nc" id="L231">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L278">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L236" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L237">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L284">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L240">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
-<span class="nc" id="L241">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L287">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L288">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -248,40 +295,40 @@ import java.util.List;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L251">        UpdatePosicionCommand command = null;</span>
-<span class="nc" id="L252">        PosicionDao base = new PosicionDao();</span>
+<span class="nc" id="L298">        UpdatePosicionCommand command = null;</span>
+<span class="nc" id="L299">        PosicionDao base = new PosicionDao();</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L254">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L301">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc bnc" id="L259" title="All 2 branches missed.">            if (base.find(userDto.getId(), Posicion.class) == null){</span>
-<span class="nc" id="L260">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">            if (base.find(userDto.getId(), Posicion.class) == null){</span>
+<span class="nc" id="L307">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
 
             }
-<span class="nc" id="L263">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L264">            command = CommandFactory.createUpdatePosicionCommand( entity );</span>
-<span class="nc" id="L265">            command.execute();</span>
-<span class="nc bnc" id="L266" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L267">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L310">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L311">            command = CommandFactory.createUpdatePosicionCommand( entity );</span>
+<span class="nc" id="L312">            command.execute();</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L314">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L269">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L316">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L272">        catch ( Exception e )</span>
+<span class="nc" id="L319">        catch ( Exception e )</span>
         {
-<span class="nc" id="L274">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L321">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L279" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L280">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L327">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L283">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
-<span class="nc" id="L284">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L330">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L331">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

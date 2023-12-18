@@ -14,6 +14,7 @@ import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
+import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoWithSeparacionDto;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.*;
 import com.ucab.cmcapp.persistence.DBHandler;
@@ -27,7 +28,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioByIdCommand;
 
@@ -154,6 +158,52 @@ public class DistanciaAlejamientoService extends BaseService
         _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamiento" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id DistanciaAlejamiento: " )).build();
     }
+
+
+    @GET
+    @Path("/calculateDistances")
+    public Response calculateDistancesBetweenUsuarios() {
+        List<DistanciaAlejamientoDto> distancias;
+        List<DistanciaAlejamientoWithSeparacionDto> distances = new ArrayList<>();
+        GetAllDistanciaAlejamientoCommand command = null;
+        PosicionService posicionService = new PosicionService();
+        //Map<DistanciaAlejamientoWithSeparacionDto, Double> distances = new HashMap<>();
+
+        try {
+        command = CommandFactory.createGetAllDistanciaAlejamientoCommand();
+        command.execute();
+        if (command.getReturnParam() != null) {
+            distancias = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
+            for (DistanciaAlejamientoDto distancia : distancias) {
+                long idUsuario1 = distancia.get_agresor().getId();
+                long idUsuario2 = distancia.get_victima().getId();
+                double distance = posicionService.getAllPosicionUsuarioLastCalc2(idUsuario1, idUsuario2);
+
+                    DistanciaAlejamientoWithSeparacionDto distanciaWithSeparacion = new DistanciaAlejamientoWithSeparacionDto();
+                    distanciaWithSeparacion.setSeparacion(distance);
+                    distanciaWithSeparacion.set_agresor(distancia.get_agresor());
+                    distanciaWithSeparacion.set_victima(distancia.get_victima());
+                    distanciaWithSeparacion.setId(distancia.getId());
+                    distanciaWithSeparacion.set_distanciaMinima(distancia.get_distanciaMinima());
+
+                distances.add(distanciaWithSeparacion);
+            }
+        } else {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build();
+        }
+
+    } catch (Exception e) {
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en DistanciaAlejamiento ")).build();
+    } finally {
+        if (command != null)
+            command.closeHandlerSession();
+    }
+
+
+
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(distances, "Distancias calculadas")).build();
+    }
+
 
 
 
