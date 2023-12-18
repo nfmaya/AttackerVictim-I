@@ -69,10 +69,15 @@ public class PosicionService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Posicion: " + userId)).build();
     }
 
+    public double calculateDistance(PosicionDto pos1, PosicionDto pos2) {
+        float xDiff = pos1.getCoordenadaX() - pos2.getCoordenadaX();
+        float yDiff = pos1.getCoordenadaY() - pos2.getCoordenadaY();
+        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+    }
 
     @GET
     @Path( "/usuario/{id}" )
-    public Response getAllPosicionUsuarioLast(@PathParam( "id" ) long id )
+    public Response getAllPosicionUsuarioLast1(@PathParam( "id" ) long id )
     {
         List<PosicionDto> response;
         PosicionDto lastResponse = null;
@@ -109,6 +114,55 @@ public class PosicionService extends BaseService
 
         _logger.debug( "Leaving PosicionService.getPosicion" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(lastResponse,"Busqueda por Id Posicion: " )).build();
+    }
+
+    @GET
+    @Path( "/usuario/{id1}/{id2}" )
+    public Response getAllPosicionUsuarioLast2(@PathParam( "id1" ) long id1, @PathParam( "id2" ) long id2 )
+    {
+        List<PosicionDto> response1, response2;
+        PosicionDto lastResponse1 = null, lastResponse2 = null;
+        GetAllPosicionCommand command1 = null, command2 = null;
+        double distance = 0.0;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in PosicionService.getPosicion" );
+        //endregion
+
+        try
+        {
+            command1 = CommandFactory.createGetAllPosicionCommand(id1);
+            command1.execute();
+            command2 = CommandFactory.createGetAllPosicionCommand(id2);
+            command2.execute();
+            if(command1.getReturnParam() != null && command2.getReturnParam() != null){
+                response1 = PosicionMapper.mapListEntityToDto(command1.getReturnParam());
+                response2 = PosicionMapper.mapListEntityToDto(command2.getReturnParam());
+                if (!response1.isEmpty() && !response2.isEmpty()) {
+                    lastResponse1 = response1.get(response1.size() - 1);
+                    lastResponse2 = response2.get(response2.size() - 1);
+                    distance = calculateDistance(lastResponse1, lastResponse2);
+                } else {
+                    return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+                }
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion ")).build();
+
+        }
+        finally
+        {
+            if (command1 != null)
+                command1.closeHandlerSession();
+            if (command2 != null)
+                command2.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving PosicionService.getPosicion" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>("Busqueda por Id Posicion: " + " Distance between last positions: " + distance)).build();
     }
     
 
