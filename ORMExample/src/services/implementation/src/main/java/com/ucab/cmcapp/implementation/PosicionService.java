@@ -214,12 +214,15 @@ return distance;
 
 
     @POST
-    @Path("/insert")
-    public Response addPosicion( PosicionDto userDto )
+    @Path("/insertVictima")
+    public Response addPosicionVictima( PosicionDto userDto )
     {
         Posicion entity;
         PosicionDto response;
         CreatePosicionCommand command = null;
+        DistanciaAlejamientoService distanciaAlejamientoService = new DistanciaAlejamientoService();
+        long idAgresor;
+        double distancia = 0.0;
         //region Instrumentation DEBUG
         _logger.debug( "Get in PosicionService.addPosicion" );
         //endregion
@@ -231,6 +234,55 @@ return distance;
             command.execute();
             if(command.getReturnParam() != null){
                 response = PosicionMapper.mapEntityToDto(command.getReturnParam());
+
+                idAgresor = distanciaAlejamientoService.getDistanciaAlejamientoUsuarioAgresorId(userDto.getId());
+                if (idAgresor != 0){
+                    distancia = getAllPosicionUsuarioLastCalc2(userDto.getId(), idAgresor);
+
+                    //if (distancia > 100){
+                    //}
+                }
+
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userDto.getId())).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving PosicionService.addPosicion" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,""+ distancia)).build();
+    }
+
+
+    @POST
+    @Path("/insertAgresor")
+    public Response addPosicionAgresor( PosicionDto userDto )
+    {
+        Posicion entity;
+        PosicionDto response;
+        CreatePosicionCommand command = null;
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in PosicionService.addPosicion" );
+        //endregion
+
+        try
+        {
+            entity = PosicionMapper.mapDtoToEntityInsert( userDto );
+            command = CommandFactory.createCreatePosicionCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = PosicionMapper.mapEntityToDto(command.getReturnParam());
+
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }

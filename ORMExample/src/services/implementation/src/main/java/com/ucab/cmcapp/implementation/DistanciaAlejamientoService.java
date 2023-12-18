@@ -124,6 +124,44 @@ public class DistanciaAlejamientoService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Usuario: " + distanciaId)).build();
     }
 
+
+
+    public long getDistanciaAlejamientoUsuarioAgresorId(long distanciaId )
+    {
+        List<DistanciaAlejamientoDto> response;
+        GetDistanciaAlejamientoUsuariosCommand command = null;
+        _logger.debug( "Get in DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
+        long id;
+
+        try
+        {
+            command = CommandFactory.createGetDistanciaAlejamientoUsuariosCommand(distanciaId);
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
+                id = response.get(0).get_agresor().getId();
+            }else{
+return 0;            }
+        }
+        catch ( Exception e )
+        {
+            return 0;
+        }
+
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
+        return id;
+    }
+
+
+
+
     @GET
     @Path( "/findAll" )
     public Response getAllDistanciaAlejamiento()
