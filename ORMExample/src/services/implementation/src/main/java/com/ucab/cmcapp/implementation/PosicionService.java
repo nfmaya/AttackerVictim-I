@@ -5,12 +5,15 @@ import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.Posicion;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.posicion.composite.GetAllPosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.CreatePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.DeletePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.GetPosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.UpdatePosicionCommand;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
+import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.PosicionMapper;
 import com.ucab.cmcapp.logic.mappers.PosicionMapper;
 import com.ucab.cmcapp.persistence.dao.PosicionDao;
 import org.slf4j.Logger;
@@ -20,6 +23,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.List;
 
 @Path( "/posicion" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -65,40 +69,84 @@ public class PosicionService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Posicion: " + userId)).build();
     }
 
+
+    @GET
+    @Path( "/usuario/{id}" )
+    public Response getAllPosicionUsuarioLast(@PathParam( "id" ) long id )
+    {
+        List<PosicionDto> response;
+        PosicionDto lastResponse = null;
+        GetAllPosicionCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in PosicionService.getPosicion" );
+        //endregion
+
+        try
+        {
+            command = CommandFactory.createGetAllPosicionCommand(id);
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = PosicionMapper.mapListEntityToDto(command.getReturnParam());
+                if (!response.isEmpty()) {
+                    lastResponse = response.get(response.size() - 1);
+                } else {
+                    return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+                }
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion ")).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving PosicionService.getPosicion" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(lastResponse,"Busqueda por Id Posicion: " )).build();
+    }
+    
+
     @POST
     @Path("/insert")
-    public void addPosicion(PosicionDto userDto) {
+    public Response addPosicion( PosicionDto userDto )
+    {
         Posicion entity;
-        PosicionDto response = null;
+        PosicionDto response;
         CreatePosicionCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in PosicionService.addPosicion");
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in PosicionService.addPosicion" );
+        //endregion
 
-        try {
-            entity = PosicionMapper.mapDtoToEntityInsert(userDto);
-            command = CommandFactory.createCreatePosicionCommand(entity);
+        try
+        {
+            entity = PosicionMapper.mapDtoToEntityInsert( userDto );
+            command = CommandFactory.createCreatePosicionCommand( entity );
             command.execute();
-            if (command.getReturnParam() != null) {
+            if(command.getReturnParam() != null){
                 response = PosicionMapper.mapEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Insertado: " + userDto.getId()));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userDto.getId())).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving PosicionService.addPosicion");
         }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Posicion " + userDto.getId())).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving PosicionService.addPosicion" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
 

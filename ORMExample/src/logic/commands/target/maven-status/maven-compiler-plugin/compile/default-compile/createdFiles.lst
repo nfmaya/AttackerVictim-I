@@ -28,6 +28,7 @@ com\ucab\cmcapp\logic\commands\ZonaSeguridad\atomic\DeleteZonaSeguridadByIdComma
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\composite\DeleteCoordenadaZonaSeguridadCommand.class
 com\ucab\cmcapp\logic\commands\TiempoControl\composite\GetTiempoControlCommand.class
 com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\composite\DeleteDistanciaCommand.class
+com\ucab\cmcapp\logic\commands\posicion\composite\GetAllPosicionCommand.class
 com\ucab\cmcapp\logic\commands\puntoControl\composite\UpdatePuntoControlCommand.class
 com\ucab\cmcapp\logic\commands\alerta\atomic\AddAlertaCommand.class
 com\ucab\cmcapp\logic\commands\ZonaSeguridadUsuario\atomic\GetZonaSeguridadUsuarioByIdCommand.class
@@ -73,6 +74,7 @@ com\ucab\cmcapp\logic\commands\alerta\composite\GetAlertaCommand.class
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\atomic\AddCoordenadaZonaSeguridadCommand.class
 com\ucab\cmcapp\logic\commands\posicion\atomic\DeletePosicionByIdCommand.class
 com\ucab\cmcapp\logic\commands\TiempoControl\atomic\GetAllTiempoControlByIdCommand.class
+com\ucab\cmcapp\logic\commands\posicion\atomic\GetAllPosicionByIdCommand.class
 com\ucab\cmcapp\logic\commands\usuario\composite\CreateUsuarioCommand.class
 com\ucab\cmcapp\logic\commands\puntoControl\composite\DeletePuntoControlCommand.class
 com\ucab\cmcapp\logic\commands\UserType\atomic\DeleteUserTypeByIdCommand.class

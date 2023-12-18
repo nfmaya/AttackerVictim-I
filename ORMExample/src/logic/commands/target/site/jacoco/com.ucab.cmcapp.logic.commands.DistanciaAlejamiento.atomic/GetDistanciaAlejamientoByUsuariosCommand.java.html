@@ -21,39 +21,37 @@ public class GetDistanciaAlejamientoByUsuariosCommand extends Command&lt;Distanc
     public GetDistanciaAlejamientoByUsuariosCommand(DBHandler handler , long id)
 <span class="nc" id="L22">    {</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L24">        _logger.debug( String.format( &quot;Get in GetDistanciaAlejamientoByUsuariosCommand.ctor: parameter {%s}&quot; ) );</span>
-<span class="nc" id="L25">        _IdAlej = id;</span>
-<span class="nc" id="L26">        setHandler(handler);</span>
-<span class="nc" id="L27">        _dao = DaoFactory.createDistanciaAlejamientoDao(getHandler());</span>
+<span class="nc" id="L24">        _IdAlej = id;</span>
+<span class="nc" id="L25">        setHandler(handler);</span>
+<span class="nc" id="L26">        _dao = DaoFactory.createDistanciaAlejamientoDao(getHandler());</span>
 
         //region Instrumentation DEBUG
-<span class="nc" id="L30">        _logger.debug( String.format( &quot;Leavin GetDistanciaAlejamientoByUsuariosCommand.ctor: atribute {%s}&quot; ) );</span>
         //endregion
-<span class="nc" id="L32">    }</span>
+<span class="nc" id="L30">    }</span>
 
 
     @Override
     public void execute()
     {
         //region Instrumentation DEBUG
-<span class="nc" id="L39">        _logger.debug( &quot;Get in  GetDistanciaAlejamientoByUsuariosCommand.execute&quot; );</span>
+<span class="nc" id="L37">        _logger.debug( &quot;Get in  GetDistanciaAlejamientoByUsuariosCommand.execute&quot; );</span>
         //endregion
-<span class="nc" id="L41">        _distancia = _dao.getDistanciaAlejamientoByUsuarios(_IdAlej);</span>
+<span class="nc" id="L39">        _distancia = _dao.getDistanciaAlejamientoByUsuarios(_IdAlej);</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L43">        _logger.debug( &quot;Leavin  GetDistanciaAlejamientoByUsuariosCommand.execute&quot; );</span>
+<span class="nc" id="L41">        _logger.debug( &quot;Leavin  GetDistanciaAlejamientoByUsuariosCommand.execute&quot; );</span>
         //endregion
-<span class="nc" id="L45">    }</span>
+<span class="nc" id="L43">    }</span>
 
     @Override
     public List&lt;DistanciaAlejamiento&gt; getReturnParam()
     {
-<span class="nc" id="L50">        return _distancia;</span>
+<span class="nc" id="L48">        return _distancia;</span>
     }
 
     @Override
     public void closeHandlerSession()
     {
-<span class="nc" id="L56">        getHandler().closeSession();</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L54">        getHandler().closeSession();</span>
+<span class="nc" id="L55">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -2,6 +2,8 @@ package com.ucab.cmcapp.logic.mappers;
 
 import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.Posicion;
+import com.ucab.cmcapp.common.entities.Posicion;
+import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,6 +106,14 @@ public class PosicionMapper extends BaseMapper
         return entity;
     }
 
+
+    public static List<PosicionDto> mapListEntityToDto(List<Posicion> entities) {
+        List<PosicionDto> dtos = new ArrayList<>();
+        for (Posicion entity : entities) {
+            dtos.add(mapEntityToDto(entity));
+        }
+        return dtos;
+    }
 
 
 
