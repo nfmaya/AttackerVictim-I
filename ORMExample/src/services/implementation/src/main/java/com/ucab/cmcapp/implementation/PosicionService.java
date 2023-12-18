@@ -10,9 +10,7 @@ import com.ucab.cmcapp.logic.commands.posicion.composite.CreatePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.DeletePosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.GetPosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.UpdatePosicionCommand;
-import com.ucab.cmcapp.logic.dtos.AlertaDto;
-import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
-import com.ucab.cmcapp.logic.dtos.PosicionDto;
+import com.ucab.cmcapp.logic.dtos.*;
 import com.ucab.cmcapp.logic.dtos.PosicionDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
 import com.ucab.cmcapp.logic.mappers.PosicionMapper;
@@ -214,6 +212,66 @@ return distance;
     }
 
 
+    public void checkAllUsersLastPositionTimestamp() {
+        // Get a list of all users
+        UsuarioService usuarioService = new UsuarioService();
+        List<UsuarioDto> allUsers = usuarioService.getAllUsuarioList();
+        List<PosicionDto> response;
+        PosicionDto lastPosition = null;
+        GetAllPosicionCommand command = null;
+
+        // Define the acceptable time difference (in milliseconds)
+        //long acceptableTimeDifference = 3600000; // 1 hour
+        long acceptableTimeDifference = 600000; // 10 minutes
+
+        // Get the current time
+        long currentTime = System.currentTimeMillis();
+
+        // Iterate over all users
+        for (UsuarioDto user : allUsers) {
+            // Get the last position of the user
+            try {
+                command = CommandFactory.createGetAllPosicionCommand(user.getId());
+                command.execute();
+                if(command.getReturnParam() != null){
+                    response = PosicionMapper.mapListEntityToDto(command.getReturnParam());
+                    if (!response.isEmpty()) {
+                        lastPosition = response.get(response.size() - 1);
+                    } else {
+                        break;
+                    }
+                }else{
+                    break;
+                }
+            }
+            catch ( Exception e ) {
+                break;
+            }
+
+            // Check if the last position exists
+            if (lastPosition != null) {
+                // Get the timestamp of the last position
+                long lastPositionTime = lastPosition.getFechaHora().getTime();
+
+                // Calculate the time difference
+                long timeDifference = currentTime - lastPositionTime;
+
+                // Check if the time difference is greater than the acceptable time difference
+                if (timeDifference > acceptableTimeDifference) {
+                    // Create a new alert
+                    AlertaDto alertaDto = new AlertaDto();
+                    alertaDto.set_tipoAlerta("No position update");
+                    alertaDto.set_fechaHora(new Date());
+                    alertaDto.setUsuario(user);
+
+                    // Create an instance of AlertaService
+                    AlertaService alertaService = new AlertaService();
+                    // Call the method to insert the alert
+                    alertaService.addAlerta(alertaDto);
+                }
+            }
+        }
+    }
 
 
     @POST
@@ -264,7 +322,7 @@ return distance;
 
                     }
                 }
-
+                checkAllUsersLastPositionTimestamp();
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }
