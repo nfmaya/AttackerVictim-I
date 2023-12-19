@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.Posicion;
+import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.posicion.composite.GetAllPosicionCommand;
 import com.ucab.cmcapp.logic.commands.posicion.composite.CreatePosicionCommand;
@@ -117,6 +118,46 @@ public class PosicionService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(lastResponse,"Busqueda por Id Posicion: " )).build();
     }
 
+
+    public List<PosicionDto> getAllPosicionUsuarioLast1Me(long id )
+    {
+        List<PosicionDto> response = null;
+        PosicionDto lastResponse = null;
+        GetAllPosicionCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in PosicionService.getPosicion" );
+        //endregion
+
+        try
+        {
+            command = CommandFactory.createGetAllPosicionCommand(id);
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = PosicionMapper.mapListEntityToDto(command.getReturnParam());
+                if (!response.isEmpty()) {
+                    lastResponse = response.get(response.size() - 1);
+                } else {
+                    return response;
+                }
+            }else{
+                return response;
+            }
+        }
+        catch ( Exception e )
+        {
+            return response;
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving PosicionService.getPosicion" );
+        return response;
+    }
+
     @GET
     @Path( "/usuario/{id1}/{id2}" )
     public Response getAllPosicionUsuarioLastCalc(@PathParam( "id1" ) long id1, @PathParam( "id2" ) long id2 )
@@ -210,6 +251,8 @@ return 0.0;
         _logger.debug( "Leaving PosicionService.getPosicion" );
 return distance;
     }
+
+
 
 
     public void checkAllUsersLastPositionTimestamp() {
@@ -323,6 +366,7 @@ return distance;
                     }
                 }
                 checkAllUsersLastPositionTimestamp();
+                checkAgresorInsideVictimaZonaSeguridad();
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }
@@ -378,10 +422,70 @@ return distance;
                 command.closeHandlerSession();
         }
 
+        checkAgresorInsideVictimaZonaSeguridad();
+
         _logger.debug( "Leaving PosicionService.addPosicion" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
+    public boolean isUserInsideSafeZone(PosicionDto userPosition, List<CoordenadaZonaSeguridadDto> safeZoneCoordinatesList) {
+        int i, j;
+        boolean result = false;
+        for (i = 0, j = safeZoneCoordinatesList.size() - 1; i < safeZoneCoordinatesList.size(); j = i++) {
+            if ((safeZoneCoordinatesList.get(i).getCoordenadaY() > userPosition.getCoordenadaY()) != (safeZoneCoordinatesList.get(j).getCoordenadaY() > userPosition.getCoordenadaY()) &&
+                    (userPosition.getCoordenadaX() < (safeZoneCoordinatesList.get(j).getCoordenadaX() - safeZoneCoordinatesList.get(i).getCoordenadaX()) * (userPosition.getCoordenadaY() - safeZoneCoordinatesList.get(i).getCoordenadaY()) / (safeZoneCoordinatesList.get(j).getCoordenadaY()-safeZoneCoordinatesList.get(i).getCoordenadaY()) + safeZoneCoordinatesList.get(i).getCoordenadaX())) {
+                result = !result;
+            }
+        }
+        return result;
+    }
+
+    public void checkAgresorInsideVictimaZonaSeguridad() {
+        // Step 1: Get all DistanciaAlejamiento relations
+        DistanciaAlejamientoService distanciaAlejamientoService = new DistanciaAlejamientoService();
+        ZonaSeguridadUsuarioService zonaSeguridadUsuarioService = new ZonaSeguridadUsuarioService();
+        CoordenadaZonaSeguridadService coordenadaZonaSeguridadService = new CoordenadaZonaSeguridadService();
+
+        List<DistanciaAlejamientoDto> allDistanciaAlejamiento = distanciaAlejamientoService.getAllDistanciaAlejamiento2();
+
+        // Step 2: Iterate over each DistanciaAlejamiento relation
+        for (DistanciaAlejamientoDto distanciaAlejamiento : allDistanciaAlejamiento) {
+            long victimaId = distanciaAlejamiento.get_victima().getId();
+            long agresorId = distanciaAlejamiento.get_agresor().getId();
+
+            // Step 3: Get all ZonaSeguridad for the Victima
+            List<ZonaSeguridadUsuarioDto> allZonaSeguridad = zonaSeguridadUsuarioService.getUsuarioAllZonaSeguridad2(victimaId);
+
+            // Step 4: Iterate over each ZonaSeguridad
+            for (ZonaSeguridadUsuarioDto zonaSeguridad : allZonaSeguridad) {
+                List<CoordenadaZonaSeguridadDto> allCoordenadas = coordenadaZonaSeguridadService.getCoordenadaAllZonaSeguridad2(zonaSeguridad.getId());
+
+                // Step 5: Get the last position of the Agresor
+                List<PosicionDto> agresorLastPosition = getAllPosicionUsuarioLast1Me(agresorId);
+                PosicionDto agresorLastPos = agresorLastPosition.get(agresorLastPosition.size() - 1);
+
+
+                // Step 6: Check if the Agresor position is inside the ZonaSeguridad polygon
+                if (isUserInsideSafeZone(agresorLastPos, allCoordenadas)) {
+                    //aqui se construye el objeto de alerta
+
+                    // Create an instance of AlertaDto
+                    AlertaDto alertaDto = new AlertaDto();
+                    // Set the properties of alertaDto as needed
+                    alertaDto.set_tipoAlerta("Dentro Zona Seguridad");
+                    alertaDto.set_fechaHora(new Date());
+                    alertaDto.setUsuario(distanciaAlejamiento.get_agresor());
+
+                    // Create an instance of AlertaService
+                    AlertaService alertaService = new AlertaService();
+                    // Call the method to insert the alert
+                    alertaService.addAlerta(alertaDto);
+
+                    //TAMBIEN SE VA A LLAMAR AL FIREBASE
+                }
+            }
+        }
+    }
 
     @DELETE
     @Path("/delete")

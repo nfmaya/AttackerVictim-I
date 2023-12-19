@@ -159,6 +159,39 @@ return 0;            }
         return id;
     }
 
+    public long getDistanciaAlejamientoUsuarioVictimaId(long distanciaId )
+    {
+        List<DistanciaAlejamientoDto> response;
+        GetDistanciaAlejamientoUsuariosCommand command = null;
+        _logger.debug( "Get in DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
+        long id;
+
+        try
+        {
+            command = CommandFactory.createGetDistanciaAlejamientoUsuariosCommand(distanciaId);
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
+                id = response.get(0).get_victima().getId();
+            }else{
+                return 0;            }
+        }
+        catch ( Exception e )
+        {
+            return 0;
+        }
+
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
+        return id;
+    }
+
     public float getDistanciaAlejamientoUsuarioDistanciaMin(long distanciaId )
     {
         List<DistanciaAlejamientoDto> response;
@@ -227,6 +260,42 @@ return 0;            }
         _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamiento" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id DistanciaAlejamiento: " )).build();
     }
+
+
+    public List<DistanciaAlejamientoDto> getAllDistanciaAlejamiento2()
+    {
+        List<DistanciaAlejamientoDto> response = null;
+        GetAllDistanciaAlejamientoCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in DistanciaAlejamientoService.getDistanciaAlejamiento" );
+        //endregion
+
+        try
+        {
+            command = CommandFactory.createGetAllDistanciaAlejamientoCommand();
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return response;
+
+            }
+        }
+        catch ( Exception e )
+        {
+            return response;
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamiento" );
+        return response;
+    }
+
 
 
     @GET

@@ -105,6 +105,41 @@ public class CoordenadaZonaSeguridadService extends BaseService
     }
 
 
+    public List<CoordenadaZonaSeguridadDto> getCoordenadaAllZonaSeguridad2(long userId)
+    {
+        List<CoordenadaZonaSeguridadDto> response = null;
+        GetAllCoordenadaZonaSeguridadCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadService.getZonaSeguridad" );
+        //endregion
+
+        try
+        {
+            command = CommandFactory.createGetAllCoordenadaZonaSeguridadCommand(userId);
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = CoordenadaZonaSeguridadMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return response;
+            }
+        }
+        catch ( Exception e )
+        {
+            return response;
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadService.getZonaSeguridad" );
+        return response;
+    }
+
+
+
     @POST
     @Path("/insert")
     public Response addCoordenadaZonaSeguridad( CoordenadaZonaSeguridadDto userDto )

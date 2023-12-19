@@ -128,6 +128,38 @@ public class ZonaSeguridadUsuarioService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Zona Seguridad: ")).build();
 
     }
+
+
+    public List<ZonaSeguridadUsuarioDto> getUsuarioAllZonaSeguridad2(long userId) {
+        List<ZonaSeguridadUsuarioDto> response = null;
+        GetAllZonaSeguridadUsuarioByUsuarioCommand command = null;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in ZonaSeguridadService.getZonaSeguridad");
+
+        try {
+            command = CommandFactory.createGetAllZonaSeguridadUsuarioByUsuarioCommand(userId);
+            command.execute();
+            if (command.getReturnParam() != null) {
+                response = ZonaSeguridadUsuarioMapper.mapListEntityToDto(command.getReturnParam());
+            } else {
+                return response;
+            }
+        } catch (Exception e) {
+            return response;
+
+        } finally {
+            if (command != null) {
+                command.closeHandlerSession();
+            }
+
+        }
+        _logger.debug("Leaving ZonaSeguridadUsuarioService.getZonaSeguridadUsuario");
+        return response;
+
+    }
+
+
     @POST
     @Path("/insert")
     public Response addZonaSeguridadUsuario( ZonaSeguridadUsuarioDto userDto )

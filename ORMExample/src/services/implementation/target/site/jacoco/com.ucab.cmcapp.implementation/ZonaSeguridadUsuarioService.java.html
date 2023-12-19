@@ -128,41 +128,73 @@ import java.util.List;
 <span class="nc" id="L128">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Zona Seguridad: &quot;)).build();</span>
 
     }
+
+
+    public List&lt;ZonaSeguridadUsuarioDto&gt; getUsuarioAllZonaSeguridad2(long userId) {
+<span class="nc" id="L134">        List&lt;ZonaSeguridadUsuarioDto&gt; response = null;</span>
+<span class="nc" id="L135">        GetAllZonaSeguridadUsuarioByUsuarioCommand command = null;</span>
+<span class="nc" id="L136">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L137">        String jsonString = null;</span>
+<span class="nc" id="L138">        _logger.debug(&quot;Get in ZonaSeguridadService.getZonaSeguridad&quot;);</span>
+
+        try {
+<span class="nc" id="L141">            command = CommandFactory.createGetAllZonaSeguridadUsuarioByUsuarioCommand(userId);</span>
+<span class="nc" id="L142">            command.execute();</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">            if (command.getReturnParam() != null) {</span>
+<span class="nc" id="L144">                response = ZonaSeguridadUsuarioMapper.mapListEntityToDto(command.getReturnParam());</span>
+            } else {
+<span class="nc" id="L146">                return response;</span>
+            }
+<span class="nc" id="L148">        } catch (Exception e) {</span>
+<span class="nc" id="L149">            return response;</span>
+
+        } finally {
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (command != null) {</span>
+<span class="nc" id="L153">                command.closeHandlerSession();</span>
+            }
+
+        }
+<span class="nc" id="L157">        _logger.debug(&quot;Leaving ZonaSeguridadUsuarioService.getZonaSeguridadUsuario&quot;);</span>
+<span class="nc" id="L158">        return response;</span>
+
+    }
+
+
     @POST
     @Path(&quot;/insert&quot;)
     public Response addZonaSeguridadUsuario( ZonaSeguridadUsuarioDto userDto )
     {
         ZonaSeguridadUsuario entity;
         ZonaSeguridadUsuarioDto response;
-<span class="nc" id="L137">        CreateZonaSeguridadUsuarioCommand command = null;</span>
+<span class="nc" id="L169">        CreateZonaSeguridadUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L139">        _logger.debug( &quot;Get in ZonaSeguridadUsuarioService.addZonaSeguridadUsuario&quot; );</span>
+<span class="nc" id="L171">        _logger.debug( &quot;Get in ZonaSeguridadUsuarioService.addZonaSeguridadUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L144">            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntityInsert( userDto );</span>
-<span class="nc" id="L145">            command = CommandFactory.createCreateZonaSeguridadUsuarioCommand( entity );</span>
-<span class="nc" id="L146">            command.execute();</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L148">                response = ZonaSeguridadUsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L176">            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L177">            command = CommandFactory.createCreateZonaSeguridadUsuarioCommand( entity );</span>
+<span class="nc" id="L178">            command.execute();</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L180">                response = ZonaSeguridadUsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L150">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L182">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L153">        catch ( Exception e )</span>
+<span class="nc" id="L185">        catch ( Exception e )</span>
         {
-<span class="nc" id="L155">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Zona Seguridad &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L187">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Zona Seguridad &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L160" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L161">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L193">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L164">        _logger.debug( &quot;Leaving ZonaSeguridadUsuarioService.addZonaSeguridadUsuario&quot; );</span>
-<span class="nc" id="L165">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L196">        _logger.debug( &quot;Leaving ZonaSeguridadUsuarioService.addZonaSeguridadUsuario&quot; );</span>
+<span class="nc" id="L197">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
     }
 
     @DELETE
@@ -171,35 +203,35 @@ import java.util.List;
     {
         ZonaSeguridadUsuario entity;
         ZonaSeguridadUsuarioDto response;
-<span class="nc" id="L174">        DeleteZonaSeguridadUsuarioCommand command = null;</span>
+<span class="nc" id="L206">        DeleteZonaSeguridadUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L176">        _logger.debug( &quot;Get in ZonaSeguridadUsuarioService.deleteZonaSeguridadUsuario&quot; );</span>
+<span class="nc" id="L208">        _logger.debug( &quot;Get in ZonaSeguridadUsuarioService.deleteZonaSeguridadUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L181">            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L182">            command = CommandFactory.createDeleteZonaSeguridadUsuarioCommand( entity );</span>
-<span class="nc" id="L183">            command.execute();</span>
-<span class="nc bnc" id="L184" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L185">                response = ZonaSeguridadUsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L213">            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L214">            command = CommandFactory.createDeleteZonaSeguridadUsuarioCommand( entity );</span>
+<span class="nc" id="L215">            command.execute();</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L217">                response = ZonaSeguridadUsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L187">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L219">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L190">        catch ( Exception e )</span>
+<span class="nc" id="L222">        catch ( Exception e )</span>
         {
-<span class="nc" id="L192">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Zona Seguridad &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L224">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Zona Seguridad &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L197" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L198">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L230">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L201">        _logger.debug( &quot;Leaving ZonaSeguridadUsuarioService.deleteZonaSeguridadUsuario&quot; );</span>
-<span class="nc" id="L202">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L233">        _logger.debug( &quot;Leaving ZonaSeguridadUsuarioService.deleteZonaSeguridadUsuario&quot; );</span>
+<span class="nc" id="L234">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -209,40 +241,40 @@ import java.util.List;
     {
         ZonaSeguridadUsuario entity;
         ZonaSeguridadUsuarioDto response;
-<span class="nc" id="L212">        UpdateZonaSeguridadUsuarioCommand command = null;</span>
-<span class="nc" id="L213">        ZonaSeguridadUsuarioDao base = new ZonaSeguridadUsuarioDao();</span>
+<span class="nc" id="L244">        UpdateZonaSeguridadUsuarioCommand command = null;</span>
+<span class="nc" id="L245">        ZonaSeguridadUsuarioDao base = new ZonaSeguridadUsuarioDao();</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L215">        _logger.debug( &quot;Get in ZonaSeguridadUsuarioService.deleteZonaSeguridadUsuario&quot; );</span>
+<span class="nc" id="L247">        _logger.debug( &quot;Get in ZonaSeguridadUsuarioService.deleteZonaSeguridadUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc bnc" id="L220" title="All 2 branches missed.">            if (base.find(userDto.getId(), ZonaSeguridadUsuario.class) == null){</span>
-<span class="nc" id="L221">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">            if (base.find(userDto.getId(), ZonaSeguridadUsuario.class) == null){</span>
+<span class="nc" id="L253">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
 
             }
-<span class="nc" id="L224">            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L225">            command = CommandFactory.createUpdateZonaSeguridadUsuarioCommand( entity );</span>
-<span class="nc" id="L226">            command.execute();</span>
-<span class="nc bnc" id="L227" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L228">                response = ZonaSeguridadUsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L256">            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L257">            command = CommandFactory.createUpdateZonaSeguridadUsuarioCommand( entity );</span>
+<span class="nc" id="L258">            command.execute();</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L260">                response = ZonaSeguridadUsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L230">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L262">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L233">        catch ( Exception e )</span>
+<span class="nc" id="L265">        catch ( Exception e )</span>
         {
-<span class="nc" id="L235">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Zona Seguridad &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L267">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Zona Seguridad &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L240" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L241">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L273">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L244">        _logger.debug( &quot;Leaving ZonaSeguridadUsuarioService.deleteZonaSeguridadUsuario&quot; );</span>
-<span class="nc" id="L245">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L276">        _logger.debug( &quot;Leaving ZonaSeguridadUsuarioService.deleteZonaSeguridadUsuario&quot; );</span>
+<span class="nc" id="L277">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
