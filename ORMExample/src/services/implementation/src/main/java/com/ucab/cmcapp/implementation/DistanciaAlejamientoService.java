@@ -80,6 +80,8 @@ public class DistanciaAlejamientoService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Distancia: " + distanciaId)).build();
     }
 
+
+    //endpoint que devuelve la DistanciaAlejamiento de un Usuario
     @GET
     @Path( "/usuario/{id}" )
     public Response getDistanciaAlejamientoUsuario(@PathParam( "id" ) long distanciaId )
@@ -125,7 +127,7 @@ public class DistanciaAlejamientoService extends BaseService
     }
 
 
-
+    //metodo que devuelve la DistanciaAlejamiento de un Usuario
     public long getDistanciaAlejamientoUsuarioAgresorId(long distanciaId )
     {
         List<DistanciaAlejamientoDto> response;
@@ -159,6 +161,7 @@ return 0;            }
         return id;
     }
 
+    //metodo para buscar el Id de la victima de una DistanciaAlejamiento
     public long getDistanciaAlejamientoUsuarioVictimaId(long distanciaId )
     {
         List<DistanciaAlejamientoDto> response;
@@ -192,6 +195,8 @@ return 0;            }
         return id;
     }
 
+
+    //metodo para buscar el Id del Agresor de una DistanciaAlejamiento
     public float getDistanciaAlejamientoUsuarioDistanciaMin(long distanciaId )
     {
         List<DistanciaAlejamientoDto> response;
@@ -226,6 +231,7 @@ return 0;            }
     }
 
 
+    //endpoint que devuelve las DistanciaAlejamientos (completo)
     @GET
     @Path( "/findAll" )
     public Response getAllDistanciaAlejamiento()
@@ -262,6 +268,7 @@ return 0;            }
     }
 
 
+    //metodo que devuelve las DistanciaAlejamientos (completo) en forma de List
     public List<DistanciaAlejamientoDto> getAllDistanciaAlejamiento2()
     {
         List<DistanciaAlejamientoDto> response = null;
@@ -297,7 +304,9 @@ return 0;            }
     }
 
 
-
+    //endpoint que ejecuta los calculos de distancias entre Victimas y Agresores, por DistanciaAlejamiento.
+    //Osea ejecuta un findAll, donde va por cada DistanciaAlejamiento y calcula la distancia entre los usuarios
+    //lo devuelve en forma de List con un Dto modificado, con la separacion siendo la distancia calculada
     @GET
     @Path("/calculateDistances")
     public Response calculateDistancesBetweenUsuarios() {

@@ -68,7 +68,7 @@ public class CoordenadaZonaSeguridadService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Coordenada: " + userId)).build();
     }
 
-
+    //endpoint para obtener todas las coordenadas de una zona de seguridad
     @GET
     @Path( "/findAll/{id}")
     public Response getCoordenadaAllZonaSeguridad(@PathParam( "id" ) long userId)
@@ -104,7 +104,7 @@ public class CoordenadaZonaSeguridadService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id ZonaSeguridad: " )).build();
     }
 
-
+    //metodo para obtener todas las coordenadas de una zona de seguridad
     public List<CoordenadaZonaSeguridadDto> getCoordenadaAllZonaSeguridad2(long userId)
     {
         List<CoordenadaZonaSeguridadDto> response = null;

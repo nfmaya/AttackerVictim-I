@@ -71,12 +71,14 @@ public class PosicionService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Posicion: " + userId)).build();
     }
 
+    //metodo para calcular la disrtancia entre dos puntos
     public double calculateDistance(PosicionDto pos1, PosicionDto pos2) {
         float xDiff = pos1.getCoordenadaX() - pos2.getCoordenadaX();
         float yDiff = pos1.getCoordenadaY() - pos2.getCoordenadaY();
         return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 
+    //endpoint para obtener la ultima posicion de un usuario dado su id
     @GET
     @Path( "/usuario/{id}" )
     public Response getAllPosicionUsuarioLast1(@PathParam( "id" ) long id )
@@ -119,6 +121,7 @@ public class PosicionService extends BaseService
     }
 
 
+    //metodo que devuelve la ultima posicion de un usuario dado su id
     public List<PosicionDto> getAllPosicionUsuarioLast1Me(long id )
     {
         List<PosicionDto> response = null;
@@ -158,6 +161,8 @@ public class PosicionService extends BaseService
         return response;
     }
 
+
+    //endpoint para obtener la distancia de dos usuarios dado sus ids
     @GET
     @Path( "/usuario/{id1}/{id2}" )
     public Response getAllPosicionUsuarioLastCalc(@PathParam( "id1" ) long id1, @PathParam( "id2" ) long id2 )
@@ -207,7 +212,7 @@ public class PosicionService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(""+distance)).build();
     }
 
-
+    //metodo para obtener la distancia de dos usuarios dado sus ids
     public double getAllPosicionUsuarioLastCalc2(long id1, long id2 )
     {
         List<PosicionDto> response1, response2;
@@ -254,7 +259,7 @@ return distance;
 
 
 
-
+    //metodo que checkea si un usuario no ha actualizado su posicion en un tiempo determinado
     public void checkAllUsersLastPositionTimestamp() {
         // Get a list of all users
         UsuarioService usuarioService = new UsuarioService();
@@ -316,7 +321,11 @@ return distance;
         }
     }
 
-
+    //endpoint para insertar la ultima ubicacion de la Victima. devuelve la ultima posicion en el response del POST
+    //asi como tambien si el agresor se encuentra dentro del radio de distancia minima, envia una Alerta
+    //y tambien si el agresor se encuentra dentro de la zona de seguridad de la victima, envia una Alerta
+    //ejecuta el checkeo de la ultima posicion
+    //TODO: ver si las llamadas de los checkeos se hacen aca
     @POST
     @Path("/insertVictima")
     public Response addPosicionVictima( PosicionDto userDto )
@@ -387,6 +396,8 @@ return distance;
     }
 
 
+    //endpoint para insertar la posicion de un Agresor. solo vse ejecuta el checkeo de la zona de seguridad
+    //TODO: ver si la llamada del chekceo se hace aca
     @POST
     @Path("/insertAgresor")
     public Response addPosicionAgresor( PosicionDto userDto )
@@ -428,6 +439,7 @@ return distance;
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
+    //metodo que checkea si un usuario se encuentra dentro de la zona de seguridad de una victima dada
     public boolean isUserInsideSafeZone(PosicionDto userPosition, List<CoordenadaZonaSeguridadDto> safeZoneCoordinatesList) {
         int i, j;
         boolean result = false;
@@ -440,6 +452,7 @@ return distance;
         return result;
     }
 
+    //metodo que checkea si un agresor se encuentra dentro de la zona de seguridad. ejecuta el analisis completo
     public void checkAgresorInsideVictimaZonaSeguridad() {
         // Step 1: Get all DistanciaAlejamiento relations
         DistanciaAlejamientoService distanciaAlejamientoService = new DistanciaAlejamientoService();

@@ -98,6 +98,8 @@ public class ZonaSeguridadUsuarioService extends BaseService
 
     }
 
+
+    //endpoint para obtener las zonas de seguridad de un usuario
     @GET
     @Path("/findAll/{id}")
     public Response getUsuarioAllZonaSeguridad(@PathParam("id") long userId) {
@@ -130,6 +132,7 @@ public class ZonaSeguridadUsuarioService extends BaseService
     }
 
 
+    //metodo para obtener las zonas de seguridad de un usuario
     public List<ZonaSeguridadUsuarioDto> getUsuarioAllZonaSeguridad2(long userId) {
         List<ZonaSeguridadUsuarioDto> response = null;
         GetAllZonaSeguridadUsuarioByUsuarioCommand command = null;
