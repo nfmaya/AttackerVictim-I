@@ -321,6 +321,62 @@ return distance;
         }
     }
 
+
+    //metodo que checkea si un usuario esta enviando la misma posicion. despues de 10 envios
+    public void checkAllUsersSamePosition() {
+        // Get a list of all users
+        UsuarioService usuarioService = new UsuarioService();
+        List<UsuarioDto> allUsers = usuarioService.getAllUsuarioList();
+        List<PosicionDto> response;
+        GetAllPosicionCommand command = null;
+
+        // Iterate over all users
+        for (UsuarioDto user : allUsers) {
+            // Get the last 5 positions of the user
+            try {
+                command = CommandFactory.createGetAllPosicionCommand(user.getId());
+                command.execute();
+                if(command.getReturnParam() != null){
+                    response = PosicionMapper.mapListEntityToDto(command.getReturnParam());
+                    if (response.size() >= 5) {
+                        // Check if the last 10 positions are the same
+                        PosicionDto referencePosition = response.get(response.size() - 1);
+                        boolean allSame = true;
+                        for (int i = 2; i <= 5; i++) {
+                            PosicionDto currentPosition = response.get(response.size() - i);
+                            if (currentPosition.getCoordenadaX() != referencePosition.getCoordenadaX() ||
+                                    currentPosition.getCoordenadaY() != referencePosition.getCoordenadaY()) {
+                                allSame = false;
+                                break;
+                            }
+                        }
+                        if (allSame) {
+                            // The user is sending the same location
+                            //aqui se construye el objeto de alerta
+
+                            // Create an instance of AlertaDto
+                            AlertaDto alertaDto = new AlertaDto();
+                            // Set the properties of alertaDto as needed
+                            alertaDto.set_tipoAlerta("Inactivo por 5 envios");
+                            alertaDto.set_fechaHora(new Date());
+                            alertaDto.setUsuario(user);
+
+                            // Create an instance of AlertaService
+                            AlertaService alertaService = new AlertaService();
+                            // Call the method to insert the alert
+                            alertaService.addAlerta(alertaDto);
+
+                            //TAMBIEN SE VA A LLAMAR AL FIREBASE
+                        }
+                    }
+                }
+            }
+            catch ( Exception e ) {
+                continue;
+            }
+        }
+    }
+
     //endpoint para insertar la ultima ubicacion de la Victima. devuelve la ultima posicion en el response del POST
     //asi como tambien si el agresor se encuentra dentro del radio de distancia minima, envia una Alerta
     //y tambien si el agresor se encuentra dentro de la zona de seguridad de la victima, envia una Alerta
@@ -361,7 +417,7 @@ return distance;
                         // Create an instance of AlertaDto
                         AlertaDto alertaDto = new AlertaDto();
                         // Set the properties of alertaDto as needed
-                        alertaDto.set_tipoAlerta("Dentro radio");
+                        alertaDto.set_tipoAlerta("Agresor Dentro radio");
                         alertaDto.set_fechaHora(new Date());
                         alertaDto.setUsuario(userDto.getUsuario());
 
@@ -376,6 +432,7 @@ return distance;
                 }
                 checkAllUsersLastPositionTimestamp();
                 checkAgresorInsideVictimaZonaSeguridad();
+                checkAllUsersSamePosition();
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }

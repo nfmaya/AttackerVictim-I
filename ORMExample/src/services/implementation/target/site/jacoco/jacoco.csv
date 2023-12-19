@@ -6,7 +6,7 @@ implementation,com.ucab.cmcapp.implementation,UsuarioService,550,0,30,0,102,0,24
 implementation,com.ucab.cmcapp.implementation,AlertaService,563,0,28,0,90,0,22,0,8,0
 implementation,com.ucab.cmcapp.implementation,TiempoControlService,431,0,22,0,74,0,18,0,7,0
 implementation,com.ucab.cmcapp.implementation,ZonaSeguridadUsuarioService,539,0,30,0,105,0,24,0,9,0
-implementation,com.ucab.cmcapp.implementation,PosicionService,1179,0,90,0,238,0,60,0,15,0
+implementation,com.ucab.cmcapp.implementation,PosicionService,1289,0,104,0,269,0,68,0,16,0
 implementation,com.ucab.cmcapp.implementation,ZonaSeguridadService,431,0,22,0,74,0,18,0,7,0
 implementation,com.ucab.cmcapp.implementation,PuntoControlService,374,0,18,0,61,0,15,0,6,0
 implementation,com.ucab.cmcapp.implementation,BaseService,62,0,2,0,18,0,8,0,7,0

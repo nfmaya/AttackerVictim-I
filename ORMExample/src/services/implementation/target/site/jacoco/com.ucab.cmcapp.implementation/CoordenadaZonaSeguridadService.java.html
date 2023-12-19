@@ -68,7 +68,7 @@ import java.util.List;
 <span class="nc" id="L68">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Coordenada: &quot; + userId)).build();</span>
     }
 
-
+    //endpoint para obtener todas las coordenadas de una zona de seguridad
     @GET
     @Path( &quot;/findAll/{id}&quot;)
     public Response getCoordenadaAllZonaSeguridad(@PathParam( &quot;id&quot; ) long userId)
@@ -104,7 +104,7 @@ import java.util.List;
 <span class="nc" id="L104">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id ZonaSeguridad: &quot; )).build();</span>
     }
 
-
+    //metodo para obtener todas las coordenadas de una zona de seguridad
     public List&lt;CoordenadaZonaSeguridadDto&gt; getCoordenadaAllZonaSeguridad2(long userId)
     {
 <span class="nc" id="L110">        List&lt;CoordenadaZonaSeguridadDto&gt; response = null;</span>
