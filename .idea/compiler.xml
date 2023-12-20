@@ -8,8 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="enums" />
         <module name="dao" />
+        <module name="RabbitMQ-Firebase" />
         <module name="entities" />
         <module name="implementation" />
+        <module name="LDAP-users" />
         <module name="dtos" />
         <module name="utilities" />
         <module name="exceptions" />
@@ -18,5 +20,8 @@
         <module name="mappers" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="RabbitMQ-firebas" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

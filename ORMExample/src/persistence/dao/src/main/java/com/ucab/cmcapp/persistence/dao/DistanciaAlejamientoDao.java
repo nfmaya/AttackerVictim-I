@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 
 public class DistanciaAlejamientoDao extends BaseDao<DistanciaAlejamiento>
@@ -34,20 +36,18 @@ public class DistanciaAlejamientoDao extends BaseDao<DistanciaAlejamiento>
         _builder = _em.getCriteriaBuilder();
     }
 
-    public DistanciaAlejamiento getDistanciaAlejamientoByUsuarios(long Victima_id, long Agresor_id) {
-        DistanciaAlejamiento result = EntityFactory.createDistanciaAlejamiento();
-        _logger.debug(String.format("Get in DistanciaAlejamientoDao.getDistanciaAlejamientoByUsuarios: parameters (Victima_id: %d, Agresor_id: %d)", Victima_id, Agresor_id));
+    public List<DistanciaAlejamiento> getDistanciaAlejamientoByUsuarios(long id) {
+        List<DistanciaAlejamiento> result = null;
+        _logger.debug(String.format("Get in DistanciaAlejamientoDao.getDistanciaAlejamientoByUsuarios: parameters ", id));
         try {
-            CriteriaQuery<DistanciaAlejamiento> query = _builder.createQuery(DistanciaAlejamiento.class);
-            Root<DistanciaAlejamiento> root = query.from(DistanciaAlejamiento.class);
+            CriteriaQuery<DistanciaAlejamiento> criteriaQuery = _builder.createQuery(DistanciaAlejamiento.class);
+            Root<DistanciaAlejamiento> root = criteriaQuery.from(DistanciaAlejamiento.class);
 
-            query.select(root);
-            query.where(_builder.and(
-                    _builder.equal(root.get("_victima"), Victima_id),
-                    _builder.equal(root.get("_agresor"), Agresor_id)
-            ));
+            Query query = _em.createQuery("FROM DistanciaAlejamiento WHERE _victima.id = :idUsuario", DistanciaAlejamiento.class);
+            query.setParameter("idUsuario", id);
 
-            result = _em.createQuery(query).getSingleResult();
+            result = query.getResultList();
+
         } catch (NoResultException e) {
             _logger.error(String.format("Error DistanciaAlejamientoDao.getDistanciaAlejamientoByUsuarios: No Result {%s}", e.getMessage()));
         } catch (Exception e) {

@@ -29,39 +29,40 @@ public class UserTypeService extends BaseService
     private static Logger _logger = LoggerFactory.getLogger( UserTypeService.class );
 
     @GET
-    @Path("/{id}")
-    public void getUserType(@PathParam("id") long userId) {
+    @Path( "/{id}" )
+    public Response getUserType(@PathParam( "id" ) long userId )
+    {
         UserType entity;
-        UserTypeDto response = null;
+        UserTypeDto response;
         GetUserTypeCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in UserTypeService.getUserType");
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UserTypeService.getUserType" );
+        //endregion
 
-        try {
-            entity = UserTypeMapper.mapDtoToEntity(userId);
-            command = CommandFactory.createGetUserTypeCommand(entity);
+        try
+        {
+            entity = UserTypeMapper.mapDtoToEntity( userId );
+            command = CommandFactory.createGetUserTypeCommand( entity );
             command.execute();
-            if (command.getReturnParam() != null) {
+            if(command.getReturnParam() != null){
                 response = UserTypeMapper.mapEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id UserType: " + userId));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
             }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en UserType " + userId)).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving UserTypeService.getUserType");
         }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en UserType " + userId)).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving UserTypeService.getUserType" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id UserType: " + userId)).build();
     }
 
 

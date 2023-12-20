@@ -5,9 +5,9 @@ dao,com.ucab.cmcapp.persistence.dao,UsuarioDao,107,0,0,0,22,0,4,0,4,0
 dao,com.ucab.cmcapp.persistence.dao,AlertaDao,107,0,0,0,22,0,4,0,4,0
 dao,com.ucab.cmcapp.persistence.dao,CoordenadaZonaSeguridadDao,102,0,0,0,22,0,4,0,4,0
 dao,com.ucab.cmcapp.persistence.dao,UserTypeDao,21,0,0,0,7,0,3,0,3,0
-dao,com.ucab.cmcapp.persistence.dao,PosicionDao,21,0,0,0,7,0,3,0,3,0
-dao,com.ucab.cmcapp.persistence.dao,UserDao,107,0,0,0,22,0,4,0,4,0
-dao,com.ucab.cmcapp.persistence.dao,DistanciaAlejamientoDao,125,0,0,0,24,0,4,0,4,0
+dao,com.ucab.cmcapp.persistence.dao,PosicionDao,102,0,0,0,22,0,4,0,4,0
+dao,com.ucab.cmcapp.persistence.dao,ZonaSeguridadUsuarioDao,102,0,0,0,22,0,4,0,4,0
+dao,com.ucab.cmcapp.persistence.dao,DistanciaAlejamientoDao,102,0,0,0,22,0,4,0,4,0
 dao,com.ucab.cmcapp.persistence.dao,TiempoControlDao,21,0,0,0,7,0,3,0,3,0
 dao,com.ucab.cmcapp.persistence.dao,BaseDao,235,0,4,0,59,0,15,0,13,0
 dao,com.ucab.cmcapp.persistence.dao,PuntoControlDao,21,0,0,0,7,0,3,0,3,0

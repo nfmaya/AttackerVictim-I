@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddPuntoControlCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">command</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.logic.commands.puntoControl.atomic</a> &gt; <span class="el_source">AddPuntoControlCommand.java</span></div><h1>AddPuntoControlCommand.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.logic.commands.puntoControl.atomic;
+
+import com.ucab.cmcapp.common.entities.PuntoControl;
+import com.ucab.cmcapp.logic.commands.Command;
+import com.ucab.cmcapp.persistence.DBHandler;
+import com.ucab.cmcapp.persistence.DaoFactory;
+import com.ucab.cmcapp.persistence.dao.PuntoControlDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class AddPuntoControlCommand extends Command&lt;PuntoControl&gt;
+{
+<span class="nc" id="L13">    private static Logger _logger = LoggerFactory.getLogger( AddPuntoControlCommand.class );</span>
+    private PuntoControl _PuntoControl;
+    private PuntoControlDao _dao;
+
+    public AddPuntoControlCommand( PuntoControl PuntoControl, DBHandler handler )
+<span class="nc" id="L18">    {</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L20">        _logger.debug( String.format( &quot;Get in AddPuntoControlCommand.ctor: parameter {%s}&quot;,</span>
+<span class="nc" id="L21">                PuntoControl.toString() ) );</span>
+<span class="nc" id="L22">        setHandler(handler);</span>
+<span class="nc" id="L23">        _PuntoControl = PuntoControl;</span>
+<span class="nc" id="L24">        _dao = DaoFactory.createPuntoControlDao(getHandler());</span>
+
+
+        //region Instrumentation DEBUG
+<span class="nc" id="L28">        _logger.debug( String.format( &quot;Leaving AddPuntoControlCommand.ctor: attribute {%s}&quot;,</span>
+<span class="nc" id="L29">                _PuntoControl.toString() ) );</span>
+        //endregion
+<span class="nc" id="L31">    }</span>
+
+    public AddPuntoControlCommand( PuntoControl PuntoControl )
+<span class="nc" id="L34">    {</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L36">        _logger.debug( String.format( &quot;Get in AddPuntoControlCommand.ctor: parameter {%s}&quot;,</span>
+<span class="nc" id="L37">                PuntoControl.toString() ) );</span>
+<span class="nc" id="L38">        _PuntoControl = PuntoControl;</span>
+<span class="nc" id="L39">        setHandler(new DBHandler());</span>
+<span class="nc" id="L40">        _dao = DaoFactory.createPuntoControlDao(getHandler());</span>
+
+
+        //region Instrumentation DEBUG
+<span class="nc" id="L44">        _logger.debug( String.format( &quot;Leaving AddPuntoControlCommand.ctor: attribute {%s}&quot;,</span>
+<span class="nc" id="L45">                _PuntoControl.toString() ) );</span>
+        //endregion
+<span class="nc" id="L47">    }</span>
+
+    @Override
+    public void execute()
+    {
+        //region Instrumentation DEBUG
+<span class="nc" id="L53">        _logger.debug( &quot;Get in  AddPuntoControlCommand.execute&quot; );</span>
+        //endregion
+
+<span class="nc" id="L56">        _PuntoControl = _dao.insert( _PuntoControl);</span>
+
+        //region Instrumentation DEBUG
+<span class="nc" id="L59">        _logger.debug( &quot;Get in  AddPuntoControlCommand.execute&quot; );</span>
+        //endregion
+<span class="nc" id="L61">    }</span>
+
+    @Override
+    public PuntoControl getReturnParam()
+    {
+<span class="nc" id="L66">        return _PuntoControl;</span>
+    }
+
+    @Override
+    public void closeHandlerSession()
+    {
+<span class="nc" id="L72">        getHandler().closeSession();</span>
+<span class="nc" id="L73">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

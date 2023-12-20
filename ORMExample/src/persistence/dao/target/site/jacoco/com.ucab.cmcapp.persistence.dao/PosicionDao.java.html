@@ -9,30 +9,61 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 
 public class PosicionDao extends BaseDao&lt;Posicion&gt;
 {
-<span class="nc" id="L19">    private static Logger _logger = LoggerFactory.getLogger( PosicionDao.class );</span>
+<span class="nc" id="L21">    private static Logger _logger = LoggerFactory.getLogger( PosicionDao.class );</span>
     private EntityManager _em;
     private CriteriaBuilder _builder;
 
 
     public PosicionDao()
     {
-<span class="nc" id="L26">        super();</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L28">        super();</span>
+<span class="nc" id="L29">    }</span>
 
     public PosicionDao( DBHandler handler )
     {
-<span class="nc" id="L31">        super( handler );</span>
+<span class="nc" id="L33">        super( handler );</span>
 
-<span class="nc" id="L33">        _em = getDBHandler().getSession();</span>
-<span class="nc" id="L34">        _builder = _em.getCriteriaBuilder();</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L35">        _em = getDBHandler().getSession();</span>
+<span class="nc" id="L36">        _builder = _em.getCriteriaBuilder();</span>
+<span class="nc" id="L37">    }</span>
+
+    public List&lt;Posicion&gt; getPosicionByIdUsuario(long id)
+    {
+<span class="nc" id="L41">        List&lt;Posicion&gt; result = null;</span>
+<span class="nc" id="L42">        _logger.debug( String.format( &quot;Get in UsuarioDao.getUsuarioByUsername: parameter {%s}&quot;, id ) );</span>
+        try
+        {
+<span class="nc" id="L45">            CriteriaQuery&lt;Posicion&gt; criteriaQuery = _builder.createQuery( Posicion.class );</span>
+<span class="nc" id="L46">            Root&lt;Posicion&gt; root = criteriaQuery.from( Posicion.class );</span>
+
+<span class="nc" id="L48">            Query query = _em.createQuery(&quot;FROM Posicion WHERE usuario.id = :idUsuario&quot;, Posicion.class);</span>
+<span class="nc" id="L49">            query.setParameter(&quot;idUsuario&quot;, id);</span>
+<span class="nc" id="L50">            result = query.getResultList();</span>
+        }
+<span class="nc" id="L52">        catch ( NoResultException e )</span>
+        {
+<span class="nc" id="L54">            _logger.error( String.format( &quot;Error UsuarioDao.getUsuarioByUsername: No Result {%s}&quot;, e.getMessage() ) );</span>
+        }
+<span class="nc" id="L56">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L58">            _logger.error( String.format( &quot;Error UsuarioDao.getUsuarioByUsername: {%s}&quot;, e.getMessage() ) );</span>
+<span class="nc" id="L59">            throw new CupraException( e.getMessage() );</span>
+<span class="nc" id="L60">        }</span>
+        //region Instrumentation
+<span class="nc" id="L62">        _logger.debug( String.format( &quot;Leavin UsuarioDao.getUsuarioByUsername: result {%s}&quot;, result ) );</span>
+        //endregion
+
+<span class="nc" id="L65">        return result;</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -17,19 +17,15 @@ import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.*;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.atomic.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.*;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.*;
 import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.GetAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.UpdateAlertaCommand;
-import com.ucab.cmcapp.logic.commands.posicion.atomic.AddPosicionCommand;
-import com.ucab.cmcapp.logic.commands.posicion.atomic.DeletePosicionByIdCommand;
-import com.ucab.cmcapp.logic.commands.posicion.atomic.GetPosicionByIdCommand;
-import com.ucab.cmcapp.logic.commands.posicion.atomic.UpdatePosicionByIdCommand;
-import com.ucab.cmcapp.logic.commands.posicion.composite.CreatePosicionCommand;
-import com.ucab.cmcapp.logic.commands.posicion.composite.DeletePosicionCommand;
-import com.ucab.cmcapp.logic.commands.posicion.composite.GetPosicionCommand;
-import com.ucab.cmcapp.logic.commands.posicion.composite.UpdatePosicionCommand;
+import com.ucab.cmcapp.logic.commands.posicion.atomic.*;
+import com.ucab.cmcapp.logic.commands.posicion.composite.*;
 import com.ucab.cmcapp.logic.commands.puntoControl.atomic.AddPuntoControlCommand;
 import com.ucab.cmcapp.logic.commands.puntoControl.atomic.DeletePuntoControlByIdCommand;
 import com.ucab.cmcapp.logic.commands.puntoControl.atomic.GetPuntoControlByIdCommand;
@@ -38,11 +34,7 @@ import com.ucab.cmcapp.logic.commands.puntoControl.composite.CreatePuntoControlC
 import com.ucab.cmcapp.logic.commands.puntoControl.composite.DeletePuntoControlCommand;
 import com.ucab.cmcapp.logic.commands.puntoControl.composite.GetPuntoControlCommand;
 import com.ucab.cmcapp.logic.commands.puntoControl.composite.UpdatePuntoControlCommand;
-import com.ucab.cmcapp.logic.commands.user.atomic.AddUserCommand;
-import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByIdCommand;
-import com.ucab.cmcapp.logic.commands.user.composite.CreateUserCommand;
-import com.ucab.cmcapp.logic.commands.user.composite.GetUserCommand;
-import com.ucab.cmcapp.logic.commands.user.atomic.GetUserByEmailCommand;
+
 import com.ucab.cmcapp.logic.commands.usuario.atomic.*;
 import com.ucab.cmcapp.logic.commands.usuario.composite.*;
 import com.ucab.cmcapp.persistence.DBHandler;
@@ -51,41 +43,6 @@ import java.util.List;
 
 public class CommandFactory
 {
-    //User
-    public static GetUserCommand createGetUserCommand(User user)
-    {
-        return new GetUserCommand(user);
-    }
-
-    public static GetUserByEmailCommand createGetUserByEmailCommand(User user)
-    {
-        return new GetUserByEmailCommand(user);
-    }
-
-    public static GetUserByEmailCommand createGetUserByEmailCommand(User user, DBHandler handler)
-    {
-        return new GetUserByEmailCommand(user, handler);
-    }
-
-    public static GetUserByIdCommand createGetUserByIdCommand (DBHandler handler, long userId )
-    {
-        return new GetUserByIdCommand(handler, userId);
-    }
-
-    public static AddUserCommand createAddUserCommand(User user, DBHandler handler)
-    {
-        return new AddUserCommand(user, handler);
-    }
-
-    public static AddUserCommand createAddUserCommand(User user)
-    {
-        return new AddUserCommand(user);
-    }
-
-    public static CreateUserCommand createCreateUserCommand(User user)
-    {
-        return new CreateUserCommand(user);
-    }
 
     //Usuario
 
@@ -245,14 +202,14 @@ public class CommandFactory
         return new GetDistanciaAlejamientoCommand(distancia);
     }
 
-    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DistanciaAlejamiento distancia)
+    public static GetDistanciaAlejamientoUsuariosCommand createGetDistanciaAlejamientoUsuariosCommand(long id)
     {
-        return new GetDistanciaAlejamientoByUsuariosCommand(distancia);
+        return new GetDistanciaAlejamientoUsuariosCommand(id);
     }
 
-    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DistanciaAlejamiento distancia, DBHandler handler)
+    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DBHandler handler,long id)
     {
-        return new GetDistanciaAlejamientoByUsuariosCommand(distancia, handler);
+        return new GetDistanciaAlejamientoByUsuariosCommand(handler, id);
     }
 
     public static GetDistanciaAlejamientoByIdCommand createGetDistanciaAlejamientoByIdCommand (DBHandler handler, long distanciaId )
@@ -375,6 +332,18 @@ public class CommandFactory
     public static UpdatePosicionCommand createUpdatePosicionCommand(Posicion user)
     {
         return new UpdatePosicionCommand(user);
+    }
+
+
+    public static GetAllPosicionCommand createGetAllPosicionCommand(long id)
+    {
+        return new GetAllPosicionCommand(id);
+    }
+
+
+    public static GetAllPosicionByIdCommand createGetAllPosicionByIdCommand (DBHandler handler,long id)
+    {
+        return new GetAllPosicionByIdCommand(handler, id);
     }
     
     
@@ -715,6 +684,90 @@ public class CommandFactory
         return new UpdateUserTypeCommand(user);
     }
     
+    //ZonaSeguridadUsuario
 
+    public static GetZonaSeguridadUsuarioCommand createGetZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+        return new GetZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);
+    }
+
+
+    public static GetZonaSeguridadUsuarioByIdCommand createGetZonaSeguridadUsuarioByIdCommand (DBHandler handler, long ZonaSeguridadUsuarioId )
+    {
+        return new GetZonaSeguridadUsuarioByIdCommand(handler, ZonaSeguridadUsuarioId);
+    }
+
+    public static GetAllZonaSeguridadUsuarioCommand createGetAllZonaSeguridadUsuarioCommand()
+    {
+        return new GetAllZonaSeguridadUsuarioCommand();
+    }
+
+
+    public static GetAllZonaSeguridadUsuarioByIdCommand createGetAllZonaSeguridadUsuarioByIdCommand (DBHandler handler )
+    {
+        return new GetAllZonaSeguridadUsuarioByIdCommand(handler);
+    }
+
+
+
+
+    public static GetAllZonaSeguridadUsuarioByIdUsuarioCommand createGetAllZonaSeguridadUsuarioByIdUsuarioCommand(DBHandler handler, long id)
+    {
+        return new GetAllZonaSeguridadUsuarioByIdUsuarioCommand(handler,id);
+    }
+
+
+    public static GetAllZonaSeguridadUsuarioByUsuarioCommand createGetAllZonaSeguridadUsuarioByUsuarioCommand (long id )
+    {
+        return new GetAllZonaSeguridadUsuarioByUsuarioCommand(id);
+    }
+
+
+    public static AddZonaSeguridadUsuarioCommand createAddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario, DBHandler handler)
+    {
+        return new AddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario, handler);
+    }
+
+    public static AddZonaSeguridadUsuarioCommand createAddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+        return new AddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);
+    }
+
+    public static CreateZonaSeguridadUsuarioCommand createCreateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+        return new CreateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);
+    }
+
+
+
+    public static DeleteZonaSeguridadUsuarioByIdCommand createDeleteZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user, DBHandler handler)
+    {
+        return new DeleteZonaSeguridadUsuarioByIdCommand(user, handler);
+    }
+
+    public static DeleteZonaSeguridadUsuarioByIdCommand createDeleteZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user)
+    {
+        return new DeleteZonaSeguridadUsuarioByIdCommand(user);
+    }
+
+    public static DeleteZonaSeguridadUsuarioCommand createDeleteZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario user)
+    {
+        return new DeleteZonaSeguridadUsuarioCommand(user);
+    }
+
+    public static UpdateZonaSeguridadUsuarioByIdCommand createUpdateZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user, DBHandler handler)
+    {
+        return new UpdateZonaSeguridadUsuarioByIdCommand(user, handler);
+    }
+
+    public static UpdateZonaSeguridadUsuarioByIdCommand createUpdateZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user)
+    {
+        return new UpdateZonaSeguridadUsuarioByIdCommand(user);
+    }
+
+    public static UpdateZonaSeguridadUsuarioCommand createUpdateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario user)
+    {
+        return new UpdateZonaSeguridadUsuarioCommand(user);
+    }
 
 }

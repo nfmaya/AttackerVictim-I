@@ -5,7 +5,6 @@
     <persistence-unit name="cmcapp" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <non-jta-data-source>java:/AttackerDriver</non-jta-data-source>
-        <class>com.ucab.cmcapp.common.entities.User</class>
         <class>com.ucab.cmcapp.common.entities.UserType</class>
         <class>com.ucab.cmcapp.common.entities.Usuario</class>
         <class>com.ucab.cmcapp.common.entities.Alerta</class>
@@ -15,7 +14,7 @@
         <class>com.ucab.cmcapp.common.entities.CoordenadaZonaSeguridad</class>
         <class>com.ucab.cmcapp.common.entities.ZonaSeguridad</class>
         <class>com.ucab.cmcapp.common.entities.TiempoControl</class>
-
+        <class>com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario</class>
 
         <properties>
             <property name="hibernate.generate_statistics" value="true"/>

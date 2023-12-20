@@ -33,75 +33,31 @@ import java.util.List;
 public class TiempoControlService extends BaseService {
     private static Logger _logger = LoggerFactory.getLogger(TiempoControlService.class);
 
-    @GET//Arreglado ya envía al rabbitmq
-    @Path("/{id}")
-    public void getTiempoControl(@PathParam("id") long userId) {
-        TiempoControl entity;
-        TiempoControlDto response = null;
-        GetTiempoControlCommand command = null;
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        _logger.debug("Get in TiempoControlService.getTiempoControl");
-
-        try {
-            entity = TiempoControlMapper.mapDtoToEntity(userId);
-            command = CommandFactory.createGetTiempoControlCommand(entity);
-            command.execute();
-            if (command.getReturnParam() != null) {
-                response = TiempoControlMapper.mapEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Alerta: " + userId));
-            } else {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build());
-            }
-            Sender.send(jsonString);
-        } catch (Exception e) {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Tiempo Control " + userId)).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            if (command != null) {
-                command.closeHandlerSession();
-            }
-            _logger.debug("Leaving TiempoControlService.getTiempoControl");
-        }
-    }
-
-
-
     @GET
-    @Path( "/findAll" )
-    public void getAllTiempoControl()
+    @Path( "/{id}" )
+    public Response getTiempoControl(@PathParam( "id" ) long userId )
     {
-        List<TiempoControlDto> response;
-        GetAllTiempoControlCommand command = null;
+        TiempoControl entity;
+        TiempoControlDto response;
+        GetTiempoControlCommand command = null;
         //region Instrumentation DEBUG
         _logger.debug( "Get in TiempoControlService.getTiempoControl" );
         //endregion
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
+
         try
         {
-            command = CommandFactory.createGetAllTiempoControlCommand();
+            entity = TiempoControlMapper.mapDtoToEntity( userId );
+            command = CommandFactory.createGetTiempoControlCommand( entity );
             command.execute();
             if(command.getReturnParam() != null){
-                response = TiempoControlMapper.mapListEntityToDto(command.getReturnParam());
-                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda de todos los controles de tiempo"));
+                response = TiempoControlMapper.mapEntityToDto(command.getReturnParam());
             }else{
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build());
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + userId)).build();
             }
-            Sender.send(jsonString);
         }
         catch ( Exception e )
         {
-            try {
-                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en TiempoControl ")).build());
-                Sender.send(jsonString);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Tiempo Control " + userId)).build();
 
         }
         finally
@@ -111,7 +67,43 @@ public class TiempoControlService extends BaseService {
         }
 
         _logger.debug( "Leaving TiempoControlService.getTiempoControl" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Tiempo Control: " + userId)).build();
+    }
 
+
+    @GET
+    @Path( "/findAll" )
+    public Response getAllTiempoControl()
+    {
+        List<TiempoControlDto> response;
+        GetAllTiempoControlCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in TiempoControlService.getTiempoControl" );
+        //endregion
+
+        try
+        {
+            command = CommandFactory.createGetAllTiempoControlCommand();
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = TiempoControlMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en TiempoControl ")).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving TiempoControlService.getTiempoControl" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id TiempoControl: " )).build();
     }
 
     @POST

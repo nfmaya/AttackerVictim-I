@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommandFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">command</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.logic.commands</a> &gt; <span class="el_source">CommandFactory.java</span></div><h1>CommandFactory.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.logic.commands;
+
+import com.ucab.cmcapp.common.entities.*;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.atomic.*;
+import com.ucab.cmcapp.logic.commands.CoordenadaZonaSeguridad.composite.*;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.*;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.*;
+import com.ucab.cmcapp.logic.commands.TiempoControl.atomic.*;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.*;
+import com.ucab.cmcapp.logic.commands.UserType.atomic.AddUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.atomic.DeleteUserTypeByIdCommand;
+import com.ucab.cmcapp.logic.commands.UserType.atomic.GetUserTypeByIdCommand;
+import com.ucab.cmcapp.logic.commands.UserType.atomic.UpdateUserTypeByIdCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.CreateUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.DeleteUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.GetUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.UserType.composite.UpdateUserTypeCommand;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.atomic.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.atomic.*;
+import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.*;
+import com.ucab.cmcapp.logic.commands.alerta.atomic.*;
+import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.GetAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.UpdateAlertaCommand;
+import com.ucab.cmcapp.logic.commands.posicion.atomic.*;
+import com.ucab.cmcapp.logic.commands.posicion.composite.*;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.AddPuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.DeletePuntoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.GetPuntoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.UpdatePuntoControlByIdCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.CreatePuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.DeletePuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.GetPuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.UpdatePuntoControlCommand;
+
+import com.ucab.cmcapp.logic.commands.usuario.atomic.*;
+import com.ucab.cmcapp.logic.commands.usuario.composite.*;
+import com.ucab.cmcapp.persistence.DBHandler;
+
+import java.util.List;
+
+<span class="nc" id="L44">public class CommandFactory</span>
+{
+
+    //Usuario
+
+    public static GetUsuarioCommand createGetUsuarioCommand(Usuario user)
+    {
+<span class="nc" id="L51">        return new GetUsuarioCommand(user);</span>
+    }
+
+    public static GetAllUsuarioCommand createGetAllUsuarioCommand()
+    {
+<span class="nc" id="L56">        return new GetAllUsuarioCommand();</span>
+    }
+
+    public static GetAllUsuarioByIdCommand createGetAllUsuarioByIdCommand (DBHandler handler )
+    {
+<span class="nc" id="L61">        return new GetAllUsuarioByIdCommand(handler);</span>
+    }
+
+
+
+    public static GetUsuarioByUsernameCommand createGetUsuarioByUsernameCommand(Usuario user)
+    {
+<span class="nc" id="L68">        return new GetUsuarioByUsernameCommand(user);</span>
+    }
+
+    public static GetUsuarioByUsernameCommand createGetUsuarioByUsernameCommand(Usuario user, DBHandler handler)
+    {
+<span class="nc" id="L73">        return new GetUsuarioByUsernameCommand(user, handler);</span>
+    }
+
+    public static DeleteUsuarioByIdCommand createDeleteUsuarioByIdCommand(Usuario user, DBHandler handler)
+    {
+<span class="nc" id="L78">        return new DeleteUsuarioByIdCommand(user, handler);</span>
+    }
+
+    public static DeleteUsuarioByIdCommand createDeleteUsuarioByIdCommand(Usuario user)
+    {
+<span class="nc" id="L83">        return new DeleteUsuarioByIdCommand(user);</span>
+    }
+
+    public static DeleteUsuarioCommand createDeleteUsuarioCommand(Usuario user)
+    {
+<span class="nc" id="L88">        return new DeleteUsuarioCommand(user);</span>
+    }
+
+    public static UpdateUsuarioByIdCommand createUpdateUsuarioByIdCommand(Usuario user, DBHandler handler)
+    {
+<span class="nc" id="L93">        return new UpdateUsuarioByIdCommand(user, handler);</span>
+    }
+
+    public static UpdateUsuarioByIdCommand createUpdateUsuarioByIdCommand(Usuario user)
+    {
+<span class="nc" id="L98">        return new UpdateUsuarioByIdCommand(user);</span>
+    }
+
+    public static UpdateUsuarioCommand createUpdateUsuarioCommand(Usuario user)
+    {
+<span class="nc" id="L103">        return new UpdateUsuarioCommand(user);</span>
+    }
+
+
+    public static GetUsuarioByIdCommand createGetUsuarioByIdCommand (DBHandler handler, long userId )
+    {
+<span class="nc" id="L109">        return new GetUsuarioByIdCommand(handler, userId);</span>
+    }
+
+
+    public static AddUsuarioCommand createAddUsuarioCommand(Usuario user, DBHandler handler)
+    {
+<span class="nc" id="L115">        return new AddUsuarioCommand(user, handler);</span>
+    }
+
+    public static AddUsuarioCommand createAddUsuarioCommand(Usuario user)
+    {
+<span class="nc" id="L120">        return new AddUsuarioCommand(user);</span>
+    }
+
+    public static CreateUsuarioCommand createCreateUsuarioCommand(Usuario user)
+    {
+<span class="nc" id="L125">        return new CreateUsuarioCommand(user);</span>
+    }
+
+
+    //Alerta
+    public static GetAlertaCommand createGetAlertaCommand(Alerta alerta)
+    {
+<span class="nc" id="L132">        return new GetAlertaCommand(alerta);</span>
+    }
+
+    public static GetAlertaByTipoAlertaCommand createGetAlertaByTipoAlertaCommand(Alerta alerta)
+    {
+<span class="nc" id="L137">        return new GetAlertaByTipoAlertaCommand(alerta);</span>
+    }
+
+    public static GetAlertaByTipoAlertaCommand createGetAlertaByTipoAlertaCommand(Alerta alerta, DBHandler handler)
+    {
+<span class="nc" id="L142">        return new GetAlertaByTipoAlertaCommand(alerta, handler);</span>
+    }
+
+    public static GetAlertaByIdCommand createGetAlertaByIdCommand (DBHandler handler, long alertaId )
+    {
+<span class="nc" id="L147">        return new GetAlertaByIdCommand(handler, alertaId);</span>
+    }
+
+    public static AddAlertaCommand createAddAlertaCommand(Alerta alerta, DBHandler handler)
+    {
+<span class="nc" id="L152">        return new AddAlertaCommand(alerta, handler);</span>
+    }
+
+    public static AddAlertaCommand createAddAlertaCommand(Alerta alerta)
+    {
+<span class="nc" id="L157">        return new AddAlertaCommand(alerta);</span>
+    }
+
+    public static CreateAlertaCommand createCreateAlertaCommand(Alerta alerta)
+    {
+<span class="nc" id="L162">        return new CreateAlertaCommand(alerta);</span>
+    }
+
+
+
+    public static DeleteAlertaByIdCommand createDeleteAlertaByIdCommand(Alerta user, DBHandler handler)
+    {
+<span class="nc" id="L169">        return new DeleteAlertaByIdCommand(user, handler);</span>
+    }
+
+    public static DeleteAlertaByIdCommand createDeleteAlertaByIdCommand(Alerta user)
+    {
+<span class="nc" id="L174">        return new DeleteAlertaByIdCommand(user);</span>
+    }
+
+    public static DeleteAlertaCommand createDeleteAlertaCommand(Alerta user)
+    {
+<span class="nc" id="L179">        return new DeleteAlertaCommand(user);</span>
+    }
+
+    public static UpdateAlertaByIdCommand createUpdateAlertaByIdCommand(Alerta user, DBHandler handler)
+    {
+<span class="nc" id="L184">        return new UpdateAlertaByIdCommand(user, handler);</span>
+    }
+
+    public static UpdateAlertaByIdCommand createUpdateAlertaByIdCommand(Alerta user)
+    {
+<span class="nc" id="L189">        return new UpdateAlertaByIdCommand(user);</span>
+    }
+
+    public static UpdateAlertaCommand createUpdateAlertaCommand(Alerta user)
+    {
+<span class="nc" id="L194">        return new UpdateAlertaCommand(user);</span>
+    }
+
+
+    //DistanciaAlejamiento
+
+    public static GetDistanciaAlejamientoCommand createGetDistanciaAlejamientoCommand(DistanciaAlejamiento distancia)
+    {
+<span class="nc" id="L202">        return new GetDistanciaAlejamientoCommand(distancia);</span>
+    }
+
+    public static GetDistanciaAlejamientoUsuariosCommand createGetDistanciaAlejamientoUsuariosCommand(long id)
+    {
+<span class="nc" id="L207">        return new GetDistanciaAlejamientoUsuariosCommand(id);</span>
+    }
+
+    public static GetDistanciaAlejamientoByUsuariosCommand createGetDistanciaAlejamientoByUsuariosCommand(DBHandler handler,long id)
+    {
+<span class="nc" id="L212">        return new GetDistanciaAlejamientoByUsuariosCommand(handler, id);</span>
+    }
+
+    public static GetDistanciaAlejamientoByIdCommand createGetDistanciaAlejamientoByIdCommand (DBHandler handler, long distanciaId )
+    {
+<span class="nc" id="L217">        return new GetDistanciaAlejamientoByIdCommand(handler, distanciaId);</span>
+    }
+
+    public static AddDistanciaAlejamientoCommand createAddDistanciaAlejamientoCommand(DistanciaAlejamiento distancia, DBHandler handler)
+    {
+<span class="nc" id="L222">        return new AddDistanciaAlejamientoCommand(distancia, handler);</span>
+    }
+
+    public static AddDistanciaAlejamientoCommand createAddDistanciaAlejamientoCommand(DistanciaAlejamiento distancia)
+    {
+<span class="nc" id="L227">        return new AddDistanciaAlejamientoCommand(distancia);</span>
+    }
+
+    public static CreateDistanciaAlejamientoCommand createCreateDistanciaAlejamientoCommand(DistanciaAlejamiento distancia)
+    {
+<span class="nc" id="L232">        return new CreateDistanciaAlejamientoCommand(distancia);</span>
+    }
+
+
+    public static DeleteDistanciaByIdCommand createDeleteDistanciaByIdCommand(DistanciaAlejamiento user, DBHandler handler)
+    {
+<span class="nc" id="L238">        return new DeleteDistanciaByIdCommand(user, handler);</span>
+    }
+
+    public static DeleteDistanciaByIdCommand createDeleteDistanciaByIdCommand(DistanciaAlejamiento user)
+    {
+<span class="nc" id="L243">        return new DeleteDistanciaByIdCommand(user);</span>
+    }
+
+    public static DeleteDistanciaCommand createDeleteDistanciaCommand(DistanciaAlejamiento user)
+    {
+<span class="nc" id="L248">        return new DeleteDistanciaCommand(user);</span>
+    }
+
+    public static UpdateDistanciaByIdCommand createUpdateDistanciaByIdCommand(DistanciaAlejamiento user, DBHandler handler)
+    {
+<span class="nc" id="L253">        return new UpdateDistanciaByIdCommand(user, handler);</span>
+    }
+
+    public static UpdateDistanciaByIdCommand createUpdateDistanciaByIdCommand(DistanciaAlejamiento user)
+    {
+<span class="nc" id="L258">        return new UpdateDistanciaByIdCommand(user);</span>
+    }
+
+    public static UpdateDistanciaCommand createUpdateDistanciaCommand(DistanciaAlejamiento user)
+    {
+<span class="nc" id="L263">        return new UpdateDistanciaCommand(user);</span>
+    }
+
+    public static GetAllDistanciaAlejamientoCommand createGetAllDistanciaAlejamientoCommand()
+    {
+<span class="nc" id="L268">        return new GetAllDistanciaAlejamientoCommand();</span>
+    }
+
+
+    public static GetAllDistanciaAlejamientoByIdCommand createGetAllDistanciaAlejamientoByIdCommand (DBHandler handler )
+    {
+<span class="nc" id="L274">        return new GetAllDistanciaAlejamientoByIdCommand(handler);</span>
+    }
+
+
+    //Posicion
+    public static GetPosicionCommand createGetPosicionCommand(Posicion Posicion)
+    {
+<span class="nc" id="L281">        return new GetPosicionCommand(Posicion);</span>
+    }
+
+
+    public static GetPosicionByIdCommand createGetPosicionByIdCommand (DBHandler handler, long PosicionId )
+    {
+<span class="nc" id="L287">        return new GetPosicionByIdCommand(handler, PosicionId);</span>
+    }
+
+    public static AddPosicionCommand createAddPosicionCommand(Posicion Posicion, DBHandler handler)
+    {
+<span class="nc" id="L292">        return new AddPosicionCommand(Posicion, handler);</span>
+    }
+
+    public static AddPosicionCommand createAddPosicionCommand(Posicion Posicion)
+    {
+<span class="nc" id="L297">        return new AddPosicionCommand(Posicion);</span>
+    }
+
+    public static CreatePosicionCommand createCreatePosicionCommand(Posicion Posicion)
+    {
+<span class="nc" id="L302">        return new CreatePosicionCommand(Posicion);</span>
+    }
+
+
+
+    public static DeletePosicionByIdCommand createDeletePosicionByIdCommand(Posicion user, DBHandler handler)
+    {
+<span class="nc" id="L309">        return new DeletePosicionByIdCommand(user, handler);</span>
+    }
+
+    public static DeletePosicionByIdCommand createDeletePosicionByIdCommand(Posicion user)
+    {
+<span class="nc" id="L314">        return new DeletePosicionByIdCommand(user);</span>
+    }
+
+    public static DeletePosicionCommand createDeletePosicionCommand(Posicion user)
+    {
+<span class="nc" id="L319">        return new DeletePosicionCommand(user);</span>
+    }
+
+    public static UpdatePosicionByIdCommand createUpdatePosicionByIdCommand(Posicion user, DBHandler handler)
+    {
+<span class="nc" id="L324">        return new UpdatePosicionByIdCommand(user, handler);</span>
+    }
+
+    public static UpdatePosicionByIdCommand createUpdatePosicionByIdCommand(Posicion user)
+    {
+<span class="nc" id="L329">        return new UpdatePosicionByIdCommand(user);</span>
+    }
+
+    public static UpdatePosicionCommand createUpdatePosicionCommand(Posicion user)
+    {
+<span class="nc" id="L334">        return new UpdatePosicionCommand(user);</span>
+    }
+
+
+    public static GetAllPosicionCommand createGetAllPosicionCommand(long id)
+    {
+<span class="nc" id="L340">        return new GetAllPosicionCommand(id);</span>
+    }
+
+
+    public static GetAllPosicionByIdCommand createGetAllPosicionByIdCommand (DBHandler handler,long id)
+    {
+<span class="nc" id="L346">        return new GetAllPosicionByIdCommand(handler, id);</span>
+    }
+    
+    
+    //PuntoControl
+
+    public static GetPuntoControlCommand createGetPuntoControlCommand(PuntoControl PuntoControl)
+    {
+<span class="nc" id="L354">        return new GetPuntoControlCommand(PuntoControl);</span>
+    }
+
+
+    public static GetPuntoControlByIdCommand createGetPuntoControlByIdCommand (DBHandler handler, long PuntoControlId )
+    {
+<span class="nc" id="L360">        return new GetPuntoControlByIdCommand(handler, PuntoControlId);</span>
+    }
+
+    public static AddPuntoControlCommand createAddPuntoControlCommand(PuntoControl PuntoControl, DBHandler handler)
+    {
+<span class="nc" id="L365">        return new AddPuntoControlCommand(PuntoControl, handler);</span>
+    }
+
+    public static AddPuntoControlCommand createAddPuntoControlCommand(PuntoControl PuntoControl)
+    {
+<span class="nc" id="L370">        return new AddPuntoControlCommand(PuntoControl);</span>
+    }
+
+    public static CreatePuntoControlCommand createCreatePuntoControlCommand(PuntoControl PuntoControl)
+    {
+<span class="nc" id="L375">        return new CreatePuntoControlCommand(PuntoControl);</span>
+    }
+
+
+
+    public static DeletePuntoControlByIdCommand createDeletePuntoControlByIdCommand(PuntoControl user, DBHandler handler)
+    {
+<span class="nc" id="L382">        return new DeletePuntoControlByIdCommand(user, handler);</span>
+    }
+
+    public static DeletePuntoControlByIdCommand createDeletePuntoControlByIdCommand(PuntoControl user)
+    {
+<span class="nc" id="L387">        return new DeletePuntoControlByIdCommand(user);</span>
+    }
+
+    public static DeletePuntoControlCommand createDeletePuntoControlCommand(PuntoControl user)
+    {
+<span class="nc" id="L392">        return new DeletePuntoControlCommand(user);</span>
+    }
+
+    public static UpdatePuntoControlByIdCommand createUpdatePuntoControlByIdCommand(PuntoControl user, DBHandler handler)
+    {
+<span class="nc" id="L397">        return new UpdatePuntoControlByIdCommand(user, handler);</span>
+    }
+
+    public static UpdatePuntoControlByIdCommand createUpdatePuntoControlByIdCommand(PuntoControl user)
+    {
+<span class="nc" id="L402">        return new UpdatePuntoControlByIdCommand(user);</span>
+    }
+
+    public static UpdatePuntoControlCommand createUpdatePuntoControlCommand(PuntoControl user)
+    {
+<span class="nc" id="L407">        return new UpdatePuntoControlCommand(user);</span>
+    }
+
+
+    //CoordenadaZonaSeguridad
+
+    public static GetCoordenadaZonaSeguridadCommand createGetCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad CoordenadaZonaSeguridad)
+    {
+<span class="nc" id="L415">        return new GetCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad);</span>
+    }
+
+
+    public static GetCoordenadaZonaSeguridadByIdCommand createGetCoordenadaZonaSeguridadByIdCommand (DBHandler handler, long CoordenadaZonaSeguridadId )
+    {
+<span class="nc" id="L421">        return new GetCoordenadaZonaSeguridadByIdCommand(handler, CoordenadaZonaSeguridadId);</span>
+    }
+
+    public static AddCoordenadaZonaSeguridadCommand createAddCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad CoordenadaZonaSeguridad, DBHandler handler)
+    {
+<span class="nc" id="L426">        return new AddCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad, handler);</span>
+    }
+
+    public static AddCoordenadaZonaSeguridadCommand createAddCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad CoordenadaZonaSeguridad)
+    {
+<span class="nc" id="L431">        return new AddCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad);</span>
+    }
+
+    public static CreateCoordenadaZonaSeguridadCommand createCreateCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad CoordenadaZonaSeguridad)
+    {
+<span class="nc" id="L436">        return new CreateCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad);</span>
+    }
+
+
+
+    public static DeleteCoordenadaZonaSeguridadByIdCommand createDeleteCoordenadaZonaSeguridadByIdCommand(CoordenadaZonaSeguridad user, DBHandler handler)
+    {
+<span class="nc" id="L443">        return new DeleteCoordenadaZonaSeguridadByIdCommand(user, handler);</span>
+    }
+
+    public static DeleteCoordenadaZonaSeguridadByIdCommand createDeleteCoordenadaZonaSeguridadByIdCommand(CoordenadaZonaSeguridad user)
+    {
+<span class="nc" id="L448">        return new DeleteCoordenadaZonaSeguridadByIdCommand(user);</span>
+    }
+
+    public static DeleteCoordenadaZonaSeguridadCommand createDeleteCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad user)
+    {
+<span class="nc" id="L453">        return new DeleteCoordenadaZonaSeguridadCommand(user);</span>
+    }
+
+    public static UpdateCoordenadaZonaSeguridadByIdCommand createUpdateCoordenadaZonaSeguridadByIdCommand(CoordenadaZonaSeguridad user, DBHandler handler)
+    {
+<span class="nc" id="L458">        return new UpdateCoordenadaZonaSeguridadByIdCommand(user, handler);</span>
+    }
+
+    public static UpdateCoordenadaZonaSeguridadByIdCommand createUpdateCoordenadaZonaSeguridadByIdCommand(CoordenadaZonaSeguridad user)
+    {
+<span class="nc" id="L463">        return new UpdateCoordenadaZonaSeguridadByIdCommand(user);</span>
+    }
+
+    public static UpdateCoordenadaZonaSeguridadCommand createUpdateCoordenadaZonaSeguridadCommand(CoordenadaZonaSeguridad user)
+    {
+<span class="nc" id="L468">        return new UpdateCoordenadaZonaSeguridadCommand(user);</span>
+    }
+
+
+    public static GetAllCoordenadaZonaSeguridadCommand createGetAllCoordenadaZonaSeguridadCommand(long id)
+    {
+<span class="nc" id="L474">        return new GetAllCoordenadaZonaSeguridadCommand(id);</span>
+    }
+
+
+    public static GetAllCoordenadaZonaSeguridadByIdZonaCommand createGetAllCoordenadaZonaSeguridadByIdZonaCommand (DBHandler handler ,long id)
+    {
+<span class="nc" id="L480">        return new GetAllCoordenadaZonaSeguridadByIdZonaCommand(handler,id);</span>
+    }
+
+
+    //ZonaSeguridad 
+
+    public static GetZonaSeguridadCommand createGetZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad)
+    {
+<span class="nc" id="L488">        return new GetZonaSeguridadCommand(ZonaSeguridad);</span>
+    }
+
+
+    public static GetZonaSeguridadByIdCommand createGetZonaSeguridadByIdCommand (DBHandler handler, long ZonaSeguridadId )
+    {
+<span class="nc" id="L494">        return new GetZonaSeguridadByIdCommand(handler, ZonaSeguridadId);</span>
+    }
+
+    public static GetAllZonaSeguridadCommand createGetAllZonaSeguridadCommand()
+    {
+<span class="nc" id="L499">        return new GetAllZonaSeguridadCommand();</span>
+    }
+
+
+    public static GetAllZonaSeguridadByIdCommand createGetAllZonaSeguridadByIdCommand (DBHandler handler )
+    {
+<span class="nc" id="L505">        return new GetAllZonaSeguridadByIdCommand(handler);</span>
+    }
+
+    public static AddZonaSeguridadCommand createAddZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad, DBHandler handler)
+    {
+<span class="nc" id="L510">        return new AddZonaSeguridadCommand(ZonaSeguridad, handler);</span>
+    }
+
+    public static AddZonaSeguridadCommand createAddZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad)
+    {
+<span class="nc" id="L515">        return new AddZonaSeguridadCommand(ZonaSeguridad);</span>
+    }
+
+    public static CreateZonaSeguridadCommand createCreateZonaSeguridadCommand(ZonaSeguridad ZonaSeguridad)
+    {
+<span class="nc" id="L520">        return new CreateZonaSeguridadCommand(ZonaSeguridad);</span>
+    }
+
+
+
+    public static DeleteZonaSeguridadByIdCommand createDeleteZonaSeguridadByIdCommand(ZonaSeguridad user, DBHandler handler)
+    {
+<span class="nc" id="L527">        return new DeleteZonaSeguridadByIdCommand(user, handler);</span>
+    }
+
+    public static DeleteZonaSeguridadByIdCommand createDeleteZonaSeguridadByIdCommand(ZonaSeguridad user)
+    {
+<span class="nc" id="L532">        return new DeleteZonaSeguridadByIdCommand(user);</span>
+    }
+
+    public static DeleteZonaSeguridadCommand createDeleteZonaSeguridadCommand(ZonaSeguridad user)
+    {
+<span class="nc" id="L537">        return new DeleteZonaSeguridadCommand(user);</span>
+    }
+
+    public static UpdateZonaSeguridadByIdCommand createUpdateZonaSeguridadByIdCommand(ZonaSeguridad user, DBHandler handler)
+    {
+<span class="nc" id="L542">        return new UpdateZonaSeguridadByIdCommand(user, handler);</span>
+    }
+
+    public static UpdateZonaSeguridadByIdCommand createUpdateZonaSeguridadByIdCommand(ZonaSeguridad user)
+    {
+<span class="nc" id="L547">        return new UpdateZonaSeguridadByIdCommand(user);</span>
+    }
+
+    public static UpdateZonaSeguridadCommand createUpdateZonaSeguridadCommand(ZonaSeguridad user)
+    {
+<span class="nc" id="L552">        return new UpdateZonaSeguridadCommand(user);</span>
+    }
+    
+    
+    //TiempoControl
+    public static GetTiempoControlCommand createGetTiempoControlCommand(TiempoControl TiempoControl)
+    {
+<span class="nc" id="L559">        return new GetTiempoControlCommand(TiempoControl);</span>
+    }
+
+
+    public static GetTiempoControlByIdCommand createGetTiempoControlByIdCommand (DBHandler handler, long TiempoControlId )
+    {
+<span class="nc" id="L565">        return new GetTiempoControlByIdCommand(handler, TiempoControlId);</span>
+    }
+
+    public static AddTiempoControlCommand createAddTiempoControlCommand(TiempoControl TiempoControl, DBHandler handler)
+    {
+<span class="nc" id="L570">        return new AddTiempoControlCommand(TiempoControl, handler);</span>
+    }
+
+    public static AddTiempoControlCommand createAddTiempoControlCommand(TiempoControl TiempoControl)
+    {
+<span class="nc" id="L575">        return new AddTiempoControlCommand(TiempoControl);</span>
+    }
+
+    public static CreateTiempoControlCommand createCreateTiempoControlCommand(TiempoControl TiempoControl)
+    {
+<span class="nc" id="L580">        return new CreateTiempoControlCommand(TiempoControl);</span>
+    }
+
+
+
+    public static DeleteTiempoControlByIdCommand createDeleteTiempoControlByIdCommand(TiempoControl user, DBHandler handler)
+    {
+<span class="nc" id="L587">        return new DeleteTiempoControlByIdCommand(user, handler);</span>
+    }
+
+    public static DeleteTiempoControlByIdCommand createDeleteTiempoControlByIdCommand(TiempoControl user)
+    {
+<span class="nc" id="L592">        return new DeleteTiempoControlByIdCommand(user);</span>
+    }
+
+    public static DeleteTiempoControlCommand createDeleteTiempoControlCommand(TiempoControl user)
+    {
+<span class="nc" id="L597">        return new DeleteTiempoControlCommand(user);</span>
+    }
+
+    public static UpdateTiempoControlByIdCommand createUpdateTiempoControlByIdCommand(TiempoControl user, DBHandler handler)
+    {
+<span class="nc" id="L602">        return new UpdateTiempoControlByIdCommand(user, handler);</span>
+    }
+
+    public static UpdateTiempoControlByIdCommand createUpdateTiempoControlByIdCommand(TiempoControl user)
+    {
+<span class="nc" id="L607">        return new UpdateTiempoControlByIdCommand(user);</span>
+    }
+
+    public static UpdateTiempoControlCommand createUpdateTiempoControlCommand(TiempoControl user)
+    {
+<span class="nc" id="L612">        return new UpdateTiempoControlCommand(user);</span>
+    }
+
+    public static GetAllTiempoControlCommand createGetAllTiempoControlCommand()
+    {
+<span class="nc" id="L617">        return new GetAllTiempoControlCommand();</span>
+    }
+
+
+    public static GetAllTiempoControlByIdCommand createGetAllTiempoControlByIdCommand (DBHandler handler )
+    {
+<span class="nc" id="L623">        return new GetAllTiempoControlByIdCommand(handler);</span>
+    }
+
+
+
+    //UserType
+    public static GetUserTypeCommand createGetUserTypeCommand(UserType UserType)
+    {
+<span class="nc" id="L631">        return new GetUserTypeCommand(UserType);</span>
+    }
+
+
+    public static GetUserTypeByIdCommand createGetUserTypeByIdCommand (DBHandler handler, long UserTypeId )
+    {
+<span class="nc" id="L637">        return new GetUserTypeByIdCommand(handler, UserTypeId);</span>
+    }
+
+    public static AddUserTypeCommand createAddUserTypeCommand(UserType UserType, DBHandler handler)
+    {
+<span class="nc" id="L642">        return new AddUserTypeCommand(UserType, handler);</span>
+    }
+
+    public static AddUserTypeCommand createAddUserTypeCommand(UserType UserType)
+    {
+<span class="nc" id="L647">        return new AddUserTypeCommand(UserType);</span>
+    }
+
+    public static CreateUserTypeCommand createCreateUserTypeCommand(UserType UserType)
+    {
+<span class="nc" id="L652">        return new CreateUserTypeCommand(UserType);</span>
+    }
+
+
+
+    public static DeleteUserTypeByIdCommand createDeleteUserTypeByIdCommand(UserType user, DBHandler handler)
+    {
+<span class="nc" id="L659">        return new DeleteUserTypeByIdCommand(user, handler);</span>
+    }
+
+    public static DeleteUserTypeByIdCommand createDeleteUserTypeByIdCommand(UserType user)
+    {
+<span class="nc" id="L664">        return new DeleteUserTypeByIdCommand(user);</span>
+    }
+
+    public static DeleteUserTypeCommand createDeleteUserTypeCommand(UserType user)
+    {
+<span class="nc" id="L669">        return new DeleteUserTypeCommand(user);</span>
+    }
+
+    public static UpdateUserTypeByIdCommand createUpdateUserTypeByIdCommand(UserType user, DBHandler handler)
+    {
+<span class="nc" id="L674">        return new UpdateUserTypeByIdCommand(user, handler);</span>
+    }
+
+    public static UpdateUserTypeByIdCommand createUpdateUserTypeByIdCommand(UserType user)
+    {
+<span class="nc" id="L679">        return new UpdateUserTypeByIdCommand(user);</span>
+    }
+
+    public static UpdateUserTypeCommand createUpdateUserTypeCommand(UserType user)
+    {
+<span class="nc" id="L684">        return new UpdateUserTypeCommand(user);</span>
+    }
+    
+    //ZonaSeguridadUsuario
+
+    public static GetZonaSeguridadUsuarioCommand createGetZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+<span class="nc" id="L691">        return new GetZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);</span>
+    }
+
+
+    public static GetZonaSeguridadUsuarioByIdCommand createGetZonaSeguridadUsuarioByIdCommand (DBHandler handler, long ZonaSeguridadUsuarioId )
+    {
+<span class="nc" id="L697">        return new GetZonaSeguridadUsuarioByIdCommand(handler, ZonaSeguridadUsuarioId);</span>
+    }
+
+    public static GetAllZonaSeguridadUsuarioCommand createGetAllZonaSeguridadUsuarioCommand()
+    {
+<span class="nc" id="L702">        return new GetAllZonaSeguridadUsuarioCommand();</span>
+    }
+
+
+    public static GetAllZonaSeguridadUsuarioByIdCommand createGetAllZonaSeguridadUsuarioByIdCommand (DBHandler handler )
+    {
+<span class="nc" id="L708">        return new GetAllZonaSeguridadUsuarioByIdCommand(handler);</span>
+    }
+
+
+
+
+    public static GetAllZonaSeguridadUsuarioByIdUsuarioCommand createGetAllZonaSeguridadUsuarioByIdUsuarioCommand(DBHandler handler, long id)
+    {
+<span class="nc" id="L716">        return new GetAllZonaSeguridadUsuarioByIdUsuarioCommand(handler,id);</span>
+    }
+
+
+    public static GetAllZonaSeguridadUsuarioByUsuarioCommand createGetAllZonaSeguridadUsuarioByUsuarioCommand (long id )
+    {
+<span class="nc" id="L722">        return new GetAllZonaSeguridadUsuarioByUsuarioCommand(id);</span>
+    }
+
+
+    public static AddZonaSeguridadUsuarioCommand createAddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario, DBHandler handler)
+    {
+<span class="nc" id="L728">        return new AddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario, handler);</span>
+    }
+
+    public static AddZonaSeguridadUsuarioCommand createAddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+<span class="nc" id="L733">        return new AddZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);</span>
+    }
+
+    public static CreateZonaSeguridadUsuarioCommand createCreateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario ZonaSeguridadUsuario)
+    {
+<span class="nc" id="L738">        return new CreateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario);</span>
+    }
+
+
+
+    public static DeleteZonaSeguridadUsuarioByIdCommand createDeleteZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user, DBHandler handler)
+    {
+<span class="nc" id="L745">        return new DeleteZonaSeguridadUsuarioByIdCommand(user, handler);</span>
+    }
+
+    public static DeleteZonaSeguridadUsuarioByIdCommand createDeleteZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user)
+    {
+<span class="nc" id="L750">        return new DeleteZonaSeguridadUsuarioByIdCommand(user);</span>
+    }
+
+    public static DeleteZonaSeguridadUsuarioCommand createDeleteZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario user)
+    {
+<span class="nc" id="L755">        return new DeleteZonaSeguridadUsuarioCommand(user);</span>
+    }
+
+    public static UpdateZonaSeguridadUsuarioByIdCommand createUpdateZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user, DBHandler handler)
+    {
+<span class="nc" id="L760">        return new UpdateZonaSeguridadUsuarioByIdCommand(user, handler);</span>
+    }
+
+    public static UpdateZonaSeguridadUsuarioByIdCommand createUpdateZonaSeguridadUsuarioByIdCommand(ZonaSeguridadUsuario user)
+    {
+<span class="nc" id="L765">        return new UpdateZonaSeguridadUsuarioByIdCommand(user);</span>
+    }
+
+    public static UpdateZonaSeguridadUsuarioCommand createUpdateZonaSeguridadUsuarioCommand(ZonaSeguridadUsuario user)
+    {
+<span class="nc" id="L770">        return new UpdateZonaSeguridadUsuarioCommand(user);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

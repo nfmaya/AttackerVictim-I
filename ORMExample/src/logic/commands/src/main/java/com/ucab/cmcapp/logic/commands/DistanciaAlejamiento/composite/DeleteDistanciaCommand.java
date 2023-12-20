@@ -1,12 +1,10 @@
 package com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite;
 
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
-import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.commands.Command;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.DeleteDistanciaByIdCommand;
-import com.ucab.cmcapp.logic.commands.user.atomic.AddUserCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.AddUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.DeleteUsuarioByIdCommand;
 import com.ucab.cmcapp.persistence.DBHandler;

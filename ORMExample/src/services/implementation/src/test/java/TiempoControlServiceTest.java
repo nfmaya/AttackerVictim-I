@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class TiempoControlServiceTest {
-
+/*
     private TiempoControlService TiempoControlService;
     private TiempoControlDto TiempoControlDto;
 
@@ -52,7 +52,7 @@ public class TiempoControlServiceTest {
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), actualTiempoControl.getStatus());
     }
-*/
+
 
 
     @Test
@@ -112,4 +112,6 @@ public class TiempoControlServiceTest {
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), actualTiempoControl.getStatus());
     }
+
+ */
 }

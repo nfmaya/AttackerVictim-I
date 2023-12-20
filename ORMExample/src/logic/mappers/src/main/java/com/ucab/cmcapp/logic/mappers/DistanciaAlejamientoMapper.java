@@ -3,11 +3,9 @@ package com.ucab.cmcapp.logic.mappers;
 import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
 import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
-import com.ucab.cmcapp.common.entities.User;
 import com.ucab.cmcapp.common.entities.Usuario;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
-import com.ucab.cmcapp.logic.dtos.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

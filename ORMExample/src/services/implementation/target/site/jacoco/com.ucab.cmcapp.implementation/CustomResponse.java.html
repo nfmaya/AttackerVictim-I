@@ -13,5 +13,21 @@ public class CustomResponse&lt;T&gt; {
 <span class="nc" id="L13">    public CustomResponse(String description){</span>
 <span class="nc" id="L14">        this.description = description;</span>
 <span class="nc" id="L15">    }</span>
+
+    public String getDescription() {
+<span class="nc" id="L18">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="nc" id="L22">        this.description = description;</span>
+<span class="nc" id="L23">    }</span>
+
+    public T getResponse() {
+<span class="nc" id="L26">        return response;</span>
+    }
+
+    public void setResponse(T response) {
+<span class="nc" id="L30">        this.response = response;</span>
+<span class="nc" id="L31">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

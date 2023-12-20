@@ -8,18 +8,7 @@ public class EntityFactory
     /**
      * Method that returns an instance of User class
      */
-    public static User createUser()
-    {
-        return new User();
-    }
 
-    /**
-     * Method that returns an instance of User class
-     */
-    public static User createUser(long id)
-    {
-        return new User(id);
-    }
 
     public static Usuario createUsuario()
     {
@@ -123,5 +112,18 @@ public class EntityFactory
     public static TiempoControl  createTiempoControl (long id)
     {
         return new TiempoControl (id);
+    }
+
+    public static ZonaSeguridadUsuario createZonaSeguridadUsuario()
+    {
+        return new ZonaSeguridadUsuario();
+    }
+
+    /**
+     * Method that returns an instance of User class
+     */
+    public static ZonaSeguridadUsuario createZonaSeguridadUsuario(long id)
+    {
+        return new ZonaSeguridadUsuario(id);
     }
 }

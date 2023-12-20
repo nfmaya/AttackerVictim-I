@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ORMExample.iml" filepath="$PROJECT_DIR$/.idea/ORMExample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RabbitMQ-firebas.iml" filepath="$PROJECT_DIR$/RabbitMQ-firebas.iml" />
     </modules>
   </component>
 </project>
