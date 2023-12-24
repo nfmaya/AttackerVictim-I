@@ -41,7 +41,7 @@ const Login = ({ navigation }) => {
                     </View>
 
                 </ScrollView>
-                </View>
+            </View>
         </View>
     );
 }
