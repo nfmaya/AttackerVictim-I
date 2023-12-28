@@ -9,19 +9,23 @@ import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByUsernameCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.*;
 import com.ucab.cmcapp.logic.dtos.UsuarioDto;
+import com.ucab.cmcapp.logic.dtos.UsuarioLDAPDto;
 import com.ucab.cmcapp.logic.mappers.*;
 import com.ucab.cmcapp.persistence.dao.UsuarioDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.naming.CommunicationException;
+import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.List;
 import java.util.Optional;
-
+import com.salas.App;
 
 @Path( "/usuarios" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -212,6 +216,103 @@ public Response getUsuario(@PathParam( "id" ) long userId )
 
         _logger.debug( "Leaving UsuarioService.addUsuario" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
+    }
+    @GET
+    @Path( "/validar" )
+    public Response validarUsuario(UsuarioLDAPDto userDto )
+    {
+        Usuario entity;
+        GetUsuarioCommand command = null;
+        boolean respuesta;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioService.getUsuario" );
+        //endregion
+        App app= new App();
+        try
+        {
+            app.NewConnection();
+            respuesta=app.verificarUsuario(userDto.get_Username(),userDto.get_Nombre(), userDto.get_password() );
+
+        }
+        catch (NullPointerException e){
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No hay conexion con el server de LDAP  ")).build();
+        }
+        catch (NamingException e){
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se consiguio el usuario  " + userDto.get_Username())).build();
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + e)).build();
+
+        }
+
+
+        _logger.debug( "Leaving UsuarioService.getUsuario" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(userDto,"Validacion: "+respuesta)).build();
+    }
+    @POST
+    @Path("/insertLDAP")
+    public Response addUsuarioLDAP(UsuarioLDAPDto userDto )
+    {
+        Usuario entity;
+        UsuarioDto response;
+        CreateUsuarioCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioService.addUsuario" );
+        //endregion
+        App app= new App();
+
+        try
+        {
+            app.NewConnection();
+            app.addUser(userDto.get_Username(),userDto.get_Nombre(), userDto.get_password());
+        }
+        catch (CommunicationException e){
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No hay conexion con el server de LDAP  ")).build();
+        }
+        catch ( NamingException e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Ya existe","No se puede agregar ese username porque ya existe en LDAP ")).build();
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario " + userDto.get_Username())).build();
+
+        }
+        _logger.debug( "Leaving UsuarioService.addUsuario" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(userDto,"insertado: " + userDto.get_Username())).build();
+
+    }
+
+    @PUT
+    @Path("/modificarLDAP")
+    public Response modificarcontraseñaLDAP( UsuarioLDAPDto userDto )
+    {
+        Usuario entity;
+        UsuarioDto response;
+        CreateUsuarioCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioService.update" );
+        //endregion
+        App app= new App();
+
+        try
+        {
+            app.NewConnection();
+            app.updateUserPassword(userDto.get_Username(), userDto.get_password());
+        }
+        catch (CommunicationException e){
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No hay conexion con el server de LDAP  ")).build();
+        }
+        catch (NamingException e){
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se consiguio el usuario  " + userDto.get_Username())).build();
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Usuario  " + userDto.get_Username())).build();
+        }
+        _logger.debug( "Get in UsuarioService.update" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>("Editado la contraseña: " + userDto.get_Username())).build();
     }
 
     @DELETE
