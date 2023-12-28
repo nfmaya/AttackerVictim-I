@@ -332,17 +332,17 @@ import java.util.List;
 
         // Iterate over all users
 <span class="nc bnc" id="L334" title="All 2 branches missed.">        for (UsuarioDto user : allUsers) {</span>
-            // Get the last 10 positions of the user
+            // Get the last 5 positions of the user
             try {
 <span class="nc" id="L337">                command = CommandFactory.createGetAllPosicionCommand(user.getId());</span>
 <span class="nc" id="L338">                command.execute();</span>
 <span class="nc bnc" id="L339" title="All 2 branches missed.">                if(command.getReturnParam() != null){</span>
 <span class="nc" id="L340">                    response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
-<span class="nc bnc" id="L341" title="All 2 branches missed.">                    if (response.size() &gt;= 10) {</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">                    if (response.size() &gt;= 5) {</span>
                         // Check if the last 10 positions are the same
 <span class="nc" id="L343">                        PosicionDto referencePosition = response.get(response.size() - 1);</span>
 <span class="nc" id="L344">                        boolean allSame = true;</span>
-<span class="nc bnc" id="L345" title="All 2 branches missed.">                        for (int i = 2; i &lt;= 10; i++) {</span>
+<span class="nc bnc" id="L345" title="All 2 branches missed.">                        for (int i = 2; i &lt;= 5; i++) {</span>
 <span class="nc" id="L346">                            PosicionDto currentPosition = response.get(response.size() - i);</span>
 <span class="nc bnc" id="L347" title="All 2 branches missed.">                            if (currentPosition.getCoordenadaX() != referencePosition.getCoordenadaX() ||</span>
 <span class="nc bnc" id="L348" title="All 2 branches missed.">                                    currentPosition.getCoordenadaY() != referencePosition.getCoordenadaY()) {</span>
@@ -357,7 +357,7 @@ import java.util.List;
                             // Create an instance of AlertaDto
 <span class="nc" id="L358">                            AlertaDto alertaDto = new AlertaDto();</span>
                             // Set the properties of alertaDto as needed
-<span class="nc" id="L360">                            alertaDto.set_tipoAlerta(&quot;Inactivo por 10 envios&quot;);</span>
+<span class="nc" id="L360">                            alertaDto.set_tipoAlerta(&quot;Inactivo por 5 envios&quot;);</span>
 <span class="nc" id="L361">                            alertaDto.set_fechaHora(new Date());</span>
 <span class="nc" id="L362">                            alertaDto.setUsuario(user);</span>
 
@@ -417,7 +417,7 @@ import java.util.List;
                         // Create an instance of AlertaDto
 <span class="nc" id="L418">                        AlertaDto alertaDto = new AlertaDto();</span>
                         // Set the properties of alertaDto as needed
-<span class="nc" id="L420">                        alertaDto.set_tipoAlerta(&quot;Dentro radio&quot;);</span>
+<span class="nc" id="L420">                        alertaDto.set_tipoAlerta(&quot;Agresor Dentro radio&quot;);</span>
 <span class="nc" id="L421">                        alertaDto.set_fechaHora(new Date());</span>
 <span class="nc" id="L422">                        alertaDto.setUsuario(userDto.getUsuario());</span>
 

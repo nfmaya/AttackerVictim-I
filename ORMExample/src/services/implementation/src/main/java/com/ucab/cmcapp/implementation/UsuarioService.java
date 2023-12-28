@@ -394,4 +394,28 @@ public Response getUsuario(@PathParam( "id" ) long userId )
         _logger.debug( "Leaving UsuarioService.deleteUsuario" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
     }
+
+    @GET
+    @Path("/count")
+    public Response countUsuarios() {
+        List<UsuarioDto> allUsuarios = getAllUsuarioList();
+        if (allUsuarios == null) {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error retrieving Usuarios")).build();
+        }
+        int count = allUsuarios.size();
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(count, "Total Usuarios: " + count)).build();
+    }
+
+    @GET
+    @Path("/last")
+    public Response getLastUsuario() {
+        List<UsuarioDto> allUsuarios = getAllUsuarioList();
+        if (allUsuarios == null || allUsuarios.isEmpty()) {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("No Usuarios found")).build();
+        }
+        UsuarioDto lastUsuario = allUsuarios.get(allUsuarios.size() - 1);
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(lastUsuario, "Last added Usuario: " + lastUsuario.getId())).build();
+    }
+
+
 }

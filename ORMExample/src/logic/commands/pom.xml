@@ -32,5 +32,11 @@
             <artifactId>enums</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.ucab.cmcapp.backend.logic</groupId>
+            <artifactId>mappers</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
