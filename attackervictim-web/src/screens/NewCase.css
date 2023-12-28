@@ -49,3 +49,13 @@
     margin: 0px;
     margin-right: 440px;
 }
+
+.image-newcase {
+    position: absolute;
+    border-radius: 20px;
+    width: 185px;
+    height: 341px;
+    margin-left: 1050px;
+    margin-top: 300px;
+    transform: rotate(16deg);
+}

@@ -46,7 +46,7 @@ function SendPassword() {
             <span className='description-bottom-passwordrecovery'>Text message (SMS)</span>
           </div>
 
-          <CustomButton text={'Send'}/>
+          <CustomButton text={'Send'} rute='/'/>
         </div>
     </div>
   )

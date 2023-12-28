@@ -1,0 +1,25 @@
+.plusbuttom {
+    height: 48px;
+    width: 48px;
+    padding: 10px;
+    margin: 10px; 
+    background-color: #17171B;
+    border: 1px solid #34363B;
+    border-radius: 10px;
+    color: #fff;
+    
+    /* Estilos para el estado 'focus' */
+    &:focus {
+        border-color: #444;
+        outline: none; /* Elimina el contorno por defecto para navegadores como Chrome */
+        }
+}
+      
+.plusbuttom:hover,
+.plusbuttom:focus {
+    border-color: #777;
+}
+      
+.plusbuttom:active {
+    transform: scale(0.95);
+}

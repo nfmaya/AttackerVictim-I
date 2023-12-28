@@ -17,7 +17,7 @@ function Login() {
           <img src={Image} className='image'/>
           <TextInput placeholder={'Email...'} text= {email}  set_text= {set_email} Icon={CiMail} my_type='email'></TextInput>  
           <PasswordInput text= {password}  set_text= {set_password}></PasswordInput>
-          <CustomButton text={'Long In'} rute={'/NewCase'}/>
+          <CustomButton text={'Long In'} rute={'/Home'}/>
           <CustomButton text={'Forgot Password'} isprimarybutton={false} rute={'/forget-password'}/>
         </form>
     </div>

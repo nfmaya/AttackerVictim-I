@@ -2,17 +2,24 @@ import React from 'react'
 import './CustomButton.css'
 import { useNavigate } from 'react-router-dom';
 
-function CustomButton({text='Button', isprimarybutton=true, rute='/'}) {
+function CustomButton({text='Button', isprimarybutton=true, rute='', executethis}) {
 
   let navigate = useNavigate();
 
-  const handleForgetPasswordClick = () => {
-    navigate(rute);
+  const handleClick = () => {
+
+    if (typeof executethis === 'function') {
+      executethis();
+    }
+
+    if (rute) {
+      navigate(rute);
+    }
   };
 
   return (
     <button className={isprimarybutton ? 'priamry-button' : 'secondary-button'} type={isprimarybutton ? "submit" : "button"}
-            onClick={handleForgetPasswordClick}
+            onClick={handleClick}
     > 
       {text} 
     </button>

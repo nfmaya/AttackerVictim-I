@@ -7,21 +7,20 @@
     width: 1250px;
     height: 600px;
     border-radius: 10px;
-  }
-  
-  .inputs-container-main {
+}
+
+.inputs-container-main {
     display: flex;
     align-items: center;
     width: 500px;
     height: 600px;
     margin-bottom: 160px;
     flex-direction: column;
-  }
-  
-  
-  .image {
+}
+
+.image {
     transform: translate(0, -25%);
     border-radius: 20px;
     width: 400px;
     height: 300px;
-  }
+}
