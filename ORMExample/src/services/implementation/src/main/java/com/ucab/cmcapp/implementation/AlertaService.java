@@ -152,8 +152,8 @@ public class AlertaService extends BaseService
 
     @GET
     @Path("/findRecent")
-    public List<AlertaDto> getRecentAlertas() {
-        List<AlertaDto> response = null;
+    public Response getRecentAlertas() {
+        List<AlertaDto> response;
         GetAllAlertaCommand command = null;
 
         // Get the current timestamp
@@ -172,17 +172,17 @@ public class AlertaService extends BaseService
                         .filter(alertaDto -> alertaDto.get_fechaHora().getTime() > lowerLimitTime)
                         .collect(Collectors.toList());
             } else {
-                return response;
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No alerts found in the last 15 seconds")).build();
             }
         } catch (Exception e) {
-            return response;
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error while fetching recent alerts")).build();
         } finally {
             if (command != null) {
                 command.closeHandlerSession();
             }
         }
 
-        return response;
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response, "Recent alerts in the last 15 seconds")).build();
     }
 
 
