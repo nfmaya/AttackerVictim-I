@@ -2,7 +2,9 @@ package com.ucab.cmcapp.logic.mappers;
 
 import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.common.entities.TiempoControl;
 import com.ucab.cmcapp.logic.dtos.AlertaDto;
+import com.ucab.cmcapp.logic.dtos.TiempoControlDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,25 +122,14 @@ public class AlertaMapper extends BaseMapper
         return entity;
     }
 
-    public static List<Alerta> mapDtosToEntities(List<AlertaDto> dtos) throws ParseException {
-        List<Alerta> entities = new ArrayList<>();
-
-        for (AlertaDto dto : dtos) {
-            entities.add(mapDtoToEntity(dto));
-        }
-
-        return entities;
-    }
-
-    public static List<AlertaDto> mapEntitiesToDto(List<Alerta> entities) {
+    public static List<AlertaDto> mapListEntityToDto(List<Alerta> entities) {
         List<AlertaDto> dtos = new ArrayList<>();
-
         for (Alerta entity : entities) {
             dtos.add(mapEntityToDto(entity));
         }
-
         return dtos;
     }
+
 
 
 

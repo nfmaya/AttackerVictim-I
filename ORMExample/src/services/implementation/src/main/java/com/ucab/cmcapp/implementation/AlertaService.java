@@ -5,6 +5,7 @@ import com.salas.Sender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.alerta.composite.GetAllAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByTipoAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
@@ -15,6 +16,8 @@ import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
 import com.ucab.cmcapp.logic.commands.alerta.composite.UpdateAlertaCommand;
 import com.ucab.cmcapp.logic.dtos.AlertaDto;
 import com.ucab.cmcapp.logic.dtos.AlertaDto;
+import com.ucab.cmcapp.logic.dtos.AlertaDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
 import com.ucab.cmcapp.persistence.dao.AlertaDao;
@@ -28,6 +31,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path( "/alertas" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -110,6 +114,77 @@ public class AlertaService extends BaseService
         _logger.debug( "Leaving AlertaService.getAlerta" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por tipo de alerta: " + tipoAlerta)).build();
     }
+
+    @GET
+    @Path( "/findAll" )
+    public Response getAllAlerta()
+    {
+        List<AlertaDto> response;
+        GetAllAlertaCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in AlertaService.getAlerta" );
+        //endregion
+
+        try
+        {
+            command = CommandFactory.createGetAllAlertaCommand();
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = AlertaMapper.mapListEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " )).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Alerta ")).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving AlertaService.getAlerta" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Alerta: " )).build();
+    }
+
+    @GET
+    @Path("/findRecent")
+    public List<AlertaDto> getRecentAlertas() {
+        List<AlertaDto> response = null;
+        GetAllAlertaCommand command = null;
+
+        // Get the current timestamp
+        long currentTime = System.currentTimeMillis();
+
+        // Subtract 15 seconds from the current timestamp
+        long lowerLimitTime = currentTime - 60 * 1000;
+
+        try {
+            command = CommandFactory.createGetAllAlertaCommand();
+            command.execute();
+            if (command.getReturnParam() != null) {
+                // Filter the alerts based on their timestamp
+                response = AlertaMapper.mapListEntityToDto(command.getReturnParam())
+                        .stream()
+                        .filter(alertaDto -> alertaDto.get_fechaHora().getTime() > lowerLimitTime)
+                        .collect(Collectors.toList());
+            } else {
+                return response;
+            }
+        } catch (Exception e) {
+            return response;
+        } finally {
+            if (command != null) {
+                command.closeHandlerSession();
+            }
+        }
+
+        return response;
+    }
+
 
 
     @POST

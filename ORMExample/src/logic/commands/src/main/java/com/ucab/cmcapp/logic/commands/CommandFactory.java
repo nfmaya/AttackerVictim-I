@@ -20,10 +20,7 @@ import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.*;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.atomic.*;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.*;
 import com.ucab.cmcapp.logic.commands.alerta.atomic.*;
-import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
-import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
-import com.ucab.cmcapp.logic.commands.alerta.composite.GetAlertaCommand;
-import com.ucab.cmcapp.logic.commands.alerta.composite.UpdateAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.*;
 import com.ucab.cmcapp.logic.commands.posicion.atomic.*;
 import com.ucab.cmcapp.logic.commands.posicion.composite.*;
 import com.ucab.cmcapp.logic.commands.puntoControl.atomic.AddPuntoControlCommand;
@@ -193,6 +190,19 @@ public class CommandFactory
     {
         return new UpdateAlertaCommand(user);
     }
+
+
+    public static GetAllAlertaCommand createGetAllAlertaCommand()
+    {
+        return new GetAllAlertaCommand();
+    }
+
+    public static GetAllAlertaByIdCommand createGetAllAlertaByIdCommand (DBHandler handler )
+    {
+        return new GetAllAlertaByIdCommand(handler);
+    }
+
+
 
 
     //DistanciaAlejamiento
