@@ -258,6 +258,8 @@ return distance;
     }
 
 
+    //TODO:
+    //ver si se pone como endpoint o se llama desde otro lado
 
     //metodo que checkea si un usuario no ha actualizado su posicion en un tiempo determinado
     public void checkAllUsersLastPositionTimestamp() {
@@ -321,6 +323,9 @@ return distance;
         }
     }
 
+
+    //TODO:
+    //ver si se pone como endpoint o se llama desde otro lado
 
     //metodo que checkea si un usuario esta enviando la misma posicion. despues de 10 envios
     public void checkAllUsersSamePosition() {

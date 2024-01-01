@@ -217,7 +217,7 @@ public Response getUsuario(@PathParam( "id" ) long userId )
         _logger.debug( "Leaving UsuarioService.addUsuario" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
-    @GET
+    @POST
     @Path( "/validar" )
     public Response validarUsuario(UsuarioLDAPDto userDto )
     {
