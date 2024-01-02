@@ -16,15 +16,15 @@ public class Usuario {
     @Column(name = &quot;IdUsuario&quot;)
     private long _idUsuario;
 
-    @Column(name = &quot;Username&quot;)
+    @Column(name = &quot;Username&quot;, unique = true, nullable = false)
     private String _Username;
 
-    @Column(name = &quot;NombreUsuario&quot;)
+    @Column(name = &quot;NombreUsuario&quot;, nullable = false)
     private String _Nombre;
 
     //AGREGAR ESTOS ATRIBUTOS
 
-    @Column(name = &quot;DocIdentidad&quot;)
+    @Column(name = &quot;DocIdentidad&quot;, unique = true, nullable = false)
     private String DocIdentidad;
 
     @Column(name = &quot;IMEI&quot;)

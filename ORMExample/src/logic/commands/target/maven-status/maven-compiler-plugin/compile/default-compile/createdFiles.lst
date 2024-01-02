@@ -18,6 +18,7 @@ com\ucab\cmcapp\logic\commands\ZonaSeguridadUsuario\composite\CreateZonaSegurida
 com\ucab\cmcapp\logic\commands\ZonaSeguridadUsuario\atomic\AddZonaSeguridadUsuarioCommand.class
 com\ucab\cmcapp\logic\commands\posicion\composite\GetPosicionCommand.class
 com\ucab\cmcapp\logic\commands\ZonaSeguridadUsuario\atomic\GetAllZonaSeguridadUsuarioByIdCommand.class
+com\ucab\cmcapp\logic\commands\alerta\composite\GetAllAlertaCommand.class
 com\ucab\cmcapp\logic\commands\DistanciaAlejamiento\composite\UpdateDistanciaCommand.class
 com\ucab\cmcapp\logic\commands\TiempoControl\atomic\DeleteTiempoControlByIdCommand.class
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\composite\GetCoordenadaZonaSeguridadCommand.class
@@ -71,6 +72,7 @@ com\ucab\cmcapp\logic\commands\usuario\atomic\UpdateUsuarioByIdCommand.class
 com\ucab\cmcapp\logic\commands\ZonaSeguridadUsuario\atomic\DeleteZonaSeguridadUsuarioByIdCommand.class
 com\ucab\cmcapp\logic\commands\ZonaSeguridad\composite\GetZonaSeguridadCommand.class
 com\ucab\cmcapp\logic\commands\alerta\composite\GetAlertaCommand.class
+com\ucab\cmcapp\logic\commands\alerta\atomic\GetAllAlertaByIdCommand.class
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\atomic\AddCoordenadaZonaSeguridadCommand.class
 com\ucab\cmcapp\logic\commands\posicion\atomic\DeletePosicionByIdCommand.class
 com\ucab\cmcapp\logic\commands\TiempoControl\atomic\GetAllTiempoControlByIdCommand.class
