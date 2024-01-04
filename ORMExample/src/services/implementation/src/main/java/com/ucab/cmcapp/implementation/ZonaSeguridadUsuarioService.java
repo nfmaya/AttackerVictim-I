@@ -8,8 +8,7 @@ import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.GetAllZonaSeguridadUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.composite.*;
-import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
-import com.ucab.cmcapp.logic.dtos.ZonaSeguridadUsuarioDto;
+import com.ucab.cmcapp.logic.dtos.*;
 import com.ucab.cmcapp.logic.dtos.ZonaSeguridadUsuarioDto;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapper;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadUsuarioMapper;
@@ -22,6 +21,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path( "/zonasUsuario" )
@@ -131,6 +131,29 @@ public class ZonaSeguridadUsuarioService extends BaseService
 
     }
 
+    public List<ZonaSeguridadWithCoordenadasDto> getUsuarioAllZonaSeguridadWithCoordenadas2(long userId) {
+        List<ZonaSeguridadUsuarioDto> zonasSeguridadUsuario = getUsuarioAllZonaSeguridad2(userId);
+        List<ZonaSeguridadWithCoordenadasDto> result = new ArrayList<>();
+
+        CoordenadaZonaSeguridadService coordenadaZonaSeguridadService = new CoordenadaZonaSeguridadService();
+
+        for (ZonaSeguridadUsuarioDto zonaSeguridadUsuario : zonasSeguridadUsuario) {
+            ZonaSeguridadWithCoordenadasDto dto = new ZonaSeguridadWithCoordenadasDto();
+            dto.setZonaSeguridad(zonaSeguridadUsuario.getZonaSeguridadDto());
+            dto.setCoordenadas(coordenadaZonaSeguridadService.getCoordenadaAllZonaSeguridad2(zonaSeguridadUsuario.getZonaSeguridadDto().getId()));
+            result.add(dto);
+        }
+
+        return result;
+    }
+
+    //endpoint para obtener las zonas de seguridad de un usuario con las coordendas de cada una
+    @GET
+    @Path("/findAllZonaSeguridadWithCoordenadas/{id}")
+    public Response getUsuarioAllZonaSeguridadWithCoordenadas(@PathParam("id") long userId) {
+        List<ZonaSeguridadWithCoordenadasDto> response = getUsuarioAllZonaSeguridadWithCoordenadas2(userId);
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Usuario: " + userId)).build();
+    }
 
     //metodo para obtener las zonas de seguridad de un usuario
     public List<ZonaSeguridadUsuarioDto> getUsuarioAllZonaSeguridad2(long userId) {
