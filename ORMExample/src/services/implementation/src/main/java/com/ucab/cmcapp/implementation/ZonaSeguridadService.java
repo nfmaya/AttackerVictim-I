@@ -10,7 +10,7 @@ import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.DeleteZonaSegurida
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.UpdateZonaSeguridadCommand;
 import com.ucab.cmcapp.logic.commands.ZonaSeguridad.composite.GetAllZonaSeguridadCommand;
-import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
+import com.ucab.cmcapp.logic.dtos.*;
 import com.ucab.cmcapp.logic.dtos.ZonaSeguridadDto;
 import com.ucab.cmcapp.logic.mappers.AlertaMapper;
 import com.ucab.cmcapp.logic.mappers.ZonaSeguridadMapper;
@@ -140,6 +140,68 @@ public class ZonaSeguridadService extends BaseService
 
         _logger.debug( "Leaving ZonaSeguridadService.addZonaSeguridad" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
+    }
+
+
+    public ZonaSeguridadDto addZonaSeguridadInsert( ZonaSeguridadDto userDto )
+    {
+        ZonaSeguridad entity = null;
+        ZonaSeguridadDto response = null;
+        CreateZonaSeguridadCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadService.addZonaSeguridad" );
+        //endregion
+
+        try
+        {
+            entity = ZonaSeguridadMapper.mapDtoToEntityInsert( userDto );
+            command = CommandFactory.createCreateZonaSeguridadCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = ZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return response;
+            }
+        }
+        catch ( Exception e )
+        {
+            return response;
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadService.addZonaSeguridad" );
+return  response;
+    }
+
+    //FALTA PONER EL AGREGAR EN EL ZONA SEGURIDAD USUARIO
+    @POST
+    @Path("/insertWithCoordenadas/{id}")
+    public Response addZonaSeguridadWithCoordenadas(ZonaSeguridadWithCoordenadasDto zonasWithCoordenadas,@PathParam( "id" ) long userId) {
+        try {
+            CoordenadaZonaSeguridadService coordenadaZonaSeguridadService = new CoordenadaZonaSeguridadService();
+            ZonaSeguridadUsuarioService zonaSeguridadUsuarioService = new ZonaSeguridadUsuarioService();
+            UsuarioService usuarioService = new UsuarioService();
+
+                ZonaSeguridadDto addedZona = addZonaSeguridadInsert(zonasWithCoordenadas.getZonaSeguridad());
+                for (CoordenadaZonaSeguridadDto coordenada : zonasWithCoordenadas.getCoordenadas()) {
+                    coordenada.setZonaSeguridad(addedZona);
+                    coordenadaZonaSeguridadService.addCoordenadaZonaSeguridadInsert(coordenada);
+
+                }
+
+            ZonaSeguridadUsuarioDto zonaSeguridadUsuarioDto = new ZonaSeguridadUsuarioDto();
+            zonaSeguridadUsuarioDto.setZonaSeguridadDto(addedZona);
+            zonaSeguridadUsuarioDto.setUsuarioDto(usuarioService.getUsuarioDto(userId));
+            zonaSeguridadUsuarioService.addZonaSeguridadUsuarioInsert(zonaSeguridadUsuarioDto);
+
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Zonas de Seguridad with Coordenadas added successfully")).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error while adding Zonas de Seguridad with Coordenadas")).build();
+        }
     }
 
     @DELETE

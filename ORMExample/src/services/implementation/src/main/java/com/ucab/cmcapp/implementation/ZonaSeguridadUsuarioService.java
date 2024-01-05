@@ -223,6 +223,40 @@ public class ZonaSeguridadUsuarioService extends BaseService
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
 
+    public ZonaSeguridadUsuarioDto addZonaSeguridadUsuarioInsert( ZonaSeguridadUsuarioDto userDto )
+    {
+        ZonaSeguridadUsuario entity;
+        ZonaSeguridadUsuarioDto response = null;
+        CreateZonaSeguridadUsuarioCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in ZonaSeguridadUsuarioService.addZonaSeguridadUsuario" );
+        //endregion
+
+        try
+        {
+            entity = ZonaSeguridadUsuarioMapper.mapDtoToEntityInsert( userDto );
+            command = CommandFactory.createCreateZonaSeguridadUsuarioCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = ZonaSeguridadUsuarioMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return response;
+            }
+        }
+        catch ( Exception e )
+        {
+            return response;
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving ZonaSeguridadUsuarioService.addZonaSeguridadUsuario" );
+return response;
+    }
+
     @DELETE
     @Path("/delete")
     public Response deleteZonaSeguridadUsuario( ZonaSeguridadUsuarioDto userDto )

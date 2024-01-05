@@ -81,6 +81,27 @@ public class DistanciaAlejamientoService extends BaseService
     }
 
 
+    @GET
+    @Path("/count")
+    public Response countDistanciaAlejamiento() {
+        List<DistanciaAlejamientoDto> allDistancias;
+        _logger.debug("Get in DistanciaAlejamientoService.countDistanciaAlejamiento");
+
+        try {
+            allDistancias = getAllDistanciaAlejamiento2();
+            if (allDistancias == null) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new CustomResponse<>("Error retrieving DistanciaAlejamiento")).build();
+            }
+        } catch (Exception e) {
+            _logger.error("An error occurred", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new CustomResponse<>("Error counting DistanciaAlejamiento")).build();
+        }
+
+        int count = allDistancias.size();
+        _logger.debug("Leaving DistanciaAlejamientoService.countDistanciaAlejamiento");
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(count, "Count of DistanciaAlejamiento")).build();
+    }
+
     //endpoint que devuelve la DistanciaAlejamiento de un Usuario
     @GET
     @Path( "/usuario/{id}" )

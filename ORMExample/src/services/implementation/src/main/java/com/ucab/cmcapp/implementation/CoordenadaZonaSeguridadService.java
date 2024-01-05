@@ -153,6 +153,7 @@ public class CoordenadaZonaSeguridadService extends BaseService
 
         try
         {
+
             entity = CoordenadaZonaSeguridadMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreateCoordenadaZonaSeguridadCommand( entity );
             command.execute();
@@ -176,6 +177,45 @@ public class CoordenadaZonaSeguridadService extends BaseService
         _logger.debug( "Leaving CoordenadaZonaSeguridadService.addCoordenadaZonaSeguridad" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
+
+
+    public CoordenadaZonaSeguridadDto addCoordenadaZonaSeguridadInsert( CoordenadaZonaSeguridadDto userDto )
+    {
+        CoordenadaZonaSeguridad entity;
+        CoordenadaZonaSeguridadDto response = null;
+        CreateCoordenadaZonaSeguridadCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in CoordenadaZonaSeguridadService.addCoordenadaZonaSeguridad" );
+        //endregion
+
+        try
+        {
+
+            entity = CoordenadaZonaSeguridadMapper.mapDtoToEntityInsert( userDto );
+            command = CommandFactory.createCreateCoordenadaZonaSeguridadCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = CoordenadaZonaSeguridadMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return response;
+            }
+        }
+        catch ( Exception e )
+        {
+            return response;
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving CoordenadaZonaSeguridadService.addCoordenadaZonaSeguridad" );
+        return response;
+    }
+
+
 
 
     //ESTE ES EL DELETE DE LA BD

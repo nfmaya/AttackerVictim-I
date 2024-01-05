@@ -71,6 +71,40 @@ public Response getUsuario(@PathParam( "id" ) long userId )
     return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Usuario: " + userId)).build();
 }
 
+    public UsuarioDto getUsuarioDto(long userId )
+    {
+        Usuario entity;
+        UsuarioDto response = null;
+        GetUsuarioCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioService.getUsuario" );
+        //endregion
+
+        try
+        {
+            entity = UsuarioMapper.mapDtoToEntity( userId );
+            command = CommandFactory.createGetUsuarioCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+return response;
+            }
+        }
+        catch ( Exception e )
+        {
+            return response;
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving UsuarioService.getUsuario" );
+return response;    }
+
 
     @GET
     @Path( "/findAll" )
