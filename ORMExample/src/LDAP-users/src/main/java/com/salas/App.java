@@ -284,7 +284,8 @@ public class App{
 		//app.deleteUser("Francisco");//elimino el usuario
 		//app.deleteUserFromGroup("Francisco", "Victimas");//Elimino el usuario del grupo (Victimas,Agresores,Administrators)
 		//app.getAllUsers();
-		app.searchUsers("Salitas","alejandro solas");
+		System.out.println(app.verificarUsuario("ceroop", "alejandro solas", "3"));
+		//app.searchUsers("Salitas","alejandro solas");
 	}
 }
 	
