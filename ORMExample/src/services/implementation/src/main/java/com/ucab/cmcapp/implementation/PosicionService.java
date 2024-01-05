@@ -324,6 +324,52 @@ return distance;
     }
 
 
+    //endpoint para checkear si un usuario no ha actualizado su posicion en un tiempo determinado.
+    //Conectado o no
+    @GET
+    @Path( "/estatus/{id}" )
+    public boolean checkUserLastPositionTimestamp(@PathParam( "id" ) long userId ) {
+        // Define the acceptable time difference (in milliseconds)
+        long acceptableTimeDifference = 600000; // 10 minutes
+
+        // Get the current time
+        long currentTime = System.currentTimeMillis();
+
+        // Get the last position of the user
+        List<PosicionDto> userLastPosition = getAllPosicionUsuarioLast1Me(userId);
+        if (!userLastPosition.isEmpty()) {
+            PosicionDto lastPosition = userLastPosition.get(userLastPosition.size() - 1);
+
+            // Get the timestamp of the last position
+            long lastPositionTime = lastPosition.getFechaHora().getTime();
+
+            // Calculate the time difference
+            long timeDifference = currentTime - lastPositionTime;
+
+            // Check if the time difference is greater than the acceptable time difference
+            if (timeDifference > acceptableTimeDifference) {
+
+
+                // Create a new alert
+                AlertaDto alertaDto = new AlertaDto();
+                alertaDto.set_tipoAlerta("No position update");
+                alertaDto.set_fechaHora(new Date());
+                alertaDto.setUsuario(lastPosition.getUsuario());
+
+                // Create an instance of AlertaService
+                AlertaService alertaService = new AlertaService();
+                // Call the method to insert the alert
+                alertaService.addAlerta(alertaDto);
+
+                return false;
+            }else
+                return true;
+
+        }
+        return false;
+    }
+
+
     //TODO:
     //ver si se pone como endpoint o se llama desde otro lado
 
@@ -381,6 +427,8 @@ return distance;
             }
         }
     }
+
+
 
     //endpoint para insertar la ultima ubicacion de la Victima. devuelve la ultima posicion en el response del POST
     //asi como tambien si el agresor se encuentra dentro del radio de distancia minima, envia una Alerta

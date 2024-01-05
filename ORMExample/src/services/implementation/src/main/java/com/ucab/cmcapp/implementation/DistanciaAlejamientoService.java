@@ -412,6 +412,72 @@ return 0;            }
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + distanciaDto.getId())).build();
     }
 
+    @GET
+    @Path("/calculateDistance/{id}")
+    public Response calculateDistance(@PathParam("id") long distanciaId) {
+        PosicionService posicionService = new PosicionService();
+        long idUsuario1 = getDistanciaAlejamientoUsuarioAgresorId(distanciaId);
+        long idUsuario2 = getDistanciaAlejamientoUsuarioVictimaId(distanciaId);
+        double distance;
+
+        try {
+            distance = posicionService.getAllPosicionUsuarioLastCalc2(idUsuario1, idUsuario2);
+        } catch (Exception e) {
+            _logger.error("An error occurred", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new CustomResponse<>("Error calculating distance")).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(distance, "Calculated distance")).build();
+    }
+
+    @POST
+    @Path("/insertComplete")
+    public Response addDistanciaAlejamientoComplete( DistanciaAlejamientoDto distanciaDto )
+    {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response;
+        CreateDistanciaAlejamientoCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in DistanciaAlejamientoService.addDistanciaAlejamiento" );
+        //endregion
+
+        try
+        {
+            UsuarioService usuarioService = new UsuarioService();
+
+            UsuarioDto agresor = usuarioService.addUsuarioDto(distanciaDto.get_agresor());
+
+            UsuarioDto victima = usuarioService.addUsuarioDto(distanciaDto.get_victima());
+
+            distanciaDto.set_agresor(agresor);
+
+            distanciaDto.set_victima(victima);
+
+
+            entity = DistanciaAlejamientoMapper.mapDtoToEntityInsert( distanciaDto );
+            command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + distanciaDto.getId())).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia " + distanciaDto.getId())).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.addDistanciaAlejamiento" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + distanciaDto.getId())).build();
+    }
+
     //ESTE ES EL DELETE DE LA BD
     @DELETE
     @Path("/delete")

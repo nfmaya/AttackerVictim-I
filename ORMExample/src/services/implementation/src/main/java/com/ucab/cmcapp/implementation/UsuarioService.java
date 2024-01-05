@@ -251,6 +251,42 @@ return response;    }
         _logger.debug( "Leaving UsuarioService.addUsuario" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
     }
+
+
+    public UsuarioDto addUsuarioDto( UsuarioDto userDto )
+    {
+        Usuario entity;
+        UsuarioDto response = null;
+        CreateUsuarioCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in UsuarioService.addUsuario" );
+        //endregion
+
+        try
+        {
+            entity = UsuarioMapper.mapDtoToEntityInsert( userDto );
+            command = CommandFactory.createCreateUsuarioCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return response;
+            }
+        }
+        catch ( Exception e )
+        {
+            return response;
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving UsuarioService.addUsuario" );
+return response;    }
+    
+    
     @POST
     @Path( "/validar" )
     public Response validarUsuario(UsuarioLDAPDto userDto )

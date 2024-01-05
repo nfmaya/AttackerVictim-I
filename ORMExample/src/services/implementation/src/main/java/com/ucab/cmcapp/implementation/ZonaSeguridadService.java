@@ -177,7 +177,7 @@ public class ZonaSeguridadService extends BaseService
 return  response;
     }
 
-    //FALTA PONER EL AGREGAR EN EL ZONA SEGURIDAD USUARIO
+    //agrega una zona de seguridad con sus coordenadas y la asocia con el usuario que se pasa en el URL
     @POST
     @Path("/insertWithCoordenadas/{id}")
     public Response addZonaSeguridadWithCoordenadas(ZonaSeguridadWithCoordenadasDto zonasWithCoordenadas,@PathParam( "id" ) long userId) {

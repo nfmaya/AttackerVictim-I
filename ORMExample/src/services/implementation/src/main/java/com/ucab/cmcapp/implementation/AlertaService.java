@@ -186,6 +186,40 @@ public class AlertaService extends BaseService
     }
 
 
+    @GET
+    @Path("/findRecent/{userId}")
+    public Response getRecentAlertasForUser(@PathParam("userId") long userId) {
+        List<AlertaDto> response;
+        GetAllAlertaCommand command = null;
+
+        // Get the current timestamp
+        long currentTime = System.currentTimeMillis();
+
+        // Subtract 15 seconds from the current timestamp
+        long lowerLimitTime = currentTime - 8000 * 1000;
+
+        try {
+            command = CommandFactory.createGetAllAlertaCommand();
+            command.execute();
+            if (command.getReturnParam() != null) {
+                // Filter the alerts based on their timestamp and the user ID
+                response = AlertaMapper.mapListEntityToDto(command.getReturnParam())
+                        .stream()
+                        .filter(alertaDto -> alertaDto.get_fechaHora().getTime() > lowerLimitTime && alertaDto.getUsuario().getId()  == userId)
+                        .collect(Collectors.toList());
+            } else {
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No alerts found in the last 15 seconds for user " + userId)).build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error while fetching recent alerts for user " + userId)).build();
+        } finally {
+            if (command != null) {
+                command.closeHandlerSession();
+            }
+        }
+
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response, "Recent alerts in the last 15 seconds for user " + userId)).build();
+    }
 
     @POST
     @Path("/insert")
