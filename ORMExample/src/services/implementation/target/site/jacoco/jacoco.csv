@@ -1,0 +1,12 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+implementation,com.ucab.cmcapp.implementation,CustomResponse,21,0,0,0,8,0,2,0,2,0
+implementation,com.ucab.cmcapp.implementation,CoordenadaZonaSeguridadService,466,0,22,0,91,0,18,0,7,0
+implementation,com.ucab.cmcapp.implementation,UserTypeService,392,0,18,0,70,0,15,0,6,0
+implementation,com.ucab.cmcapp.implementation,UsuarioService,565,0,26,0,114,0,21,0,8,0
+implementation,com.ucab.cmcapp.implementation,AlertaService,597,0,28,0,107,0,22,0,8,0
+implementation,com.ucab.cmcapp.implementation,TiempoControlService,465,0,22,0,91,0,18,0,7,0
+implementation,com.ucab.cmcapp.implementation,PosicionService,410,0,18,0,79,0,15,0,6,0
+implementation,com.ucab.cmcapp.implementation,ZonaSeguridadService,465,0,22,0,91,0,18,0,7,0
+implementation,com.ucab.cmcapp.implementation,PuntoControlService,392,0,18,0,70,0,15,0,6,0
+implementation,com.ucab.cmcapp.implementation,BaseService,62,0,2,0,18,0,8,0,7,0
+implementation,com.ucab.cmcapp.implementation,DistanciaAlejamientoService,465,0,22,0,91,0,18,0,7,0
