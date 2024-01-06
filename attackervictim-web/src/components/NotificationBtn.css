@@ -1,10 +1,10 @@
-.plusbuttom {
+.Notificationbuttom {
     height: 48px;
     width: 48px;
     padding: 10px;
     margin: 10px; 
-    background-color: #1b1717;
-    border: 1px solid #34363B;
+    background-color: #ee0f0f;
+    border: 1px solid #fff;
     border-radius: 10px;
     color: #fff;
     
@@ -15,11 +15,11 @@
         }
 }
       
-.plusbuttom:hover,
-.plusbuttom:focus {
+.Notificationbuttom:hover,
+.Notificationbuttom:focus {
     border-color: #777;
 }
       
-.plusbuttom:active {
+.Notificationbuttom:active {
     transform: scale(0.95);
 }

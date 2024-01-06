@@ -10,12 +10,12 @@ function ForgetPassword() {
 
   return (
     <div className='container'>
-        <text className='title'> Verify your personal information </text>
-        <form className='inputs_container'>
-          <text className='description'> Enter your email to continue </text>
+        <p className='title'> Verify your personal information </p>
+        <div className='inputs_container'>
+          <p className='description'> Enter your email to continue </p>
           <TextInput placeholder={'Email...'} text= {email}  set_text= {set_email} Icon={CiMail} my_type='email'></TextInput>  
           <CustomButton text={'Continue'} rute='/forget-password/SendPassword'/>
-        </form>
+        </div>
     </div>
   )
 }

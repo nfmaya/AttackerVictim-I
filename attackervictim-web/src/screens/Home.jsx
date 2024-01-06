@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Home.css'
 import StateCard from '../components/StateCard'
 import SafeZoneBtn from '../components/SafeZoneBtn'
 import GeolocationPoint from '../components/GeolocationPoint'
 import ComboBox from '../components/ComboBox'
 import PlusBtn from '../components/PlusBtn'
+import NotificationBtn from '../components/NotificationsBtn'
 import SimpleMap from '../components/SimpleMap'
+import {readSafeZones} from '../viewmodel/data'
 
 function Home() {
 
-    const [SafeZoneamount, setSafeZoneamount] = useState(0);
+    const [selectedZoneName, setselectedZoneName] = useState("Any");
+
     const [Victim, setVictim] = useState("Alejandro Salas");
     const [Aggressor, setAggressor] = useState("Diego De Queiros");
     const [Distance, setDistance] = useState(15);
@@ -34,31 +37,26 @@ function Home() {
         setGeolocationPoints(newPoints);
     };
 
+    /////////////////////////////////////////////////////////
+    /* estiramiento del canvas por si se agregan mas coordenadas a la zona que se desea agregar */
+
     //Calculo de contenedores en relacion a cantidad de puntos de geolocalizacion que renderizar
     const homeHeight = 1450;         // Altura base para el contenedor
     const heightPerPoint = 68;       // Altura por cada GeolocationPoint
     const totalHeight = geolocationPoints.length * heightPerPoint;
 
+    /////////////////////////////////////////////////////////
+    /*extrae las zonas seguras con las coordenadas del json*/
+    const zones = readSafeZones;
+
+    // Almacena todos los polígonos
+    const polygons = [];
+
     const renderPolygons = (map, maps) => {
-        // Define las coordenadas de los polígonos
-        const polygons = [
-          [
-            { lat: 10.493667, lng: -66.822479 },
-            { lat: 10.491452, lng: -66.822800 },
-            { lat: 10.491241, lng: -66.820504 },
-            { lat: 10.493815, lng: -66.821148 },
-          ],
-          [
-            { lat: 10.491790, lng: -66.818852 },
-            { lat: 10.490334, lng: -66.814797 },
-            { lat: 10.484430, lng: -66.820003 },
-          ],
-        ];
-    
         // Crea y añade los polígonos al mapa
-        polygons.forEach((coordinates) => {
+        zones.forEach((zona) => {
           const polygon = new maps.Polygon({
-            paths: coordinates,
+            paths: zona.coordenadas,
             strokeColor: '#3581FF',
             strokeOpacity: 0.8,
             strokeWeight: 2,
@@ -66,14 +64,35 @@ function Home() {
             fillOpacity: 0.25,
           });
           polygon.setMap(map);
+
+          polygons.push(polygon); // Agrega el polígono a la lista
+
+          const infowindowhola = new maps.InfoWindow({
+              content: `Nombre de Zona: ${zona.nombreZona}`
+          });
+
+          maps.event.addListener(polygon, 'click', () => {
+            setselectedZoneName(zona.nombreZona);
+            infowindowhola.open(map, polygon);
+
+            // Restaura el color original de todos los polígonos
+            polygons.forEach((p) => {
+                p.setOptions({ fillColor: '#3581FF',  strokeColor: '#3581FF'});
+            });
+
+            // Cambiar el color del polígono actual
+            polygon.setOptions({ fillColor: '#1400FF',  strokeColor: '#1400FF'});
+          });
         });
     };
+    /////////////////////////////////////////////////////////
 
   return (
     <div className='container-home' style={{height: `${totalHeight + homeHeight}px`}}>
 
         <div className='title-container-home'>
             <h2 className='title-home'>Case monitoring : </h2>
+            <NotificationBtn rute='/Home/Notifications'/>
             <ComboBox/>
             <PlusBtn rute='/Home/NewCase'/>
         </div>
@@ -95,8 +114,11 @@ function Home() {
         <h2 className='subtitle-home'>Safe areas : </h2>
 
         <div>
-            <p className='description-home' style={{marginRight:'650px'}}>Active safe zones : {SafeZoneamount} </p>
-            <SafeZoneBtn text='Delete'/>
+            <p className='description-home' style={{marginRight:'650px'}}>Active safe zones : {readSafeZones.length} </p>
+            <div style={{display:'flex', flexDirection:'row',alignItems:'center'}}>
+                <SafeZoneBtn text='Delete'/>
+                <p className='description-home' style={{marginLeft:'20px'}}>Selected zone : {selectedZoneName} </p>
+            </div>
             <div style={{display:'flex', flexDirection:'row',alignItems:'center'}}>
                 <SafeZoneBtn text='Add'/>
                 <p className='description-home' style={{marginLeft:'20px'}}>Geolocation points : </p>

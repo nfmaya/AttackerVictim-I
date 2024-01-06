@@ -18,7 +18,7 @@ function CustomButton({text='Button', isprimarybutton=true, rute='', executethis
   };
 
   return (
-    <button className={isprimarybutton ? 'priamry-button' : 'secondary-button'} type={isprimarybutton ? "submit" : "button"}
+    <button className={isprimarybutton ? 'priamry-button' : 'secondary-button'} /* type={isprimarybutton ? "submit" : "button"} */
             onClick={handleClick}
     > 
       {text} 

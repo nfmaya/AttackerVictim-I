@@ -71,7 +71,7 @@ function SimpleMap({aggresorname='', victimname='', renderPolygons}) {
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => {
           renderMarkers(map, maps);
-          console.log(renderPolygons); // Añade esto para depurar
+
           if (renderPolygons) {
             renderPolygons(map, maps);
           }

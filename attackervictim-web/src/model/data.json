@@ -1,0 +1,75 @@
+{
+    "response": [
+        {
+            "zonaSeguridad": {
+                "nombreZona": "Hatillo",
+                "id": 1
+            },
+            "coordenadas": [
+                {
+                    "coordenadaX": 10.455,
+            		"coordenadaY": -66.835,
+                    "zonaSeguridad": {
+                        "nombreZona": "Hatillo",
+                        "id": 1
+                    },
+                    "id": 1
+                },
+                {
+                    "coordenadaX": 10.362,
+            		"coordenadaY": -66.826,
+                    "zonaSeguridad": {
+                        "nombreZona": "Hatillo",
+                        "id": 1
+                    },
+                    "id": 2
+                },
+                {
+                    "coordenadaX": 10.386,
+            		"coordenadaY": -66.708,
+                    "zonaSeguridad": {
+                        "nombreZona": "Hatillo",
+                        "id": 1
+                    },
+                    "id": 3
+                }
+            ]
+        },
+        {
+            "zonaSeguridad": {
+                "nombreZona": "boleita",
+                "id": 2
+            },
+            "coordenadas": [
+                {
+                    "coordenadaX": 10.491790,
+            		"coordenadaY": -66.818852,
+                    "zonaSeguridad": {
+                        "nombreZona": "boleita",
+                        "id": 2
+                    },
+                    "id": 4
+                },
+                {
+                    "coordenadaX": 10.490334,
+            		"coordenadaY": -66.814797,
+                    "zonaSeguridad": {
+                        "nombreZona": "boleita",
+                        "id": 2
+                    },
+                    "id": 5
+                },
+                {
+                    "coordenadaX": 10.484430,
+            		"coordenadaY": -66.820003,
+                    "zonaSeguridad": {
+                        "nombreZona": "boleita",
+                        "id": 2
+                    },
+                    "id": 6
+                }
+            ]
+        }
+    ],
+    "description": "Busqueda por Id Usuario: 1"
+}

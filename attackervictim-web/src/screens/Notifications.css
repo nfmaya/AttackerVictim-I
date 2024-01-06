@@ -1,0 +1,40 @@
+.container-notif {
+    background: #888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 1250px;
+    height: 750px;
+    border-radius: 10px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.scroll-panel-notif {
+    background: #f0f0f0; /* Cambié el color para que se vea el scroll */
+    overflow-y: auto; /* Esto activa el scroll vertical */
+    width: 1050px;
+    height: 575px; /* Puede ajustar la altura como necesites */
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px; /* Añade un margen arriba y abajo */
+}
+
+.title-notif {
+    color: #fff;
+    font-weight: bold;
+    font-size: 36px;
+    padding: 0px;
+    margin: 5px;
+    margin-left: -960px;
+}
+
+.notification-item {
+    background: #fff;
+    margin: 5px 0;
+    padding: 10px;
+    width: (100% -15px); 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+    border-radius: 5px; 
+}
