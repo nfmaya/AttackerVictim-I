@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 public class FirebaseSender{
 
-    public void SenderVictim(String token) throws IOException, FirebaseMessagingException {
+    public void SenderVictim(String token,String Title, String Body) throws IOException, FirebaseMessagingException {
         // Ruta al archivo de configuración descargado desde Firebase Console
         //FileInputStream serviceAccount = new FileInputStream("ORMExample\\src\\RabbitMQ--Firebase\\src\\main\\java\\com\\salas\\attacker.json");
 
@@ -32,8 +32,8 @@ public class FirebaseSender{
                 .setToken(token)
                 .putData("key", "value") // Datos adicionales si los necesitas
                 .setNotification(Notification.builder()
-                        .setTitle("Título de la notificación Hola ALe")
-                        .setBody("Cuerpo de la notificación que mas")
+                        .setTitle(Title)
+                        .setBody(Body)
                         .build())
                 .build();
 

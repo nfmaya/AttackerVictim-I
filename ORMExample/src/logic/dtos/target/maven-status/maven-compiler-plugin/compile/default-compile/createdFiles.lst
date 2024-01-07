@@ -2,6 +2,7 @@ com\ucab\cmcapp\logic\dtos\UsuarioLDAPDto.class
 com\ucab\cmcapp\logic\dtos\DistanciaAlejamientoDto.class
 com\ucab\cmcapp\logic\dtos\DistanciaAlejamientoWithSeparacionDto.class
 com\ucab\cmcapp\logic\dtos\CoordenadaZonaSeguridadDto.class
+com\ucab\cmcapp\logic\dtos\ZonaSeguridadWithCoordenadasDto.class
 com\ucab\cmcapp\logic\dtos\PosicionDto.class
 com\ucab\cmcapp\logic\dtos\UsuarioDto.class
 com\ucab\cmcapp\logic\dtos\ZonaSeguridadUsuarioDto.class

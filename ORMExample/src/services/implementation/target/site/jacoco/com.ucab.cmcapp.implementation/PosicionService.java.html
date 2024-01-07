@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PosicionService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">implementation</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.implementation</a> &gt; <span class="el_source">PosicionService.java</span></div><h1>PosicionService.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.salas.Sender;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.salas.FirebaseSender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.Posicion;
 import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
@@ -30,9 +31,9 @@ import java.util.List;
 @Path( &quot;/posicion&quot; )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-<span class="nc" id="L33">public class PosicionService extends BaseService</span>
+<span class="nc" id="L34">public class PosicionService extends BaseService</span>
 {
-<span class="nc" id="L35">    private static Logger _logger = LoggerFactory.getLogger( PosicionService.class );</span>
+<span class="nc" id="L36">    private static Logger _logger = LoggerFactory.getLogger( PosicionService.class );</span>
 
     @GET
     @Path( &quot;/{id}&quot; )
@@ -40,42 +41,42 @@ import java.util.List;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L43">        GetPosicionCommand command = null;</span>
+<span class="nc" id="L44">        GetPosicionCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L45">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L46">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L50">            entity = PosicionMapper.mapDtoToEntity( userId );</span>
-<span class="nc" id="L51">            command = CommandFactory.createGetPosicionCommand( entity );</span>
-<span class="nc" id="L52">            command.execute();</span>
-<span class="nc bnc" id="L53" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L54">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L51">            entity = PosicionMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L52">            command = CommandFactory.createGetPosicionCommand( entity );</span>
+<span class="nc" id="L53">            command.execute();</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L55">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L56">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
+<span class="nc" id="L57">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
             }
         }
-<span class="nc" id="L59">        catch ( Exception e )</span>
+<span class="nc" id="L60">        catch ( Exception e )</span>
         {
-<span class="nc" id="L61">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userId)).build();</span>
+<span class="nc" id="L62">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userId)).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L67">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L68">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L70">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
-<span class="nc" id="L71">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Posicion: &quot; + userId)).build();</span>
+<span class="nc" id="L71">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L72">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Posicion: &quot; + userId)).build();</span>
     }
 
     //metodo para calcular la disrtancia entre dos puntos
     public double calculateDistance(PosicionDto pos1, PosicionDto pos2) {
-<span class="nc" id="L76">        float xDiff = pos1.getCoordenadaX() - pos2.getCoordenadaX();</span>
-<span class="nc" id="L77">        float yDiff = pos1.getCoordenadaY() - pos2.getCoordenadaY();</span>
-<span class="nc" id="L78">        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);</span>
+<span class="nc" id="L77">        float xDiff = pos1.getCoordenadaX() - pos2.getCoordenadaX();</span>
+<span class="nc" id="L78">        float yDiff = pos1.getCoordenadaY() - pos2.getCoordenadaY();</span>
+<span class="nc" id="L79">        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);</span>
     }
 
     //endpoint para obtener la ultima posicion de un usuario dado su id
@@ -84,81 +85,81 @@ import java.util.List;
     public Response getAllPosicionUsuarioLast1(@PathParam( &quot;id&quot; ) long id )
     {
         List&lt;PosicionDto&gt; response;
-<span class="nc" id="L87">        PosicionDto lastResponse = null;</span>
-<span class="nc" id="L88">        GetAllPosicionCommand command = null;</span>
+<span class="nc" id="L88">        PosicionDto lastResponse = null;</span>
+<span class="nc" id="L89">        GetAllPosicionCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L90">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L91">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L95">            command = CommandFactory.createGetAllPosicionCommand(id);</span>
-<span class="nc" id="L96">            command.execute();</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L98">                response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">                if (!response.isEmpty()) {</span>
-<span class="nc" id="L100">                    lastResponse = response.get(response.size() - 1);</span>
+<span class="nc" id="L96">            command = CommandFactory.createGetAllPosicionCommand(id);</span>
+<span class="nc" id="L97">            command.execute();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L99">                response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">                if (!response.isEmpty()) {</span>
+<span class="nc" id="L101">                    lastResponse = response.get(response.size() - 1);</span>
                 } else {
-<span class="nc" id="L102">                    return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
+<span class="nc" id="L103">                    return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
                 }
             }else{
-<span class="nc" id="L105">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
+<span class="nc" id="L106">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
             }
         }
-<span class="nc" id="L108">        catch ( Exception e )</span>
+<span class="nc" id="L109">        catch ( Exception e )</span>
         {
-<span class="nc" id="L110">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot;)).build();</span>
+<span class="nc" id="L111">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot;)).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L116">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L117">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L119">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
-<span class="nc" id="L120">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(lastResponse,&quot;Busqueda por Id Posicion: &quot; )).build();</span>
+<span class="nc" id="L120">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L121">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(lastResponse,&quot;Busqueda por Id Posicion: &quot; )).build();</span>
     }
 
 
     //metodo que devuelve la ultima posicion de un usuario dado su id
     public List&lt;PosicionDto&gt; getAllPosicionUsuarioLast1Me(long id )
     {
-<span class="nc" id="L127">        List&lt;PosicionDto&gt; response = null;</span>
-<span class="nc" id="L128">        PosicionDto lastResponse = null;</span>
-<span class="nc" id="L129">        GetAllPosicionCommand command = null;</span>
+<span class="nc" id="L128">        List&lt;PosicionDto&gt; response = null;</span>
+<span class="nc" id="L129">        PosicionDto lastResponse = null;</span>
+<span class="nc" id="L130">        GetAllPosicionCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L131">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L132">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L136">            command = CommandFactory.createGetAllPosicionCommand(id);</span>
-<span class="nc" id="L137">            command.execute();</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L139">                response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">                if (!response.isEmpty()) {</span>
-<span class="nc" id="L141">                    lastResponse = response.get(response.size() - 1);</span>
+<span class="nc" id="L137">            command = CommandFactory.createGetAllPosicionCommand(id);</span>
+<span class="nc" id="L138">            command.execute();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L140">                response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">                if (!response.isEmpty()) {</span>
+<span class="nc" id="L142">                    lastResponse = response.get(response.size() - 1);</span>
                 } else {
-<span class="nc" id="L143">                    return response;</span>
+<span class="nc" id="L144">                    return response;</span>
                 }
             }else{
-<span class="nc" id="L146">                return response;</span>
+<span class="nc" id="L147">                return response;</span>
             }
         }
-<span class="nc" id="L149">        catch ( Exception e )</span>
+<span class="nc" id="L150">        catch ( Exception e )</span>
         {
-<span class="nc" id="L151">            return response;</span>
+<span class="nc" id="L152">            return response;</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L157">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L158">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L160">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
-<span class="nc" id="L161">        return response;</span>
+<span class="nc" id="L161">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L162">        return response;</span>
     }
 
 
@@ -168,93 +169,93 @@ import java.util.List;
     public Response getAllPosicionUsuarioLastCalc(@PathParam( &quot;id1&quot; ) long id1, @PathParam( &quot;id2&quot; ) long id2 )
     {
         List&lt;PosicionDto&gt; response1, response2;
-<span class="nc" id="L171">        PosicionDto lastResponse1 = null, lastResponse2 = null;</span>
-<span class="nc" id="L172">        GetAllPosicionCommand command1 = null, command2 = null;</span>
-<span class="nc" id="L173">        double distance = 0.0;</span>
+<span class="nc" id="L172">        PosicionDto lastResponse1 = null, lastResponse2 = null;</span>
+<span class="nc" id="L173">        GetAllPosicionCommand command1 = null, command2 = null;</span>
+<span class="nc" id="L174">        double distance = 0.0;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L175">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L176">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L180">            command1 = CommandFactory.createGetAllPosicionCommand(id1);</span>
-<span class="nc" id="L181">            command1.execute();</span>
-<span class="nc" id="L182">            command2 = CommandFactory.createGetAllPosicionCommand(id2);</span>
-<span class="nc" id="L183">            command2.execute();</span>
-<span class="nc bnc" id="L184" title="All 4 branches missed.">            if(command1.getReturnParam() != null &amp;&amp; command2.getReturnParam() != null){</span>
-<span class="nc" id="L185">                response1 = PosicionMapper.mapListEntityToDto(command1.getReturnParam());</span>
-<span class="nc" id="L186">                response2 = PosicionMapper.mapListEntityToDto(command2.getReturnParam());</span>
-<span class="nc bnc" id="L187" title="All 4 branches missed.">                if (!response1.isEmpty() &amp;&amp; !response2.isEmpty()) {</span>
-<span class="nc" id="L188">                    lastResponse1 = response1.get(response1.size() - 1);</span>
-<span class="nc" id="L189">                    lastResponse2 = response2.get(response2.size() - 1);</span>
-<span class="nc" id="L190">                    distance = calculateDistance(lastResponse1, lastResponse2);</span>
+<span class="nc" id="L181">            command1 = CommandFactory.createGetAllPosicionCommand(id1);</span>
+<span class="nc" id="L182">            command1.execute();</span>
+<span class="nc" id="L183">            command2 = CommandFactory.createGetAllPosicionCommand(id2);</span>
+<span class="nc" id="L184">            command2.execute();</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">            if(command1.getReturnParam() != null &amp;&amp; command2.getReturnParam() != null){</span>
+<span class="nc" id="L186">                response1 = PosicionMapper.mapListEntityToDto(command1.getReturnParam());</span>
+<span class="nc" id="L187">                response2 = PosicionMapper.mapListEntityToDto(command2.getReturnParam());</span>
+<span class="nc bnc" id="L188" title="All 4 branches missed.">                if (!response1.isEmpty() &amp;&amp; !response2.isEmpty()) {</span>
+<span class="nc" id="L189">                    lastResponse1 = response1.get(response1.size() - 1);</span>
+<span class="nc" id="L190">                    lastResponse2 = response2.get(response2.size() - 1);</span>
+<span class="nc" id="L191">                    distance = calculateDistance(lastResponse1, lastResponse2);</span>
                 } else {
-<span class="nc" id="L192">                    return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
+<span class="nc" id="L193">                    return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
                 }
             }else{
-<span class="nc" id="L195">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
+<span class="nc" id="L196">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
             }
         }
-<span class="nc" id="L198">        catch ( Exception e )</span>
+<span class="nc" id="L199">        catch ( Exception e )</span>
         {
-<span class="nc" id="L200">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot;)).build();</span>
+<span class="nc" id="L201">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot;)).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L205" title="All 2 branches missed.">            if (command1 != null)</span>
-<span class="nc" id="L206">                command1.closeHandlerSession();</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (command2 != null)</span>
-<span class="nc" id="L208">                command2.closeHandlerSession();</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">            if (command1 != null)</span>
+<span class="nc" id="L207">                command1.closeHandlerSession();</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (command2 != null)</span>
+<span class="nc" id="L209">                command2.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L211">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
-<span class="nc" id="L212">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;&quot;+distance)).build();</span>
+<span class="nc" id="L212">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L213">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;&quot;+distance)).build();</span>
     }
 
     //metodo para obtener la distancia de dos usuarios dado sus ids
     public double getAllPosicionUsuarioLastCalc2(long id1, long id2 )
     {
         List&lt;PosicionDto&gt; response1, response2;
-<span class="nc" id="L219">        PosicionDto lastResponse1 = null, lastResponse2 = null;</span>
-<span class="nc" id="L220">        GetAllPosicionCommand command1 = null, command2 = null;</span>
-<span class="nc" id="L221">        double distance = 0.0;</span>
+<span class="nc" id="L220">        PosicionDto lastResponse1 = null, lastResponse2 = null;</span>
+<span class="nc" id="L221">        GetAllPosicionCommand command1 = null, command2 = null;</span>
+<span class="nc" id="L222">        double distance = 0.0;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L223">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L224">        _logger.debug( &quot;Get in PosicionService.getPosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L228">            command1 = CommandFactory.createGetAllPosicionCommand(id1);</span>
-<span class="nc" id="L229">            command1.execute();</span>
-<span class="nc" id="L230">            command2 = CommandFactory.createGetAllPosicionCommand(id2);</span>
-<span class="nc" id="L231">            command2.execute();</span>
-<span class="nc bnc" id="L232" title="All 4 branches missed.">            if(command1.getReturnParam() != null &amp;&amp; command2.getReturnParam() != null){</span>
-<span class="nc" id="L233">                response1 = PosicionMapper.mapListEntityToDto(command1.getReturnParam());</span>
-<span class="nc" id="L234">                response2 = PosicionMapper.mapListEntityToDto(command2.getReturnParam());</span>
-<span class="nc bnc" id="L235" title="All 4 branches missed.">                if (!response1.isEmpty() &amp;&amp; !response2.isEmpty()) {</span>
-<span class="nc" id="L236">                    lastResponse1 = response1.get(response1.size() - 1);</span>
-<span class="nc" id="L237">                    lastResponse2 = response2.get(response2.size() - 1);</span>
-<span class="nc" id="L238">                    distance = calculateDistance(lastResponse1, lastResponse2);</span>
+<span class="nc" id="L229">            command1 = CommandFactory.createGetAllPosicionCommand(id1);</span>
+<span class="nc" id="L230">            command1.execute();</span>
+<span class="nc" id="L231">            command2 = CommandFactory.createGetAllPosicionCommand(id2);</span>
+<span class="nc" id="L232">            command2.execute();</span>
+<span class="nc bnc" id="L233" title="All 4 branches missed.">            if(command1.getReturnParam() != null &amp;&amp; command2.getReturnParam() != null){</span>
+<span class="nc" id="L234">                response1 = PosicionMapper.mapListEntityToDto(command1.getReturnParam());</span>
+<span class="nc" id="L235">                response2 = PosicionMapper.mapListEntityToDto(command2.getReturnParam());</span>
+<span class="nc bnc" id="L236" title="All 4 branches missed.">                if (!response1.isEmpty() &amp;&amp; !response2.isEmpty()) {</span>
+<span class="nc" id="L237">                    lastResponse1 = response1.get(response1.size() - 1);</span>
+<span class="nc" id="L238">                    lastResponse2 = response2.get(response2.size() - 1);</span>
+<span class="nc" id="L239">                    distance = calculateDistance(lastResponse1, lastResponse2);</span>
                 } else {
-<span class="nc" id="L240">                return 0.0;                }</span>
+<span class="nc" id="L241">                return 0.0;                }</span>
             }else{
-<span class="nc" id="L242">return 0.0;            }</span>
+<span class="nc" id="L243">return 0.0;            }</span>
         }
-<span class="nc" id="L244">        catch ( Exception e )</span>
+<span class="nc" id="L245">        catch ( Exception e )</span>
         {
-<span class="nc" id="L246">return 0.0;</span>
+<span class="nc" id="L247">return 0.0;</span>
         }
         finally
         {
-<span class="nc bnc" id="L250" title="All 2 branches missed.">            if (command1 != null)</span>
-<span class="nc" id="L251">                command1.closeHandlerSession();</span>
-<span class="nc bnc" id="L252" title="All 2 branches missed.">            if (command2 != null)</span>
-<span class="nc" id="L253">                command2.closeHandlerSession();</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">            if (command1 != null)</span>
+<span class="nc" id="L252">                command1.closeHandlerSession();</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">            if (command2 != null)</span>
+<span class="nc" id="L254">                command2.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L256">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
-<span class="nc" id="L257">return distance;</span>
+<span class="nc" id="L257">        _logger.debug( &quot;Leaving PosicionService.getPosicion&quot; );</span>
+<span class="nc" id="L258">return distance;</span>
     }
 
 
@@ -264,64 +265,110 @@ import java.util.List;
     //metodo que checkea si un usuario no ha actualizado su posicion en un tiempo determinado
     public void checkAllUsersLastPositionTimestamp() {
         // Get a list of all users
-<span class="nc" id="L267">        UsuarioService usuarioService = new UsuarioService();</span>
-<span class="nc" id="L268">        List&lt;UsuarioDto&gt; allUsers = usuarioService.getAllUsuarioList();</span>
+<span class="nc" id="L268">        UsuarioService usuarioService = new UsuarioService();</span>
+<span class="nc" id="L269">        List&lt;UsuarioDto&gt; allUsers = usuarioService.getAllUsuarioList();</span>
         List&lt;PosicionDto&gt; response;
-<span class="nc" id="L270">        PosicionDto lastPosition = null;</span>
-<span class="nc" id="L271">        GetAllPosicionCommand command = null;</span>
+<span class="nc" id="L271">        PosicionDto lastPosition = null;</span>
+<span class="nc" id="L272">        GetAllPosicionCommand command = null;</span>
 
         // Define the acceptable time difference (in milliseconds)
         //long acceptableTimeDifference = 3600000; // 1 hour
-<span class="nc" id="L275">        long acceptableTimeDifference = 600000; // 10 minutes</span>
+<span class="nc" id="L276">        long acceptableTimeDifference = 600000; // 10 minutes</span>
 
         // Get the current time
-<span class="nc" id="L278">        long currentTime = System.currentTimeMillis();</span>
+<span class="nc" id="L279">        long currentTime = System.currentTimeMillis();</span>
 
         // Iterate over all users
-<span class="nc bnc" id="L281" title="All 2 branches missed.">        for (UsuarioDto user : allUsers) {</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        for (UsuarioDto user : allUsers) {</span>
             // Get the last position of the user
             try {
-<span class="nc" id="L284">                command = CommandFactory.createGetAllPosicionCommand(user.getId());</span>
-<span class="nc" id="L285">                command.execute();</span>
-<span class="nc bnc" id="L286" title="All 2 branches missed.">                if(command.getReturnParam() != null){</span>
-<span class="nc" id="L287">                    response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
-<span class="nc bnc" id="L288" title="All 2 branches missed.">                    if (!response.isEmpty()) {</span>
-<span class="nc" id="L289">                        lastPosition = response.get(response.size() - 1);</span>
+<span class="nc" id="L285">                command = CommandFactory.createGetAllPosicionCommand(user.getId());</span>
+<span class="nc" id="L286">                command.execute();</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">                if(command.getReturnParam() != null){</span>
+<span class="nc" id="L288">                    response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">                    if (!response.isEmpty()) {</span>
+<span class="nc" id="L290">                        lastPosition = response.get(response.size() - 1);</span>
                     } else {
-<span class="nc" id="L291">                        break;</span>
+<span class="nc" id="L292">                        break;</span>
                     }
                 }else{
-<span class="nc" id="L294">                    break;</span>
+<span class="nc" id="L295">                    break;</span>
                 }
             }
-<span class="nc" id="L297">            catch ( Exception e ) {</span>
-<span class="nc" id="L298">                break;</span>
-<span class="nc" id="L299">            }</span>
+<span class="nc" id="L298">            catch ( Exception e ) {</span>
+<span class="nc" id="L299">                break;</span>
+<span class="nc" id="L300">            }</span>
 
             // Check if the last position exists
-<span class="nc bnc" id="L302" title="All 2 branches missed.">            if (lastPosition != null) {</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">            if (lastPosition != null) {</span>
                 // Get the timestamp of the last position
-<span class="nc" id="L304">                long lastPositionTime = lastPosition.getFechaHora().getTime();</span>
+<span class="nc" id="L305">                long lastPositionTime = lastPosition.getFechaHora().getTime();</span>
 
                 // Calculate the time difference
-<span class="nc" id="L307">                long timeDifference = currentTime - lastPositionTime;</span>
+<span class="nc" id="L308">                long timeDifference = currentTime - lastPositionTime;</span>
 
                 // Check if the time difference is greater than the acceptable time difference
-<span class="nc bnc" id="L310" title="All 2 branches missed.">                if (timeDifference &gt; acceptableTimeDifference) {</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">                if (timeDifference &gt; acceptableTimeDifference) {</span>
                     // Create a new alert
-<span class="nc" id="L312">                    AlertaDto alertaDto = new AlertaDto();</span>
-<span class="nc" id="L313">                    alertaDto.set_tipoAlerta(&quot;No position update&quot;);</span>
-<span class="nc" id="L314">                    alertaDto.set_fechaHora(new Date());</span>
-<span class="nc" id="L315">                    alertaDto.setUsuario(user);</span>
+<span class="nc" id="L313">                    AlertaDto alertaDto = new AlertaDto();</span>
+<span class="nc" id="L314">                    alertaDto.set_tipoAlerta(&quot;No position update&quot;);</span>
+<span class="nc" id="L315">                    alertaDto.set_fechaHora(new Date());</span>
+<span class="nc" id="L316">                    alertaDto.setUsuario(user);</span>
 
                     // Create an instance of AlertaService
-<span class="nc" id="L318">                    AlertaService alertaService = new AlertaService();</span>
+<span class="nc" id="L319">                    AlertaService alertaService = new AlertaService();</span>
                     // Call the method to insert the alert
-<span class="nc" id="L320">                    alertaService.addAlerta(alertaDto);</span>
+<span class="nc" id="L321">                    alertaService.addAlerta(alertaDto);</span>
                 }
             }
-<span class="nc" id="L323">        }</span>
-<span class="nc" id="L324">    }</span>
+<span class="nc" id="L324">        }</span>
+<span class="nc" id="L325">    }</span>
+
+
+    //endpoint para checkear si un usuario no ha actualizado su posicion en un tiempo determinado.
+    //Conectado o no
+    @GET
+    @Path( &quot;/estatus/{id}&quot; )
+    public boolean checkUserLastPositionTimestamp(@PathParam( &quot;id&quot; ) long userId ) {
+        // Define the acceptable time difference (in milliseconds)
+<span class="nc" id="L334">        long acceptableTimeDifference = 600000; // 10 minutes</span>
+
+        // Get the current time
+<span class="nc" id="L337">        long currentTime = System.currentTimeMillis();</span>
+
+        // Get the last position of the user
+<span class="nc" id="L340">        List&lt;PosicionDto&gt; userLastPosition = getAllPosicionUsuarioLast1Me(userId);</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">        if (!userLastPosition.isEmpty()) {</span>
+<span class="nc" id="L342">            PosicionDto lastPosition = userLastPosition.get(userLastPosition.size() - 1);</span>
+
+            // Get the timestamp of the last position
+<span class="nc" id="L345">            long lastPositionTime = lastPosition.getFechaHora().getTime();</span>
+
+            // Calculate the time difference
+<span class="nc" id="L348">            long timeDifference = currentTime - lastPositionTime;</span>
+
+            // Check if the time difference is greater than the acceptable time difference
+<span class="nc bnc" id="L351" title="All 2 branches missed.">            if (timeDifference &gt; acceptableTimeDifference) {</span>
+
+
+                // Create a new alert
+<span class="nc" id="L355">                AlertaDto alertaDto = new AlertaDto();</span>
+<span class="nc" id="L356">                alertaDto.set_tipoAlerta(&quot;No position update&quot;);</span>
+<span class="nc" id="L357">                alertaDto.set_fechaHora(new Date());</span>
+<span class="nc" id="L358">                alertaDto.setUsuario(lastPosition.getUsuario());</span>
+
+                // Create an instance of AlertaService
+<span class="nc" id="L361">                AlertaService alertaService = new AlertaService();</span>
+                // Call the method to insert the alert
+<span class="nc" id="L363">                alertaService.addAlerta(alertaDto);</span>
+
+<span class="nc" id="L365">                return false;</span>
+            }else
+<span class="nc" id="L367">                return true;</span>
+
+        }
+<span class="nc" id="L370">        return false;</span>
+    }
 
 
     //TODO:
@@ -330,57 +377,59 @@ import java.util.List;
     //metodo que checkea si un usuario esta enviando la misma posicion. despues de 10 envios
     public void checkAllUsersSamePosition() {
         // Get a list of all users
-<span class="nc" id="L333">        UsuarioService usuarioService = new UsuarioService();</span>
-<span class="nc" id="L334">        List&lt;UsuarioDto&gt; allUsers = usuarioService.getAllUsuarioList();</span>
+<span class="nc" id="L380">        UsuarioService usuarioService = new UsuarioService();</span>
+<span class="nc" id="L381">        List&lt;UsuarioDto&gt; allUsers = usuarioService.getAllUsuarioList();</span>
         List&lt;PosicionDto&gt; response;
-<span class="nc" id="L336">        GetAllPosicionCommand command = null;</span>
+<span class="nc" id="L383">        GetAllPosicionCommand command = null;</span>
 
         // Iterate over all users
-<span class="nc bnc" id="L339" title="All 2 branches missed.">        for (UsuarioDto user : allUsers) {</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">        for (UsuarioDto user : allUsers) {</span>
             // Get the last 5 positions of the user
             try {
-<span class="nc" id="L342">                command = CommandFactory.createGetAllPosicionCommand(user.getId());</span>
-<span class="nc" id="L343">                command.execute();</span>
-<span class="nc bnc" id="L344" title="All 2 branches missed.">                if(command.getReturnParam() != null){</span>
-<span class="nc" id="L345">                    response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
-<span class="nc bnc" id="L346" title="All 2 branches missed.">                    if (response.size() &gt;= 5) {</span>
+<span class="nc" id="L389">                command = CommandFactory.createGetAllPosicionCommand(user.getId());</span>
+<span class="nc" id="L390">                command.execute();</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">                if(command.getReturnParam() != null){</span>
+<span class="nc" id="L392">                    response = PosicionMapper.mapListEntityToDto(command.getReturnParam());</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">                    if (response.size() &gt;= 5) {</span>
                         // Check if the last 10 positions are the same
-<span class="nc" id="L348">                        PosicionDto referencePosition = response.get(response.size() - 1);</span>
-<span class="nc" id="L349">                        boolean allSame = true;</span>
-<span class="nc bnc" id="L350" title="All 2 branches missed.">                        for (int i = 2; i &lt;= 5; i++) {</span>
-<span class="nc" id="L351">                            PosicionDto currentPosition = response.get(response.size() - i);</span>
-<span class="nc bnc" id="L352" title="All 2 branches missed.">                            if (currentPosition.getCoordenadaX() != referencePosition.getCoordenadaX() ||</span>
-<span class="nc bnc" id="L353" title="All 2 branches missed.">                                    currentPosition.getCoordenadaY() != referencePosition.getCoordenadaY()) {</span>
-<span class="nc" id="L354">                                allSame = false;</span>
-<span class="nc" id="L355">                                break;</span>
+<span class="nc" id="L395">                        PosicionDto referencePosition = response.get(response.size() - 1);</span>
+<span class="nc" id="L396">                        boolean allSame = true;</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">                        for (int i = 2; i &lt;= 5; i++) {</span>
+<span class="nc" id="L398">                            PosicionDto currentPosition = response.get(response.size() - i);</span>
+<span class="nc bnc" id="L399" title="All 2 branches missed.">                            if (currentPosition.getCoordenadaX() != referencePosition.getCoordenadaX() ||</span>
+<span class="nc bnc" id="L400" title="All 2 branches missed.">                                    currentPosition.getCoordenadaY() != referencePosition.getCoordenadaY()) {</span>
+<span class="nc" id="L401">                                allSame = false;</span>
+<span class="nc" id="L402">                                break;</span>
                             }
                         }
-<span class="nc bnc" id="L358" title="All 2 branches missed.">                        if (allSame) {</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">                        if (allSame) {</span>
                             // The user is sending the same location
                             //aqui se construye el objeto de alerta
 
                             // Create an instance of AlertaDto
-<span class="nc" id="L363">                            AlertaDto alertaDto = new AlertaDto();</span>
+<span class="nc" id="L410">                            AlertaDto alertaDto = new AlertaDto();</span>
                             // Set the properties of alertaDto as needed
-<span class="nc" id="L365">                            alertaDto.set_tipoAlerta(&quot;Inactivo por 5 envios&quot;);</span>
-<span class="nc" id="L366">                            alertaDto.set_fechaHora(new Date());</span>
-<span class="nc" id="L367">                            alertaDto.setUsuario(user);</span>
+<span class="nc" id="L412">                            alertaDto.set_tipoAlerta(&quot;Inactivo por 5 envios&quot;);</span>
+<span class="nc" id="L413">                            alertaDto.set_fechaHora(new Date());</span>
+<span class="nc" id="L414">                            alertaDto.setUsuario(user);</span>
 
                             // Create an instance of AlertaService
-<span class="nc" id="L370">                            AlertaService alertaService = new AlertaService();</span>
+<span class="nc" id="L417">                            AlertaService alertaService = new AlertaService();</span>
                             // Call the method to insert the alert
-<span class="nc" id="L372">                            alertaService.addAlerta(alertaDto);</span>
+<span class="nc" id="L419">                            alertaService.addAlerta(alertaDto);</span>
 
                             //TAMBIEN SE VA A LLAMAR AL FIREBASE
                         }
                     }
                 }
             }
-<span class="nc" id="L379">            catch ( Exception e ) {</span>
-<span class="nc" id="L380">                continue;</span>
-<span class="nc" id="L381">            }</span>
-<span class="nc" id="L382">        }</span>
-<span class="nc" id="L383">    }</span>
+<span class="nc" id="L426">            catch ( Exception e ) {</span>
+<span class="nc" id="L427">                continue;</span>
+<span class="nc" id="L428">            }</span>
+<span class="nc" id="L429">        }</span>
+<span class="nc" id="L430">    }</span>
+
+
 
     //endpoint para insertar la ultima ubicacion de la Victima. devuelve la ultima posicion en el response del POST
     //asi como tambien si el agresor se encuentra dentro del radio de distancia minima, envia una Alerta
@@ -393,68 +442,68 @@ import java.util.List;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L396">        CreatePosicionCommand command = null;</span>
-<span class="nc" id="L397">        Response customResponse = null;</span>
-<span class="nc" id="L398">        DistanciaAlejamientoService distanciaAlejamientoService = new DistanciaAlejamientoService();</span>
+<span class="nc" id="L445">        CreatePosicionCommand command = null;</span>
+<span class="nc" id="L446">        Response customResponse = null;</span>
+<span class="nc" id="L447">        DistanciaAlejamientoService distanciaAlejamientoService = new DistanciaAlejamientoService();</span>
         long idAgresor;
-<span class="nc" id="L400">        double distancia = 0.0;</span>
-<span class="nc" id="L401">        double distanciaMin = 0.0;</span>
+<span class="nc" id="L449">        double distancia = 0.0;</span>
+<span class="nc" id="L450">        double distanciaMin = 0.0;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L403">        _logger.debug( &quot;Get in PosicionService.addPosicion&quot; );</span>
+<span class="nc" id="L452">        _logger.debug( &quot;Get in PosicionService.addPosicion&quot; );</span>
         //endregion
 
         try{
-<span class="nc" id="L407">            entity = PosicionMapper.mapDtoToEntityInsert( userDto );</span>
-<span class="nc" id="L408">            command = CommandFactory.createCreatePosicionCommand( entity );</span>
-<span class="nc" id="L409">            command.execute();</span>
-<span class="nc bnc" id="L410" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L411">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L456">            entity = PosicionMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L457">            command = CommandFactory.createCreatePosicionCommand( entity );</span>
+<span class="nc" id="L458">            command.execute();</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L460">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
 
-<span class="nc" id="L413">                idAgresor = distanciaAlejamientoService.getDistanciaAlejamientoUsuarioAgresorId(userDto.getId());</span>
-<span class="nc" id="L414">                distanciaMin = distanciaAlejamientoService.getDistanciaAlejamientoUsuarioDistanciaMin(userDto.getId());</span>
-<span class="nc bnc" id="L415" title="All 2 branches missed.">                if (idAgresor != 0){</span>
-<span class="nc" id="L416">                    distancia = getAllPosicionUsuarioLastCalc2(userDto.getId(), idAgresor);</span>
+<span class="nc" id="L462">                idAgresor = distanciaAlejamientoService.getDistanciaAlejamientoUsuarioAgresorId(userDto.getId());</span>
+<span class="nc" id="L463">                distanciaMin = distanciaAlejamientoService.getDistanciaAlejamientoUsuarioDistanciaMin(userDto.getId());</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">                if (idAgresor != 0){</span>
+<span class="nc" id="L465">                    distancia = getAllPosicionUsuarioLastCalc2(userDto.getId(), idAgresor);</span>
 
-<span class="nc bnc" id="L418" title="All 2 branches missed.">                    if (distancia &lt;= distanciaMin){</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">                    if (distancia &lt;= distanciaMin){</span>
 
                     //aqui se construye el objeto de alerta
 
                         // Create an instance of AlertaDto
-<span class="nc" id="L423">                        AlertaDto alertaDto = new AlertaDto();</span>
+<span class="nc" id="L472">                        AlertaDto alertaDto = new AlertaDto();</span>
                         // Set the properties of alertaDto as needed
-<span class="nc" id="L425">                        alertaDto.set_tipoAlerta(&quot;Agresor Dentro radio&quot;);</span>
-<span class="nc" id="L426">                        alertaDto.set_fechaHora(new Date());</span>
-<span class="nc" id="L427">                        alertaDto.setUsuario(userDto.getUsuario());</span>
+<span class="nc" id="L474">                        alertaDto.set_tipoAlerta(&quot;Agresor Dentro radio&quot;);</span>
+<span class="nc" id="L475">                        alertaDto.set_fechaHora(new Date());</span>
+<span class="nc" id="L476">                        alertaDto.setUsuario(userDto.getUsuario());</span>
 
                         // Create an instance of AlertaService
-<span class="nc" id="L430">                        AlertaService alertaService = new AlertaService();</span>
+<span class="nc" id="L479">                        AlertaService alertaService = new AlertaService();</span>
                         // Call the method to insert the alert
-<span class="nc" id="L432">                        alertaService.addAlerta(alertaDto);</span>
+<span class="nc" id="L481">                        alertaService.addAlerta(alertaDto);</span>
 
                         //TAMBIEN SE VA A LLAMAR AL FIREBASE
 
                     }
                 }
-<span class="nc" id="L438">                checkAllUsersLastPositionTimestamp();</span>
-<span class="nc" id="L439">                checkAgresorInsideVictimaZonaSeguridad();</span>
-<span class="nc" id="L440">                checkAllUsersSamePosition();</span>
+<span class="nc" id="L487">                checkAllUsersLastPositionTimestamp();</span>
+<span class="nc" id="L488">                checkAgresorInsideVictimaZonaSeguridad();</span>
+<span class="nc" id="L489">                checkAllUsersSamePosition();</span>
             }else{
-<span class="nc" id="L442">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L491">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L445">        catch ( Exception e )</span>
+<span class="nc" id="L494">        catch ( Exception e )</span>
         {
-<span class="nc" id="L447">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L496">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L452" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L453">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L502">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L456">        _logger.debug( &quot;Leaving PosicionService.addPosicion&quot; );</span>
-<span class="nc" id="L457">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;&quot;+ distancia)).build();</span>
+<span class="nc" id="L505">        _logger.debug( &quot;Leaving PosicionService.addPosicion&quot; );</span>
+<span class="nc" id="L506">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;&quot;+ distancia)).build();</span>
     }
 
 
@@ -466,101 +515,115 @@ import java.util.List;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L469">        CreatePosicionCommand command = null;</span>
+<span class="nc" id="L518">        CreatePosicionCommand command = null;</span>
 
         //region Instrumentation DEBUG
-<span class="nc" id="L472">        _logger.debug( &quot;Get in PosicionService.addPosicion&quot; );</span>
+<span class="nc" id="L521">        _logger.debug( &quot;Get in PosicionService.addPosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L477">            entity = PosicionMapper.mapDtoToEntityInsert( userDto );</span>
-<span class="nc" id="L478">            command = CommandFactory.createCreatePosicionCommand( entity );</span>
-<span class="nc" id="L479">            command.execute();</span>
-<span class="nc bnc" id="L480" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L481">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L526">            entity = PosicionMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L527">            command = CommandFactory.createCreatePosicionCommand( entity );</span>
+<span class="nc" id="L528">            command.execute();</span>
+<span class="nc bnc" id="L529" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L530">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
 
             }else{
-<span class="nc" id="L484">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L533">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L487">        catch ( Exception e )</span>
+<span class="nc" id="L536">        catch ( Exception e )</span>
         {
-<span class="nc" id="L489">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L538">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L494" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L495">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L543" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L544">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L498">        checkAgresorInsideVictimaZonaSeguridad();</span>
+<span class="nc" id="L547">        checkAgresorInsideVictimaZonaSeguridad();</span>
 
-<span class="nc" id="L500">        _logger.debug( &quot;Leaving PosicionService.addPosicion&quot; );</span>
-<span class="nc" id="L501">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L549">        _logger.debug( &quot;Leaving PosicionService.addPosicion&quot; );</span>
+<span class="nc" id="L550">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
     }
 
     //metodo que checkea si un usuario se encuentra dentro de la zona de seguridad de una victima dada
     public boolean isUserInsideSafeZone(PosicionDto userPosition, List&lt;CoordenadaZonaSeguridadDto&gt; safeZoneCoordinatesList) {
         int i, j;
-<span class="nc" id="L507">        boolean result = false;</span>
-<span class="nc bnc" id="L508" title="All 2 branches missed.">        for (i = 0, j = safeZoneCoordinatesList.size() - 1; i &lt; safeZoneCoordinatesList.size(); j = i++) {</span>
-<span class="nc bnc" id="L509" title="All 6 branches missed.">            if ((safeZoneCoordinatesList.get(i).getCoordenadaY() &gt; userPosition.getCoordenadaY()) != (safeZoneCoordinatesList.get(j).getCoordenadaY() &gt; userPosition.getCoordenadaY()) &amp;&amp;</span>
-<span class="nc bnc" id="L510" title="All 2 branches missed.">                    (userPosition.getCoordenadaX() &lt; (safeZoneCoordinatesList.get(j).getCoordenadaX() - safeZoneCoordinatesList.get(i).getCoordenadaX()) * (userPosition.getCoordenadaY() - safeZoneCoordinatesList.get(i).getCoordenadaY()) / (safeZoneCoordinatesList.get(j).getCoordenadaY()-safeZoneCoordinatesList.get(i).getCoordenadaY()) + safeZoneCoordinatesList.get(i).getCoordenadaX())) {</span>
-<span class="nc bnc" id="L511" title="All 2 branches missed.">                result = !result;</span>
+<span class="nc" id="L556">        boolean result = false;</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">        for (i = 0, j = safeZoneCoordinatesList.size() - 1; i &lt; safeZoneCoordinatesList.size(); j = i++) {</span>
+<span class="nc bnc" id="L558" title="All 6 branches missed.">            if ((safeZoneCoordinatesList.get(i).getCoordenadaY() &gt; userPosition.getCoordenadaY()) != (safeZoneCoordinatesList.get(j).getCoordenadaY() &gt; userPosition.getCoordenadaY()) &amp;&amp;</span>
+<span class="nc bnc" id="L559" title="All 2 branches missed.">                    (userPosition.getCoordenadaX() &lt; (safeZoneCoordinatesList.get(j).getCoordenadaX() - safeZoneCoordinatesList.get(i).getCoordenadaX()) * (userPosition.getCoordenadaY() - safeZoneCoordinatesList.get(i).getCoordenadaY()) / (safeZoneCoordinatesList.get(j).getCoordenadaY()-safeZoneCoordinatesList.get(i).getCoordenadaY()) + safeZoneCoordinatesList.get(i).getCoordenadaX())) {</span>
+<span class="nc bnc" id="L560" title="All 2 branches missed.">                result = !result;</span>
             }
         }
-<span class="nc" id="L514">        return result;</span>
+<span class="nc" id="L563">        return result;</span>
     }
 
     //metodo que checkea si un agresor se encuentra dentro de la zona de seguridad. ejecuta el analisis completo
     public void checkAgresorInsideVictimaZonaSeguridad() {
         // Step 1: Get all DistanciaAlejamiento relations
-<span class="nc" id="L520">        DistanciaAlejamientoService distanciaAlejamientoService = new DistanciaAlejamientoService();</span>
-<span class="nc" id="L521">        ZonaSeguridadUsuarioService zonaSeguridadUsuarioService = new ZonaSeguridadUsuarioService();</span>
-<span class="nc" id="L522">        CoordenadaZonaSeguridadService coordenadaZonaSeguridadService = new CoordenadaZonaSeguridadService();</span>
+<span class="nc" id="L569">        DistanciaAlejamientoService distanciaAlejamientoService = new DistanciaAlejamientoService();</span>
+<span class="nc" id="L570">        ZonaSeguridadUsuarioService zonaSeguridadUsuarioService = new ZonaSeguridadUsuarioService();</span>
+<span class="nc" id="L571">        CoordenadaZonaSeguridadService coordenadaZonaSeguridadService = new CoordenadaZonaSeguridadService();</span>
 
-<span class="nc" id="L524">        List&lt;DistanciaAlejamientoDto&gt; allDistanciaAlejamiento = distanciaAlejamientoService.getAllDistanciaAlejamiento2();</span>
+<span class="nc" id="L573">        List&lt;DistanciaAlejamientoDto&gt; allDistanciaAlejamiento = distanciaAlejamientoService.getAllDistanciaAlejamiento2();</span>
 
         // Step 2: Iterate over each DistanciaAlejamiento relation
-<span class="nc bnc" id="L527" title="All 2 branches missed.">        for (DistanciaAlejamientoDto distanciaAlejamiento : allDistanciaAlejamiento) {</span>
-<span class="nc" id="L528">            long victimaId = distanciaAlejamiento.get_victima().getId();</span>
-<span class="nc" id="L529">            long agresorId = distanciaAlejamiento.get_agresor().getId();</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">        for (DistanciaAlejamientoDto distanciaAlejamiento : allDistanciaAlejamiento) {</span>
+<span class="nc" id="L577">            long victimaId = distanciaAlejamiento.get_victima().getId();</span>
+<span class="nc" id="L578">            long agresorId = distanciaAlejamiento.get_agresor().getId();</span>
 
             // Step 3: Get all ZonaSeguridad for the Victima
-<span class="nc" id="L532">            List&lt;ZonaSeguridadUsuarioDto&gt; allZonaSeguridad = zonaSeguridadUsuarioService.getUsuarioAllZonaSeguridad2(victimaId);</span>
+<span class="nc" id="L581">            List&lt;ZonaSeguridadUsuarioDto&gt; allZonaSeguridad = zonaSeguridadUsuarioService.getUsuarioAllZonaSeguridad2(victimaId);</span>
 
             // Step 4: Iterate over each ZonaSeguridad
-<span class="nc bnc" id="L535" title="All 2 branches missed.">            for (ZonaSeguridadUsuarioDto zonaSeguridad : allZonaSeguridad) {</span>
-<span class="nc" id="L536">                List&lt;CoordenadaZonaSeguridadDto&gt; allCoordenadas = coordenadaZonaSeguridadService.getCoordenadaAllZonaSeguridad2(zonaSeguridad.getId());</span>
+<span class="nc bnc" id="L584" title="All 2 branches missed.">            for (ZonaSeguridadUsuarioDto zonaSeguridad : allZonaSeguridad) {</span>
+<span class="nc" id="L585">                List&lt;CoordenadaZonaSeguridadDto&gt; allCoordenadas = coordenadaZonaSeguridadService.getCoordenadaAllZonaSeguridad2(zonaSeguridad.getId());</span>
 
                 // Step 5: Get the last position of the Agresor
-<span class="nc" id="L539">                List&lt;PosicionDto&gt; agresorLastPosition = getAllPosicionUsuarioLast1Me(agresorId);</span>
-<span class="nc" id="L540">                PosicionDto agresorLastPos = agresorLastPosition.get(agresorLastPosition.size() - 1);</span>
+<span class="nc" id="L588">                List&lt;PosicionDto&gt; agresorLastPosition = getAllPosicionUsuarioLast1Me(agresorId);</span>
+<span class="nc" id="L589">                PosicionDto agresorLastPos = agresorLastPosition.get(agresorLastPosition.size() - 1);</span>
 
 
                 // Step 6: Check if the Agresor position is inside the ZonaSeguridad polygon
-<span class="nc bnc" id="L544" title="All 2 branches missed.">                if (isUserInsideSafeZone(agresorLastPos, allCoordenadas)) {</span>
+<span class="nc bnc" id="L593" title="All 2 branches missed.">                if (isUserInsideSafeZone(agresorLastPos, allCoordenadas)) {</span>
                     //aqui se construye el objeto de alerta
 
                     // Create an instance of AlertaDto
-<span class="nc" id="L548">                    AlertaDto alertaDto = new AlertaDto();</span>
+<span class="nc" id="L597">                    AlertaDto alertaDto = new AlertaDto();</span>
                     // Set the properties of alertaDto as needed
-<span class="nc" id="L550">                    alertaDto.set_tipoAlerta(&quot;Dentro Zona Seguridad&quot;);</span>
-<span class="nc" id="L551">                    alertaDto.set_fechaHora(new Date());</span>
-<span class="nc" id="L552">                    alertaDto.setUsuario(distanciaAlejamiento.get_agresor());</span>
+<span class="nc" id="L599">                    alertaDto.set_tipoAlerta(&quot;Agresor Dentro Zona Seguridad&quot;);</span>
+<span class="nc" id="L600">                    alertaDto.set_fechaHora(new Date());</span>
+<span class="nc" id="L601">                    alertaDto.setUsuario(distanciaAlejamiento.get_victima());</span>
 
                     // Create an instance of AlertaService
-<span class="nc" id="L555">                    AlertaService alertaService = new AlertaService();</span>
+<span class="nc" id="L604">                    AlertaService alertaService = new AlertaService();</span>
                     // Call the method to insert the alert
-<span class="nc" id="L557">                    alertaService.addAlerta(alertaDto);</span>
+<span class="nc" id="L606">                    alertaService.addAlerta(alertaDto);</span>
 
                     //TAMBIEN SE VA A LLAMAR AL FIREBASE
+
+<span class="nc" id="L610">                    FirebaseSender firebaseSender = new FirebaseSender();</span>
+
+                    try {
+                        //firebaseSender.SenderVictim(distanciaAlejamiento.get_victima().getIMEI());
+<span class="nc" id="L614">                        firebaseSender.SenderVictim(&quot;f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ&quot;</span>
+                                ,&quot;Alerta&quot;,&quot;Agresor Dentro Zona Seguridad&quot;);
+
+
+<span class="nc" id="L618">                    } catch (IOException | FirebaseMessagingException e) {</span>
+<span class="nc" id="L619">                        throw new RuntimeException(e);</span>
+<span class="nc" id="L620">                    }</span>
+
+
                 }
-<span class="nc" id="L561">            }</span>
-<span class="nc" id="L562">        }</span>
-<span class="nc" id="L563">    }</span>
+<span class="nc" id="L624">            }</span>
+<span class="nc" id="L625">        }</span>
+<span class="nc" id="L626">    }</span>
 
     @DELETE
     @Path(&quot;/delete&quot;)
@@ -568,35 +631,35 @@ import java.util.List;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L571">        DeletePosicionCommand command = null;</span>
+<span class="nc" id="L634">        DeletePosicionCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L573">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L636">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L578">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L579">            command = CommandFactory.createDeletePosicionCommand( entity );</span>
-<span class="nc" id="L580">            command.execute();</span>
-<span class="nc bnc" id="L581" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L582">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L641">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L642">            command = CommandFactory.createDeletePosicionCommand( entity );</span>
+<span class="nc" id="L643">            command.execute();</span>
+<span class="nc bnc" id="L644" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L645">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L584">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L647">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L587">        catch ( Exception e )</span>
+<span class="nc" id="L650">        catch ( Exception e )</span>
         {
-<span class="nc" id="L589">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L652">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L594" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L595">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L657" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L658">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L598">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
-<span class="nc" id="L599">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L661">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L662">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -606,40 +669,40 @@ import java.util.List;
     {
         Posicion entity;
         PosicionDto response;
-<span class="nc" id="L609">        UpdatePosicionCommand command = null;</span>
-<span class="nc" id="L610">        PosicionDao base = new PosicionDao();</span>
+<span class="nc" id="L672">        UpdatePosicionCommand command = null;</span>
+<span class="nc" id="L673">        PosicionDao base = new PosicionDao();</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L612">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L675">        _logger.debug( &quot;Get in PosicionService.deletePosicion&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc bnc" id="L617" title="All 2 branches missed.">            if (base.find(userDto.getId(), Posicion.class) == null){</span>
-<span class="nc" id="L618">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">            if (base.find(userDto.getId(), Posicion.class) == null){</span>
+<span class="nc" id="L681">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
 
             }
-<span class="nc" id="L621">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L622">            command = CommandFactory.createUpdatePosicionCommand( entity );</span>
-<span class="nc" id="L623">            command.execute();</span>
-<span class="nc bnc" id="L624" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L625">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L684">            entity = PosicionMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L685">            command = CommandFactory.createUpdatePosicionCommand( entity );</span>
+<span class="nc" id="L686">            command.execute();</span>
+<span class="nc bnc" id="L687" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L688">                response = PosicionMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L627">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L690">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L630">        catch ( Exception e )</span>
+<span class="nc" id="L693">        catch ( Exception e )</span>
         {
-<span class="nc" id="L632">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L695">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Posicion &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L637" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L638">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L700" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L701">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L641">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
-<span class="nc" id="L642">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L704">        _logger.debug( &quot;Leaving PosicionService.deletePosicion&quot; );</span>
+<span class="nc" id="L705">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

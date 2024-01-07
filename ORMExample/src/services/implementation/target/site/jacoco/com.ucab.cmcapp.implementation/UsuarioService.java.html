@@ -71,46 +71,46 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
 <span class="nc" id="L71">    return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Usuario: &quot; + userId)).build();</span>
 }
 
+    public UsuarioDto getUsuarioDto(long userId )
+    {
+        Usuario entity;
+<span class="nc" id="L77">        UsuarioDto response = null;</span>
+<span class="nc" id="L78">        GetUsuarioCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L80">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L85">            entity = UsuarioMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L86">            command = CommandFactory.createGetUsuarioCommand( entity );</span>
+<span class="nc" id="L87">            command.execute();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L89">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L91">return response;</span>
+            }
+        }
+<span class="nc" id="L94">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L96">            return response;</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L102">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L105">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L106">return response;    }</span>
+
 
     @GET
     @Path( &quot;/findAll&quot; )
     public Response getAllUsuario()
     {
         List&lt;UsuarioDto&gt; response;
-<span class="nc" id="L80">        GetAllUsuarioCommand command = null;</span>
-        //region Instrumentation DEBUG
-<span class="nc" id="L82">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
-        //endregion
-
-        try
-        {
-<span class="nc" id="L87">            command = CommandFactory.createGetAllUsuarioCommand();</span>
-<span class="nc" id="L88">            command.execute();</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L90">                response = UsuarioMapper.mapListEntityToDto(command.getReturnParam());</span>
-            }else{
-<span class="nc" id="L92">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
-            }
-        }
-<span class="nc" id="L95">        catch ( Exception e )</span>
-        {
-<span class="nc" id="L97">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot;)).build();</span>
-
-        }
-        finally
-        {
-<span class="nc bnc" id="L102" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L103">                command.closeHandlerSession();</span>
-        }
-
-<span class="nc" id="L106">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
-<span class="nc" id="L107">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Usuario: &quot; )).build();</span>
-    }
-
-
-    public List&lt;UsuarioDto&gt; getAllUsuarioList()
-    {
-<span class="nc" id="L113">        List&lt;UsuarioDto&gt; response = null;</span>
 <span class="nc" id="L114">        GetAllUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
 <span class="nc" id="L116">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
@@ -123,12 +123,12 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
 <span class="nc bnc" id="L123" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
 <span class="nc" id="L124">                response = UsuarioMapper.mapListEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L126">                return response;</span>
+<span class="nc" id="L126">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
             }
         }
 <span class="nc" id="L129">        catch ( Exception e )</span>
         {
-<span class="nc" id="L131">            return response;</span>
+<span class="nc" id="L131">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot;)).build();</span>
 
         }
         finally
@@ -138,7 +138,41 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
         }
 
 <span class="nc" id="L140">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
-<span class="nc" id="L141">        return response;</span>
+<span class="nc" id="L141">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Usuario: &quot; )).build();</span>
+    }
+
+
+    public List&lt;UsuarioDto&gt; getAllUsuarioList()
+    {
+<span class="nc" id="L147">        List&lt;UsuarioDto&gt; response = null;</span>
+<span class="nc" id="L148">        GetAllUsuarioCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L150">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L155">            command = CommandFactory.createGetAllUsuarioCommand();</span>
+<span class="nc" id="L156">            command.execute();</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L158">                response = UsuarioMapper.mapListEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L160">                return response;</span>
+            }
+        }
+<span class="nc" id="L163">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L165">            return response;</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L171">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L174">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L175">        return response;</span>
     }
 
     @GET
@@ -147,35 +181,35 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L150">        GetUsuarioByUsernameCommand command = null;</span>
+<span class="nc" id="L184">        GetUsuarioByUsernameCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L152">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L186">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L157">            entity = UsuarioMapper.mapDtoToEntityUsername( Username );</span>
-<span class="nc" id="L158">            command = CommandFactory.createGetUsuarioByUsernameCommand( entity );</span>
-<span class="nc" id="L159">            command.execute();</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L161">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L191">            entity = UsuarioMapper.mapDtoToEntityUsername( Username );</span>
+<span class="nc" id="L192">            command = CommandFactory.createGetUsuarioByUsernameCommand( entity );</span>
+<span class="nc" id="L193">            command.execute();</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L195">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L163">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + Username)).build();</span>
+<span class="nc" id="L197">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + Username)).build();</span>
             }
         }
-<span class="nc" id="L166">        catch ( Exception e )</span>
+<span class="nc" id="L200">        catch ( Exception e )</span>
         {
-<span class="nc" id="L168">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + Username)).build();</span>
+<span class="nc" id="L202">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + Username)).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L173" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L174">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L208">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L177">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
-<span class="nc" id="L178">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Username Usuario: &quot; + Username)).build();</span>
+<span class="nc" id="L211">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L212">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Username Usuario: &quot; + Username)).build();</span>
     }
 
 
@@ -187,68 +221,104 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L190">        CreateUsuarioCommand command = null;</span>
+<span class="nc" id="L224">        CreateUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L192">        _logger.debug( &quot;Get in UsuarioService.addUsuario&quot; );</span>
+<span class="nc" id="L226">        _logger.debug( &quot;Get in UsuarioService.addUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L197">            entity = UsuarioMapper.mapDtoToEntityInsert( userDto );</span>
-<span class="nc" id="L198">            command = CommandFactory.createCreateUsuarioCommand( entity );</span>
-<span class="nc" id="L199">            command.execute();</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L201">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L231">            entity = UsuarioMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L232">            command = CommandFactory.createCreateUsuarioCommand( entity );</span>
+<span class="nc" id="L233">            command.execute();</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L235">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L203">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L237">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L206">        catch ( Exception e )</span>
+<span class="nc" id="L240">        catch ( Exception e )</span>
         {
-<span class="nc" id="L208">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L242">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L213" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L214">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L248">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L217">        _logger.debug( &quot;Leaving UsuarioService.addUsuario&quot; );</span>
-<span class="nc" id="L218">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L251">        _logger.debug( &quot;Leaving UsuarioService.addUsuario&quot; );</span>
+<span class="nc" id="L252">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
     }
+
+
+    public UsuarioDto addUsuarioDto( UsuarioDto userDto )
+    {
+        Usuario entity;
+<span class="nc" id="L259">        UsuarioDto response = null;</span>
+<span class="nc" id="L260">        CreateUsuarioCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L262">        _logger.debug( &quot;Get in UsuarioService.addUsuario&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L267">            entity = UsuarioMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L268">            command = CommandFactory.createCreateUsuarioCommand( entity );</span>
+<span class="nc" id="L269">            command.execute();</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L271">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L273">                return response;</span>
+            }
+        }
+<span class="nc" id="L276">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L278">            return response;</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L282" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L283">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L286">        _logger.debug( &quot;Leaving UsuarioService.addUsuario&quot; );</span>
+<span class="nc" id="L287">return response;    }</span>
+    
+    
     @POST
     @Path( &quot;/validar&quot; )
     public Response validarUsuario(UsuarioLDAPDto userDto )
     {
         Usuario entity;
-<span class="nc" id="L225">        GetUsuarioCommand command = null;</span>
+<span class="nc" id="L295">        GetUsuarioCommand command = null;</span>
         boolean respuesta;
         //region Instrumentation DEBUG
-<span class="nc" id="L228">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L298">        _logger.debug( &quot;Get in UsuarioService.getUsuario&quot; );</span>
         //endregion
-<span class="nc" id="L230">        App app= new App();</span>
+<span class="nc" id="L300">        App app= new App();</span>
         try
         {
-<span class="nc" id="L233">            app.NewConnection();</span>
-<span class="nc" id="L234">            respuesta=app.verificarUsuario(userDto.get_Username(),userDto.get_Nombre(), userDto.get_password() );</span>
+<span class="nc" id="L303">            app.NewConnection();</span>
+<span class="nc" id="L304">            respuesta=app.verificarUsuario(userDto.get_Username(),userDto.get_Nombre(), userDto.get_password() );</span>
 
         }
-<span class="nc" id="L237">        catch (NullPointerException e){</span>
-<span class="nc" id="L238">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No hay conexion con el server de LDAP  &quot;)).build();</span>
+<span class="nc" id="L307">        catch (NullPointerException e){</span>
+<span class="nc" id="L308">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No hay conexion con el server de LDAP  &quot;)).build();</span>
         }
-<span class="nc" id="L240">        catch (NamingException e){</span>
-<span class="nc" id="L241">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se consiguio el usuario  &quot; + userDto.get_Username())).build();</span>
+<span class="nc" id="L310">        catch (NamingException e){</span>
+<span class="nc" id="L311">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se consiguio el usuario  &quot; + userDto.get_Username())).build();</span>
         }
-<span class="nc" id="L243">        catch ( Exception e )</span>
+<span class="nc" id="L313">        catch ( Exception e )</span>
         {
-<span class="nc" id="L245">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + e)).build();</span>
+<span class="nc" id="L315">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + e)).build();</span>
 
-<span class="nc" id="L247">        }</span>
+<span class="nc" id="L317">        }</span>
 
 
-<span class="nc" id="L250">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
-<span class="nc" id="L251">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(userDto,&quot;Validacion: &quot;+respuesta)).build();</span>
+<span class="nc" id="L320">        _logger.debug( &quot;Leaving UsuarioService.getUsuario&quot; );</span>
+<span class="nc" id="L321">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(userDto,&quot;Validacion: &quot;+respuesta)).build();</span>
     }
     @POST
     @Path(&quot;/insertLDAP&quot;)
@@ -256,31 +326,31 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L259">        CreateUsuarioCommand command = null;</span>
+<span class="nc" id="L329">        CreateUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L261">        _logger.debug( &quot;Get in UsuarioService.addUsuario&quot; );</span>
+<span class="nc" id="L331">        _logger.debug( &quot;Get in UsuarioService.addUsuario&quot; );</span>
         //endregion
-<span class="nc" id="L263">        App app= new App();</span>
+<span class="nc" id="L333">        App app= new App();</span>
 
         try
         {
-<span class="nc" id="L267">            app.NewConnection();</span>
-<span class="nc" id="L268">            app.addUser(userDto.get_Username(),userDto.get_Nombre(), userDto.get_password());</span>
+<span class="nc" id="L337">            app.NewConnection();</span>
+<span class="nc" id="L338">            app.addUser(userDto.get_Username(),userDto.get_Nombre(), userDto.get_password());</span>
         }
-<span class="nc" id="L270">        catch (CommunicationException e){</span>
-<span class="nc" id="L271">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No hay conexion con el server de LDAP  &quot;)).build();</span>
+<span class="nc" id="L340">        catch (CommunicationException e){</span>
+<span class="nc" id="L341">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No hay conexion con el server de LDAP  &quot;)).build();</span>
         }
-<span class="nc" id="L273">        catch ( NamingException e )</span>
+<span class="nc" id="L343">        catch ( NamingException e )</span>
         {
-<span class="nc" id="L275">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Ya existe&quot;,&quot;No se puede agregar ese username porque ya existe en LDAP &quot;)).build();</span>
+<span class="nc" id="L345">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Ya existe&quot;,&quot;No se puede agregar ese username porque ya existe en LDAP &quot;)).build();</span>
         }
-<span class="nc" id="L277">        catch ( Exception e )</span>
+<span class="nc" id="L347">        catch ( Exception e )</span>
         {
-<span class="nc" id="L279">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.get_Username())).build();</span>
+<span class="nc" id="L349">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.get_Username())).build();</span>
 
-<span class="nc" id="L281">        }</span>
-<span class="nc" id="L282">        _logger.debug( &quot;Leaving UsuarioService.addUsuario&quot; );</span>
-<span class="nc" id="L283">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(userDto,&quot;insertado: &quot; + userDto.get_Username())).build();</span>
+<span class="nc" id="L351">        }</span>
+<span class="nc" id="L352">        _logger.debug( &quot;Leaving UsuarioService.addUsuario&quot; );</span>
+<span class="nc" id="L353">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(userDto,&quot;insertado: &quot; + userDto.get_Username())).build();</span>
 
     }
 
@@ -290,29 +360,29 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L293">        CreateUsuarioCommand command = null;</span>
+<span class="nc" id="L363">        CreateUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L295">        _logger.debug( &quot;Get in UsuarioService.update&quot; );</span>
+<span class="nc" id="L365">        _logger.debug( &quot;Get in UsuarioService.update&quot; );</span>
         //endregion
-<span class="nc" id="L297">        App app= new App();</span>
+<span class="nc" id="L367">        App app= new App();</span>
 
         try
         {
-<span class="nc" id="L301">            app.NewConnection();</span>
-<span class="nc" id="L302">            app.updateUserPassword(userDto.get_Username(), userDto.get_password());</span>
+<span class="nc" id="L371">            app.NewConnection();</span>
+<span class="nc" id="L372">            app.updateUserPassword(userDto.get_Username(), userDto.get_password());</span>
         }
-<span class="nc" id="L304">        catch (CommunicationException e){</span>
-<span class="nc" id="L305">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No hay conexion con el server de LDAP  &quot;)).build();</span>
+<span class="nc" id="L374">        catch (CommunicationException e){</span>
+<span class="nc" id="L375">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No hay conexion con el server de LDAP  &quot;)).build();</span>
         }
-<span class="nc" id="L307">        catch (NamingException e){</span>
-<span class="nc" id="L308">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se consiguio el usuario  &quot; + userDto.get_Username())).build();</span>
+<span class="nc" id="L377">        catch (NamingException e){</span>
+<span class="nc" id="L378">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se consiguio el usuario  &quot; + userDto.get_Username())).build();</span>
         }
-<span class="nc" id="L310">        catch ( Exception e )</span>
+<span class="nc" id="L380">        catch ( Exception e )</span>
         {
-<span class="nc" id="L312">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario  &quot; + userDto.get_Username())).build();</span>
-<span class="nc" id="L313">        }</span>
-<span class="nc" id="L314">        _logger.debug( &quot;Get in UsuarioService.update&quot; );</span>
-<span class="nc" id="L315">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Editado la contraseña: &quot; + userDto.get_Username())).build();</span>
+<span class="nc" id="L382">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario  &quot; + userDto.get_Username())).build();</span>
+<span class="nc" id="L383">        }</span>
+<span class="nc" id="L384">        _logger.debug( &quot;Get in UsuarioService.update&quot; );</span>
+<span class="nc" id="L385">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Editado la contraseña: &quot; + userDto.get_Username())).build();</span>
     }
 
     @DELETE
@@ -321,35 +391,35 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L324">        DeleteUsuarioCommand command = null;</span>
+<span class="nc" id="L394">        DeleteUsuarioCommand command = null;</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L326">        _logger.debug( &quot;Get in UsuarioService.deleteUsuario&quot; );</span>
+<span class="nc" id="L396">        _logger.debug( &quot;Get in UsuarioService.deleteUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc" id="L331">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L332">            command = CommandFactory.createDeleteUsuarioCommand( entity );</span>
-<span class="nc" id="L333">            command.execute();</span>
-<span class="nc bnc" id="L334" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L335">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L401">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L402">            command = CommandFactory.createDeleteUsuarioCommand( entity );</span>
+<span class="nc" id="L403">            command.execute();</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L405">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L337">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L407">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L340">        catch ( Exception e )</span>
+<span class="nc" id="L410">        catch ( Exception e )</span>
         {
-<span class="nc" id="L342">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L412">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L347" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L348">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L418">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L351">        _logger.debug( &quot;Leaving UsuarioService.deleteUsuario&quot; );</span>
-<span class="nc" id="L352">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L421">        _logger.debug( &quot;Leaving UsuarioService.deleteUsuario&quot; );</span>
+<span class="nc" id="L422">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
     }
 
 
@@ -359,62 +429,62 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
     {
         Usuario entity;
         UsuarioDto response;
-<span class="nc" id="L362">        UpdateUsuarioCommand command = null;</span>
-<span class="nc" id="L363">        UsuarioDao base = new UsuarioDao();</span>
+<span class="nc" id="L432">        UpdateUsuarioCommand command = null;</span>
+<span class="nc" id="L433">        UsuarioDao base = new UsuarioDao();</span>
         //region Instrumentation DEBUG
-<span class="nc" id="L365">        _logger.debug( &quot;Get in UsuarioService.deleteUsuario&quot; );</span>
+<span class="nc" id="L435">        _logger.debug( &quot;Get in UsuarioService.deleteUsuario&quot; );</span>
         //endregion
 
         try
         {
-<span class="nc bnc" id="L370" title="All 2 branches missed.">            if (base.find(userDto.getId(), Usuario.class) == null){</span>
-<span class="nc" id="L371">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">            if (base.find(userDto.getId(), Usuario.class) == null){</span>
+<span class="nc" id="L441">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
 
             }
-<span class="nc" id="L374">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
-<span class="nc" id="L375">            command = CommandFactory.createUpdateUsuarioCommand( entity );</span>
-<span class="nc" id="L376">            command.execute();</span>
-<span class="nc bnc" id="L377" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
-<span class="nc" id="L378">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L444">            entity = UsuarioMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L445">            command = CommandFactory.createUpdateUsuarioCommand( entity );</span>
+<span class="nc" id="L446">            command.execute();</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L448">                response = UsuarioMapper.mapEntityToDto(command.getReturnParam());</span>
             }else{
-<span class="nc" id="L380">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L450">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
             }
         }
-<span class="nc" id="L383">        catch ( Exception e )</span>
+<span class="nc" id="L453">        catch ( Exception e )</span>
         {
-<span class="nc" id="L385">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L455">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Usuario &quot; + userDto.getId())).build();</span>
 
         }
         finally
         {
-<span class="nc bnc" id="L390" title="All 2 branches missed.">            if (command != null)</span>
-<span class="nc" id="L391">                command.closeHandlerSession();</span>
+<span class="nc bnc" id="L460" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L461">                command.closeHandlerSession();</span>
         }
 
-<span class="nc" id="L394">        _logger.debug( &quot;Leaving UsuarioService.deleteUsuario&quot; );</span>
-<span class="nc" id="L395">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+<span class="nc" id="L464">        _logger.debug( &quot;Leaving UsuarioService.deleteUsuario&quot; );</span>
+<span class="nc" id="L465">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
     }
 
     @GET
     @Path(&quot;/count&quot;)
     public Response countUsuarios() {
-<span class="nc" id="L401">        List&lt;UsuarioDto&gt; allUsuarios = getAllUsuarioList();</span>
-<span class="nc bnc" id="L402" title="All 2 branches missed.">        if (allUsuarios == null) {</span>
-<span class="nc" id="L403">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error retrieving Usuarios&quot;)).build();</span>
+<span class="nc" id="L471">        List&lt;UsuarioDto&gt; allUsuarios = getAllUsuarioList();</span>
+<span class="nc bnc" id="L472" title="All 2 branches missed.">        if (allUsuarios == null) {</span>
+<span class="nc" id="L473">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error retrieving Usuarios&quot;)).build();</span>
         }
-<span class="nc" id="L405">        int count = allUsuarios.size();</span>
-<span class="nc" id="L406">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(count, &quot;Total Usuarios: &quot; + count)).build();</span>
+<span class="nc" id="L475">        int count = allUsuarios.size();</span>
+<span class="nc" id="L476">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(count, &quot;Total Usuarios: &quot; + count)).build();</span>
     }
 
     @GET
     @Path(&quot;/last&quot;)
     public Response getLastUsuario() {
-<span class="nc" id="L412">        List&lt;UsuarioDto&gt; allUsuarios = getAllUsuarioList();</span>
-<span class="nc bnc" id="L413" title="All 4 branches missed.">        if (allUsuarios == null || allUsuarios.isEmpty()) {</span>
-<span class="nc" id="L414">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No Usuarios found&quot;)).build();</span>
+<span class="nc" id="L482">        List&lt;UsuarioDto&gt; allUsuarios = getAllUsuarioList();</span>
+<span class="nc bnc" id="L483" title="All 4 branches missed.">        if (allUsuarios == null || allUsuarios.isEmpty()) {</span>
+<span class="nc" id="L484">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No Usuarios found&quot;)).build();</span>
         }
-<span class="nc" id="L416">        UsuarioDto lastUsuario = allUsuarios.get(allUsuarios.size() - 1);</span>
-<span class="nc" id="L417">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(lastUsuario, &quot;Last added Usuario: &quot; + lastUsuario.getId())).build();</span>
+<span class="nc" id="L486">        UsuarioDto lastUsuario = allUsuarios.get(allUsuarios.size() - 1);</span>
+<span class="nc" id="L487">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(lastUsuario, &quot;Last added Usuario: &quot; + lastUsuario.getId())).build();</span>
     }
 
 
