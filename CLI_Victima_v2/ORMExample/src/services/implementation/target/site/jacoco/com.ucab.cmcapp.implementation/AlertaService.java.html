@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AlertaService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">implementation</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.implementation</a> &gt; <span class="el_source">AlertaService.java</span></div><h1>AlertaService.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.implementation;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
+import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByTipoAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.CreateAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.GetAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.UpdateAlertaCommand;
+
+import com.ucab.cmcapp.logic.commands.alerta.composite.DeleteAlertaCommand;
+import com.ucab.cmcapp.logic.commands.alerta.composite.UpdateAlertaCommand;
+import com.ucab.cmcapp.logic.dtos.AlertaDto;
+import com.ucab.cmcapp.logic.dtos.AlertaDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.persistence.dao.AlertaDao;
+import com.ucab.cmcapp.persistence.dao.BaseDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
+
+@Path( &quot;/alertas&quot; )
+@Produces( MediaType.APPLICATION_JSON )
+@Consumes( MediaType.APPLICATION_JSON )
+<span class="nc" id="L35">public class AlertaService extends BaseService</span>
+{
+<span class="nc" id="L37">    private static Logger _logger = LoggerFactory.getLogger( AlertaService.class );</span>
+
+    @GET
+    @Path(&quot;/{id}&quot;)
+    public void getAlerta(@PathParam(&quot;id&quot;) long alertaId) {
+        Alerta entity;
+<span class="nc" id="L43">        AlertaDto response = null;</span>
+<span class="nc" id="L44">        GetAlertaCommand command = null;</span>
+<span class="nc" id="L45">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L46">        String jsonString = null;</span>
+<span class="nc" id="L47">        _logger.debug(&quot;Get in AlertaService.getAlerta&quot;);</span>
+
+        try {
+<span class="nc" id="L50">            entity = AlertaMapper.mapDtoToEntity(alertaId);</span>
+<span class="nc" id="L51">            command = CommandFactory.createGetAlertaCommand(entity);</span>
+<span class="nc" id="L52">            command.execute();</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (command.getReturnParam() != null) {</span>
+<span class="nc" id="L54">                response = AlertaMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L55">                jsonString = mapper.writeValueAsString(new CustomResponse&lt;&gt;(response, &quot;Busqueda por Id Alerta: &quot; + alertaId));</span>
+            } else {
+<span class="nc" id="L57">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + alertaId)).build());</span>
+            }
+<span class="nc" id="L59">            Sender.send(jsonString);</span>
+<span class="nc" id="L60">        } catch (Exception e) {</span>
+            try {
+<span class="nc" id="L62">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Alerta &quot; + alertaId)).build());</span>
+<span class="nc" id="L63">                Sender.send(jsonString);</span>
+<span class="nc" id="L64">            } catch (IOException ex) {</span>
+<span class="nc" id="L65">                throw new RuntimeException(ex);</span>
+<span class="nc" id="L66">            }</span>
+        } finally {
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (command != null) {</span>
+<span class="nc" id="L69">                command.closeHandlerSession();</span>
+            }
+<span class="nc" id="L71">            _logger.debug(&quot;Leaving AlertaService.getAlerta&quot;);</span>
+        }
+<span class="nc" id="L73">    }</span>
+
+    @GET
+    @Path(&quot;/TipoAlerta/{TipoAlerta}&quot;)
+    public void getAlerta(@PathParam(&quot;TipoAlerta&quot;) String tipoAlerta) {
+        Alerta entity;
+        AlertaDto response;
+<span class="nc" id="L80">        GetAlertaByTipoAlertaCommand command = null;</span>
+<span class="nc" id="L81">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L82">        String jsonString = null;</span>
+<span class="nc" id="L83">        _logger.debug(&quot;Get in AlertaService.getAlerta&quot;);</span>
+
+        try {
+<span class="nc" id="L86">            entity = AlertaMapper.mapDtoToEntityTipoAlerta(tipoAlerta);</span>
+<span class="nc" id="L87">            command = CommandFactory.createGetAlertaByTipoAlertaCommand(entity);</span>
+<span class="nc" id="L88">            command.execute();</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (command.getReturnParam() != null) {</span>
+<span class="nc" id="L90">                response = AlertaMapper.mapEntityToDto(command.getReturnParam());</span>
+<span class="nc" id="L91">                jsonString = mapper.writeValueAsString(new CustomResponse&lt;&gt;(response, &quot;Busqueda por tipo de alerta: &quot; + tipoAlerta));</span>
+            } else {
+<span class="nc" id="L93">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + tipoAlerta)).build());</span>
+            }
+<span class="nc" id="L95">            Sender.send(jsonString);</span>
+<span class="nc" id="L96">        } catch (Exception e) {</span>
+            try {
+<span class="nc" id="L98">                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Alerta &quot; + tipoAlerta)).build());</span>
+<span class="nc" id="L99">                Sender.send(jsonString);</span>
+<span class="nc" id="L100">            } catch (IOException ex) {</span>
+<span class="nc" id="L101">                throw new RuntimeException(ex);</span>
+<span class="nc" id="L102">            }</span>
+        } finally {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (command != null) {</span>
+<span class="nc" id="L105">                command.closeHandlerSession();</span>
+            }
+<span class="nc" id="L107">            _logger.debug(&quot;Leaving AlertaService.getAlerta&quot;);</span>
+        }
+<span class="nc" id="L109">    }</span>
+
+
+    @POST
+    @Path(&quot;/insert&quot;)
+    public Response addAlerta( AlertaDto alertaDto )
+    {
+        Alerta entity;
+        AlertaDto response;
+<span class="nc" id="L118">        CreateAlertaCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L120">        _logger.debug( &quot;Get in AlertaService.addAlerta&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L125">            entity = AlertaMapper.mapDtoToEntityInsert( alertaDto );</span>
+<span class="nc" id="L126">            command = CommandFactory.createCreateAlertaCommand( entity );</span>
+<span class="nc" id="L127">            command.execute();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L129">                response = AlertaMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L131">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + alertaDto.getId())).build();</span>
+            }
+        }
+<span class="nc" id="L134">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L136">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Alerta &quot; + alertaDto.getId())).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L142">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L145">        _logger.debug( &quot;Leaving AlertaService.addAlerta&quot; );</span>
+<span class="nc" id="L146">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + alertaDto.getId())).build();</span>
+    }
+
+
+    //ESTE ES EL DELETE DE LA BD
+    @DELETE
+    @Path(&quot;/delete&quot;)
+    public Response deleteAlerta(AlertaDto userDto )
+    {
+        Alerta entity;
+        AlertaDto response;
+<span class="nc" id="L157">        DeleteAlertaCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L159">        _logger.debug( &quot;Get in AlertaService.deleteAlerta&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L164">            entity = AlertaMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L165">            command = CommandFactory.createDeleteAlertaCommand( entity );</span>
+<span class="nc" id="L166">            command.execute();</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L168">                response = AlertaMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L170">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+            }
+
+        }
+<span class="nc" id="L174">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L176">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Alerta &quot; + userDto.getId())).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L181" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L182">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L185">        _logger.debug( &quot;Leaving AlertaService.deleteAlerta&quot; );</span>
+<span class="nc" id="L186">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+    }
+
+
+    //DELETE LOGICO
+    @PUT
+    @Path(&quot;/delete2&quot;)
+    public Response deleteAlerta2 (AlertaDto alertaDto){
+        Alerta entity;
+<span class="nc" id="L195">        AlertaDto responseDto = null;</span>
+<span class="nc" id="L196">        UpdateAlertaCommand command = null;</span>
+<span class="nc" id="L197">        AlertaDao base = new AlertaDao();</span>
+
+        try{
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            if (base.find(alertaDto.getId(),Alerta.class) == null){</span>
+<span class="nc" id="L201">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + alertaDto.getId())).build();</span>
+
+            }
+<span class="nc" id="L204">            entity = AlertaMapper.mapDtoToEntity(alertaDto);</span>
+<span class="nc" id="L205">            command = CommandFactory.createUpdateAlertaCommand(entity);</span>
+<span class="nc" id="L206">            command.execute();</span>
+
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L209">                responseDto = AlertaMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L211">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + alertaDto.getId())).build();</span>
+            }
+
+<span class="nc" id="L214">        } catch (Exception e) {</span>
+<span class="nc" id="L215">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Alerta &quot; + alertaDto.getId())).build();</span>
+        } finally {
+<span class="nc bnc" id="L217" title="All 2 branches missed.">            if(command != null){</span>
+<span class="nc" id="L218">                command.closeHandlerSession();</span>
+            }
+        }
+
+<span class="nc" id="L222">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(responseDto,&quot;Eliminado: &quot; + alertaDto.getId())).build();</span>
+
+    }
+
+
+
+
+    @PUT
+    @Path(&quot;/update&quot;)
+    public Response updateAlerta (AlertaDto alertaDto){
+        Alerta entity;
+<span class="nc" id="L233">        AlertaDto responseDto = null;</span>
+<span class="nc" id="L234">        UpdateAlertaCommand command = null;</span>
+<span class="nc" id="L235">        AlertaDao base = new AlertaDao();</span>
+
+        try{
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            if (base.find(alertaDto.getId(),Alerta.class) == null){</span>
+<span class="nc" id="L239">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + alertaDto.getId())).build();</span>
+
+            }
+<span class="nc" id="L242">            entity = AlertaMapper.mapDtoToEntity(alertaDto);</span>
+<span class="nc" id="L243">            command = CommandFactory.createUpdateAlertaCommand(entity);</span>
+<span class="nc" id="L244">            command.execute();</span>
+
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L247">                responseDto = AlertaMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L249">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + alertaDto.getId())).build();</span>
+            }
+
+<span class="nc" id="L252">        } catch (Exception e) {</span>
+<span class="nc" id="L253">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Alerta &quot; + alertaDto.getId())).build();</span>
+        } finally {
+<span class="nc bnc" id="L255" title="All 2 branches missed.">            if(command != null){</span>
+<span class="nc" id="L256">                command.closeHandlerSession();</span>
+            }
+        }
+
+<span class="nc" id="L260">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(responseDto,&quot;Editado: &quot; + alertaDto.getId())).build();</span>
+
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

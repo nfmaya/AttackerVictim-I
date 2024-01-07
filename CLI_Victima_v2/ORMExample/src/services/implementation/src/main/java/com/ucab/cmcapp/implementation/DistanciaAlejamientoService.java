@@ -1,0 +1,238 @@
+package com.ucab.cmcapp.implementation;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
+import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.common.entities.DistanciaAlejamiento;
+import com.ucab.cmcapp.common.entities.Usuario;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByUsuariosCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.CreateDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.DeleteDistanciaCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetDistanciaAlejamientoCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.UpdateDistanciaCommand;
+import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.GetAllDistanciaAlejamientoCommand;
+
+import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByIdCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
+import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
+import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
+import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
+import com.ucab.cmcapp.logic.dtos.UsuarioDto;
+import com.ucab.cmcapp.logic.mappers.*;
+import com.ucab.cmcapp.persistence.DBHandler;
+import com.ucab.cmcapp.persistence.dao.AlertaDao;
+import com.ucab.cmcapp.persistence.dao.DistanciaAlejamientoDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import java.io.IOException;
+import java.util.List;
+
+import static com.ucab.cmcapp.logic.commands.CommandFactory.createGetUsuarioByIdCommand;
+
+
+@Path( "/distancias" )
+@Produces( MediaType.APPLICATION_JSON )
+@Consumes( MediaType.APPLICATION_JSON )
+public class DistanciaAlejamientoService extends BaseService
+{
+    private static Logger _logger = LoggerFactory.getLogger( DistanciaAlejamientoService.class );
+
+    @GET
+    @Path("/{IdAlej}")
+    public void getDistanciaAlejamiento(@PathParam("IdAlej") long distanciaId) {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response = null;
+        GetDistanciaAlejamientoCommand command = null;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in DistanciaAlejamientoService.getDistanciaAlejamiento");
+
+        try {
+            entity = DistanciaAlejamientoMapper.mapDtoToEntity(distanciaId);
+            command = CommandFactory.createGetDistanciaAlejamientoCommand(entity);
+            command.execute();
+            if (command.getReturnParam() != null) {
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id Distancia: " + distanciaId));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por " + distanciaId)).build());
+            }
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia" + distanciaId)).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
+                command.closeHandlerSession();
+            }
+            _logger.debug("Leaving DistanciaAlejamientoService.getDistanciaAlejamiento");
+        }
+    }
+
+    @GET
+    @Path("/findAll")
+    public void getAllDistanciaAlejamiento() {
+        List<DistanciaAlejamientoDto> response;
+        GetAllDistanciaAlejamientoCommand command = null;
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        _logger.debug("Get in DistanciaAlejamientoService.getDistanciaAlejamiento");
+
+        try {
+            command = CommandFactory.createGetAllDistanciaAlejamientoCommand();
+            command.execute();
+            if (command.getReturnParam() != null) {
+                response = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
+                jsonString = mapper.writeValueAsString(new CustomResponse<>(response, "Busqueda por Id DistanciaAlejamiento: "));
+            } else {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Buscar por ")).build());
+            }
+            Sender.send(jsonString);
+        } catch (Exception e) {
+            try {
+                jsonString = mapper.writeValueAsString(Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en DistanciaAlejamiento")).build());
+                Sender.send(jsonString);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (command != null) {
+                command.closeHandlerSession();
+            }
+            _logger.debug("Leaving DistanciaAlejamientoService.getDistanciaAlejamiento");
+        }
+    }
+
+
+
+    @POST
+    @Path("/insert")
+    public Response addDistanciaAlejamiento( DistanciaAlejamientoDto distanciaDto )
+    {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response;
+        CreateDistanciaAlejamientoCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in DistanciaAlejamientoService.addDistanciaAlejamiento" );
+        //endregion
+
+        try
+        {
+            entity = DistanciaAlejamientoMapper.mapDtoToEntityInsert( distanciaDto );
+            command = CommandFactory.createCreateDistanciaAlejamientoCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + distanciaDto.getId())).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia " + distanciaDto.getId())).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.addDistanciaAlejamiento" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + distanciaDto.getId())).build();
+    }
+
+    //ESTE ES EL DELETE DE LA BD
+    @DELETE
+    @Path("/delete")
+    public Response deleteDistanciaAlejamiento( DistanciaAlejamientoDto userDto )
+    {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response;
+        DeleteDistanciaCommand command = null;
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
+        //endregion
+
+        try
+        {
+            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );
+            command = CommandFactory.createDeleteDistanciaCommand( entity );
+            command.execute();
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede eliminar " + userDto.getId())).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia " + userDto.getId())).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Eliminado: " + userDto.getId())).build();
+    }
+
+
+    @PUT
+    @Path("/update")
+    public Response updateDistanciaAlejamiento( DistanciaAlejamientoDto userDto )
+    {
+        DistanciaAlejamiento entity;
+        DistanciaAlejamientoDto response;
+        UpdateDistanciaCommand command = null;
+        DistanciaAlejamientoDao base = new DistanciaAlejamientoDao();
+
+        //region Instrumentation DEBUG
+        _logger.debug( "Get in DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
+        //endregion
+
+        try
+        {
+            if (base.find(userDto.getId(), DistanciaAlejamiento.class) == null){
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
+
+            }
+            entity = DistanciaAlejamientoMapper.mapDtoToEntity( userDto );
+            command = CommandFactory.createUpdateDistanciaCommand( entity );
+            command.execute();
+
+            if(command.getReturnParam() != null){
+                response = DistanciaAlejamientoMapper.mapEntityToDto(command.getReturnParam());
+            }else{
+                return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede editar " + userDto.getId())).build();
+            }
+        }
+        catch ( Exception e )
+        {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error en Distancia " + userDto.getId())).build();
+
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.deleteDistanciaAlejamiento" );
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Editado: " + userDto.getId())).build();
+    }
+
+}

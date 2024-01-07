@@ -1,15 +1,17 @@
-import { StatusBar, Text, View } from 'react-native';
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import login_screen from './Screens/Login';
-import HomeScreen from './Screens/Home';
+import React, { useEffect, useState } from "react";
+import { StatusBar, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import login_screen from "./Screens/Login";
+import HomeScreen from "./Screens/Home";
 import Alarma from "./Screens/Alarma";
-import Notifications_screen from './Screens/Notifications';
+import Notifications_screen from "./Screens/Notifications";
 import CustomAlert from "./Components/Alerta";
+import messaging from "@react-native-firebase/messaging";
+import PushNotification from "react-native-push-notification";
+
 
 export default function App() {
-
   const Stack = createNativeStackNavigator();
   
   // Estado para controlar la visibilidad de la alerta personalizada
@@ -20,6 +22,44 @@ export default function App() {
     setAlertVisible(false);
   };
 
+  //Funcion de firebase
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  }
+
+  //Aqui obtengo el token de firebase
+  const getToken =async()=>{
+    const token=await messaging().getToken()
+    console.log("Token =",token)
+  }
+
+  useEffect(()=>{
+    requestUserPermission()
+    getToken()
+
+    // Maneja las notificaciones entrantes cuando la aplicación está en primer plano
+    messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+
+      // Muestra la notificación al usuario
+      PushNotification.localNotification({
+        title: remoteMessage.notification.title,
+        message: remoteMessage.notification.body,
+      });
+    });
+
+    // Maneja las notificaciones entrantes cuando la aplicación está en segundo plano
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('A new FCM message arrived in the background!', JSON.stringify(remoteMessage));
+    });
+  },[])
 
   function NoBackScreen({navigation}) {
   
