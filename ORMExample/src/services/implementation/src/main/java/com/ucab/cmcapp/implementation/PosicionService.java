@@ -1,7 +1,8 @@
 package com.ucab.cmcapp.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.salas.Sender;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.salas.FirebaseSender;
 import com.ucab.cmcapp.common.entities.Alerta;
 import com.ucab.cmcapp.common.entities.Posicion;
 import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
@@ -595,9 +596,9 @@ return distance;
                     // Create an instance of AlertaDto
                     AlertaDto alertaDto = new AlertaDto();
                     // Set the properties of alertaDto as needed
-                    alertaDto.set_tipoAlerta("Dentro Zona Seguridad");
+                    alertaDto.set_tipoAlerta("Agresor Dentro Zona Seguridad");
                     alertaDto.set_fechaHora(new Date());
-                    alertaDto.setUsuario(distanciaAlejamiento.get_agresor());
+                    alertaDto.setUsuario(distanciaAlejamiento.get_victima());
 
                     // Create an instance of AlertaService
                     AlertaService alertaService = new AlertaService();
@@ -605,6 +606,19 @@ return distance;
                     alertaService.addAlerta(alertaDto);
 
                     //TAMBIEN SE VA A LLAMAR AL FIREBASE
+
+                    FirebaseSender firebaseSender = new FirebaseSender();
+
+                    try {
+                        //firebaseSender.SenderVictim(distanciaAlejamiento.get_victima().getIMEI());
+                        firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ");
+
+
+                    } catch (IOException | FirebaseMessagingException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
                 }
             }
         }
