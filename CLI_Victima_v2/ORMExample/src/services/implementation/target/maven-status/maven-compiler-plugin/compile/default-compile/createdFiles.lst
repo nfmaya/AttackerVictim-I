@@ -1,0 +1,11 @@
+com\ucab\cmcapp\implementation\UsuarioService.class
+com\ucab\cmcapp\implementation\PosicionService.class
+com\ucab\cmcapp\implementation\CoordenadaZonaSeguridadService.class
+com\ucab\cmcapp\implementation\UserTypeService.class
+com\ucab\cmcapp\implementation\DistanciaAlejamientoService.class
+com\ucab\cmcapp\implementation\CustomResponse.class
+com\ucab\cmcapp\implementation\PuntoControlService.class
+com\ucab\cmcapp\implementation\ZonaSeguridadService.class
+com\ucab\cmcapp\implementation\AlertaService.class
+com\ucab\cmcapp\implementation\BaseService.class
+com\ucab\cmcapp\implementation\TiempoControlService.class

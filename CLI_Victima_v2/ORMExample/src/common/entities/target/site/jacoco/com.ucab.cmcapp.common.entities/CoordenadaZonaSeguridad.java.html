@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoordenadaZonaSeguridad.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">entities</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.common.entities</a> &gt; <span class="el_source">CoordenadaZonaSeguridad.java</span></div><h1>CoordenadaZonaSeguridad.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.common.entities;
+
+import javax.persistence.*;
+
+
+@Entity
+@Table(name = &quot;CoordenadasZonaSeguridad&quot;)
+public class CoordenadaZonaSeguridad {
+
+    /**
+     *
+     */
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;IdCoor&quot;)
+    private long IdCoor;
+
+
+    @Column(name = &quot;CoordenadaX&quot;)
+    private float coordenadaX;
+
+    @Column(name = &quot;CoordenadaY&quot;)
+    private float coordenadaY;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = &quot;IdZona&quot;, nullable = false)
+    private ZonaSeguridad zonaSeguridad;
+
+
+<span class="nc" id="L31">    public CoordenadaZonaSeguridad() {</span>
+
+<span class="nc" id="L33">    }</span>
+
+<span class="nc" id="L35">    public CoordenadaZonaSeguridad(CoordenadaZonaSeguridad coordenadaZonaSeguridad) {</span>
+<span class="nc" id="L36">        zonaSeguridad = coordenadaZonaSeguridad.zonaSeguridad;</span>
+<span class="nc" id="L37">        coordenadaX = coordenadaZonaSeguridad.coordenadaX;</span>
+<span class="nc" id="L38">        coordenadaY = coordenadaZonaSeguridad.coordenadaY;</span>
+<span class="nc" id="L39">    }</span>
+
+<span class="nc" id="L41">    public CoordenadaZonaSeguridad (long id){</span>
+<span class="nc" id="L42">        IdCoor = id;</span>
+<span class="nc" id="L43">    }</span>
+
+    public long getIdCoor() {
+<span class="nc" id="L46">        return IdCoor;</span>
+    }
+
+
+
+    public void setIdCoor(long idCoor) {
+<span class="nc" id="L52">        IdCoor = idCoor;</span>
+<span class="nc" id="L53">    }</span>
+
+
+    public ZonaSeguridad getZonaSeguridad() {
+<span class="nc" id="L57">        return zonaSeguridad;</span>
+    }
+
+    public void setZonaSeguridad(ZonaSeguridad zonaSeguridad) {
+<span class="nc" id="L61">        this.zonaSeguridad = zonaSeguridad;</span>
+<span class="nc" id="L62">    }</span>
+
+
+
+    public float getCoordenadaX() {
+<span class="nc" id="L67">        return coordenadaX;</span>
+    }
+
+    public void setCoordenadaX(float coordenadaX) {
+<span class="nc" id="L71">        this.coordenadaX = coordenadaX;</span>
+<span class="nc" id="L72">    }</span>
+
+    public float getCoordenadaY() {
+<span class="nc" id="L75">        return coordenadaY;</span>
+    }
+
+    public void setCoordenadaY(float coordenadaY) {
+<span class="nc" id="L79">        this.coordenadaY = coordenadaY;</span>
+<span class="nc" id="L80">    }</span>
+
+
+    // Define relationships if needed
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

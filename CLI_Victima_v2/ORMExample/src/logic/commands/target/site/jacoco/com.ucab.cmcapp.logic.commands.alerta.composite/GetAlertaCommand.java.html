@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetAlertaCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">command</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.logic.commands.alerta.composite</a> &gt; <span class="el_source">GetAlertaCommand.java</span></div><h1>GetAlertaCommand.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.logic.commands.alerta.composite;
+
+import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.logic.commands.Command;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.alerta.atomic.GetAlertaByIdCommand;
+import com.ucab.cmcapp.persistence.DBHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class GetAlertaCommand extends Command&lt;Alerta&gt;
+{
+<span class="nc" id="L13">    private static Logger _logger = LoggerFactory.getLogger( GetAlertaCommand.class );</span>
+    private Alerta _alerta;
+    long _id;
+
+    public GetAlertaCommand( Alerta alerta )
+<span class="nc" id="L18">    {</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L20">        _logger.debug( String.format( &quot;Get in GetAlertaCommand.ctor: parameter {%s}&quot;,</span>
+<span class="nc" id="L21">                alerta.toString() ) );</span>
+<span class="nc" id="L22">        _id = alerta.get_IdAlerta();</span>
+<span class="nc" id="L23">        _alerta = alerta;</span>
+<span class="nc" id="L24">        setHandler(new DBHandler());</span>
+
+        //region Instrumentation DEBUG
+<span class="nc" id="L27">        _logger.debug( String.format( &quot;Leaving GetAlertaCommand.ctor: attribute {%s}&quot;,</span>
+<span class="nc" id="L28">                _alerta.toString() ) );</span>
+        //endregion
+<span class="nc" id="L30">    }</span>
+
+    @Override
+    public void execute()
+    {
+        try
+        {
+<span class="nc" id="L37">            GetAlertaByIdCommand getAlertaByIdCommand = CommandFactory.createGetAlertaByIdCommand(getHandler(), _id);</span>
+<span class="nc" id="L38">            getAlertaByIdCommand.execute();</span>
+<span class="nc" id="L39">            _alerta = getAlertaByIdCommand.getReturnParam();</span>
+        }
+<span class="nc" id="L41">        catch (Exception e)</span>
+        {
+<span class="nc" id="L43">            getHandler().rollbackTransaction();</span>
+<span class="nc" id="L44">            getHandler().closeSession();</span>
+<span class="nc" id="L45">            throw e;</span>
+<span class="nc" id="L46">        }</span>
+<span class="nc" id="L47">    }</span>
+
+    @Override
+    public Alerta getReturnParam()
+    {
+<span class="nc" id="L52">        return _alerta;</span>
+    }
+
+    @Override
+    public void closeHandlerSession()
+    {
+<span class="nc" id="L58">        getHandler().closeSession();</span>
+<span class="nc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
