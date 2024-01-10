@@ -102,6 +102,9 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+        lint {
+        baseline = file("lint-baseline.xml")
+    }
 }
 
 dependencies {
@@ -116,7 +119,7 @@ dependencies {
     }
     
 }
-/**Salas:Tuve que agregar esto
+//Salas:Tuve que agregar esto
 tasks.whenTaskAdded { task ->
     if (task.name == 'generateDebugLintModel') {
         task.dependsOn ':app:copyReactNativeVectorIconFonts'
@@ -131,7 +134,7 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.deprecation = true
     }
-}**/
+}
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle");
 applyNativeModulesAppBuildGradle(project)

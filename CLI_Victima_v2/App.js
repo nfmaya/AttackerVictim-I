@@ -7,58 +7,26 @@ import HomeScreen from "./Screens/Home";
 import Alarma from "./Screens/Alarma";
 import Notifications_screen from "./Screens/Notifications";
 import CustomAlert from "./Components/Alerta";
-import messaging from "@react-native-firebase/messaging";
-import PushNotification from "react-native-push-notification";
-
+import FirebaseService from "./Components/FirebaseService";//Clase FirebaseService
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   
   // Estado para controlar la visibilidad de la alerta personalizada
   const [alertVisible, setAlertVisible] = useState(false);
-
-  // Función para manejar el cierre de la alerta
-  const handleDismissAlert = () => {
-    setAlertVisible(false);
-  };
-
-  //Funcion de firebase
-  async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
-  }
-
-  //Aqui obtengo el token de firebase
-  const getToken =async()=>{
-    const token=await messaging().getToken()
-    console.log("Token =",token)
-  }
-
+    // Manejador para cuando se descarte la alerta
+    const handleDismissAlert = () => {
+      setAlertVisible(false);
+    };
   useEffect(()=>{
-    requestUserPermission()
-    getToken()
+    FirebaseService.requestUserPermission();
+    FirebaseService.getToken();
 
     // Maneja las notificaciones entrantes cuando la aplicación está en primer plano
-    messaging().onMessage(async remoteMessage => {
-      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-
-      // Muestra la notificación al usuario
-      PushNotification.localNotification({
-        title: remoteMessage.notification.title,
-        message: remoteMessage.notification.body,
-      });
-    });
+    FirebaseService.handleForegroundMessage();
 
     // Maneja las notificaciones entrantes cuando la aplicación está en segundo plano
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('A new FCM message arrived in the background!', JSON.stringify(remoteMessage));
-    });
+    FirebaseService.handleBackgroundMessage();
   },[])
 
   function NoBackScreen({navigation}) {
@@ -74,9 +42,10 @@ export default function App() {
       //cuando se desmonte NoBackScreen limpiamos para evitar fugas de memoria.
       return unsubscribe;
     }, [navigation]);
-  
+
     // Pasa el navigation a HomeScreen (para poder accerde a notifications)
     return <HomeScreen navigation={navigation} />;
+
   }
 
 
@@ -98,5 +67,6 @@ export default function App() {
         onDismiss={handleDismissAlert}
       />
     </>
+    
   );
 };

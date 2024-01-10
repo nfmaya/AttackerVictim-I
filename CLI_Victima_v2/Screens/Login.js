@@ -3,9 +3,13 @@ import { StyleSheet, View, Image, ScrollView, Text } from "react-native";
 import Boton from "../Components/Boton";
 import Email_Input from "../Components/Text_Input";
 import Password_Input from "../Components/Password_Input";
+import FirebaseService from "../Components/FirebaseService";
 import messaging from "@react-native-firebase/messaging";//FirebaseService
-const Login = ({ navigation }) => {
+import axios from 'axios'; // Para hacer las solicitudes HTTP
+import { Alert } from 'react-native'; // Importa el componente Alert
 
+
+const Login = ({ navigation }) => {
 
     // Function to toggle the password visibility state 
     const toggleShowPassword = () => { 
@@ -13,57 +17,52 @@ const Login = ({ navigation }) => {
     }; 
 
     const [showPassword, setShowPassword] = useState(false); 
-    const [email, set_email] = useState("");
+    const [username, set_username] = useState("");
     const [password, set_password] = useState("");
     const [token, setToken] = useState('');
-    // Solicita permiso y obtén el token al cargar la aplicación
-  useEffect(() => {
-    const requestPermissionAndGetToken = async () => {
-      const authStatus = await messaging().requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      if (enabled) {
-        console.log("Authorization status:", authStatus);
-        const token = await messaging().getToken();
-        console.log("Token =", token);
+    // Solicita permiso al firebase y obtén el token al cargar la aplicación
+    useEffect(() => {
+      const getToken = async () => {
+        const token = await FirebaseService.requestPermissionAndGetToken();
         setToken(token);
-      }
-    };
+      };
+    
+      getToken();
+    }, []);
 
-    requestPermissionAndGetToken();
-  }, []);
 
-  // Función para enviar la notificación
-  const sendNotification = async () => {
-    const message = {
-      to: token,
-      notification: {
-        title: "Login",
-        body: "User has logged in",
-      },
-    };
-  
-    const response = await fetch("https://fcm.googleapis.com/fcm/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "key=AAAACi9DFPg:APA91bEgig-o_t-K9_VHhrPXOQnpMHe_B485BDQ7dcpPEyCHGYgowx0ijRw82hvWWk7H-TTdt66AAO6WumweJT3CgS1MNQQ8ME7i9NMc2syHzNtCxScMubB5zSJZRrDxMfP93kL5pgi9", // Reemplaza esto con tu clave de servidor
-      },
-      body: JSON.stringify(message),
-    });
-  
-    const responseText = await response.text();
-  
-    try {
-      const data = JSON.parse(responseText);
-      console.log("Response:", data);
+  const handleLogin = async () => {
+    //Esto lo hago para probar si se envian notificaciones push
+    await FirebaseService.sendNotification(token);
+
+    //Variable para guardar el JSON de todo los datos del usuario
+    let userDetails = null;  
+    
+    try{// Obtiene los detalles del usuario
+      const response = await axios.get(`https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/usuarios/username/${username}`);
+      userDetails = response.data.response;
     } catch (error) {
-      console.error("Failed to parse JSON response. Original response:\n", responseText);
+      console.error(error);
     }
+    //Agregar el imei en la API backend solo para el usuario nuevo que acaba de ingresar sesión
+    if (userDetails.imei=="") {
+      try {
+        // Actualiza el IMEI del usuario
+        const updatedUserDetails = { ...userDetails, imei: token };
+        await axios.put(`https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/usuarios/update`, updatedUserDetails);
+        //Lo cambia a home
+        navigation.navigate("Home");
+      } catch (error) {
+        console.error(error);
+      }
+      //Si ya inicio sesión en otro telefono, no podra entrar y le sale este error 
+    }else{Alert.alert(
+      "Error",
+      "No se puede agregar porque ya inicio sesión en otro teléfono"
+    );};
+    
   };
-  
     return(
         <View style={styles.container}>
             <View style={styles.header_container}>
@@ -80,14 +79,12 @@ const Login = ({ navigation }) => {
                 <ScrollView contentContainerStyle={styles.scrollview} showsVerticalScrollIndicator={false}> 
 
                     <View style={{flex: 0.5, justifyContent: 'center', alignItems: 'center'}}> 
-                        <Email_Input text= {email}  set_text= {set_email} kb_type="email-address" _margin={15} />
+                        <Email_Input text={username} set_text={set_username} kb_type="default" _margin={15} />
                         <Password_Input showPassword={showPassword} toggleShowPassword={toggleShowPassword} password={password} set_password={set_password}/>
                     </View>
-
                     <View style={{flex: 0.5, justifyContent: 'top'}}>
-                    <Boton text="Log In" color="#878683" al_apretar={async () => { navigation.navigate("Home"); await sendNotification(); }} />
+                    <Boton text="Log In" color="#878683" al_apretar={handleLogin} />
                     </View>
-                    
                 </ScrollView>
                 </View>
         </View> 
