@@ -1,7 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-apply plugin: 'com.google.gms.google-services'
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -102,9 +102,6 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-        lint {
-        baseline = file("lint-baseline.xml")
-    }
 }
 
 dependencies {
@@ -112,29 +109,14 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
     }
-    
 }
-//Salas:Tuve que agregar esto
-tasks.whenTaskAdded { task ->
-    if (task.name == 'generateDebugLintModel') {
-        task.dependsOn ':app:copyReactNativeVectorIconFonts'
-    }
-}
-tasks.whenTaskAdded { task ->
-    if (task.name == 'lintAnalyzeDebug') {
-        task.dependsOn ':app:copyReactNativeVectorIconFonts'
-    }
-}
-allprojects {
-    tasks.withType(JavaCompile) {
-        options.deprecation = true
-    }
-}
+
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle");
 applyNativeModulesAppBuildGradle(project)
