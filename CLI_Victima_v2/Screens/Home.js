@@ -82,7 +82,6 @@ const Home = ({ navigation }) => {
 
     useEffect(() => {
         requestLocationPermission();
-    
         return () => {
             if (locationWatcher) {
                 locationWatcher.remove();
