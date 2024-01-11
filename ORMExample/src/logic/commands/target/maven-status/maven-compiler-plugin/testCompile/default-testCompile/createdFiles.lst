@@ -1,8 +1,11 @@
 com\ucab\cmcapp\logic\commands\alerta\atomic\UpdateAlertaByIdCommandTest.class
+com\ucab\cmcapp\logic\commands\usuario\atomic\GetUsuarioByIdCommandTest.class
 com\ucab\cmcapp\logic\commands\alerta\atomic\GetAlertaByTipoAlertaCommandTest.class
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\atomic\GetAllCoordenadaZonaSeguridadByIdZonaCommandTest.class
+com\ucab\cmcapp\logic\commands\usuario\composite\GetUsuarioCommandTest.class
 com\ucab\cmcapp\logic\commands\alerta\atomic\GetAlertaByIdCommandTest.class
 com\ucab\cmcapp\logic\commands\alerta\atomic\AddAlertaCommandTest.class
+com\ucab\cmcapp\logic\commands\CommandFactoryTest.class
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\atomic\DeleteCoordenadaZonaSeguridadByIdCommandTest.class
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\atomic\GetCoordenadaZonaSeguridadByIdCommandTest.class
 com\ucab\cmcapp\logic\commands\CoordenadaZonaSeguridad\atomic\UpdateCoordenadaZonaSeguridadByIdCommandTest.class

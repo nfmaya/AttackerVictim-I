@@ -209,9 +209,9 @@ public class App{
 	//Para actualizar algun atributo
 
 
-	public boolean verificarUsuario(String cn, String sn, String providedPassword) throws NamingException {
+	public boolean verificarUsuario(String cn, String providedPassword) throws NamingException {
 		// Buscar el usuario en LDAP
-		String searchFilter = "(&(cn=" + cn + ")(sn=" + sn + "))";
+		String searchFilter = "(cn=" + cn + ")";
 		String[] reqAtt = { "userPassword" };
 		SearchControls controls = new SearchControls();
 		controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
@@ -284,7 +284,7 @@ public class App{
 		//app.deleteUser("Francisco");//elimino el usuario
 		//app.deleteUserFromGroup("Francisco", "Victimas");//Elimino el usuario del grupo (Victimas,Agresores,Administrators)
 		//app.getAllUsers();
-		System.out.println(app.verificarUsuario("ceroop", "alejandro solas", "3"));
+		//System.out.println(app.verificarUsuario("ceroop", "alejandro solas", "3"));
 		//app.searchUsers("Salitas","alejandro solas");
 	}
 }

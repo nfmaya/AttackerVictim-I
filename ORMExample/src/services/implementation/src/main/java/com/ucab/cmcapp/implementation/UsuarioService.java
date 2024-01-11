@@ -301,7 +301,7 @@ return response;    }
         try
         {
             app.NewConnection();
-            respuesta=app.verificarUsuario(userDto.get_Username(),userDto.get_Nombre(), userDto.get_password() );
+            respuesta=app.verificarUsuario(userDto.get_Username(), userDto.get_password() );
 
         }
         catch (NullPointerException e){
