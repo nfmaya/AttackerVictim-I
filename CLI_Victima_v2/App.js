@@ -21,6 +21,7 @@ export default function App() {
   useEffect(()=>{
     FirebaseService.requestUserPermission();
     FirebaseService.getToken();
+    FirebaseService.createNotificationChannel();
 
     // Maneja las notificaciones entrantes cuando la aplicación está en primer plano
     FirebaseService.handleForegroundMessage();

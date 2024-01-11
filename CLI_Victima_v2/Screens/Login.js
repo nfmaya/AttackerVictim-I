@@ -26,6 +26,7 @@ const Login = ({ navigation }) => {
       const getToken = async () => {
         const token = await FirebaseService.requestPermissionAndGetToken();
         setToken(token);
+        FirebaseService.createNotificationChannel();
       };
     
       getToken();
@@ -46,7 +47,7 @@ const Login = ({ navigation }) => {
       console.error(error);
     }
     //Agregar el imei en la API backend solo para el usuario nuevo que acaba de ingresar sesión
-    if (userDetails.imei=="") {
+    if (userDetails.imei=="" || userDetails.imei==token) {
       try {
         // Actualiza el IMEI del usuario
         const updatedUserDetails = { ...userDetails, imei: token };

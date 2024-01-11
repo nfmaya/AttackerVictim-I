@@ -46,15 +46,15 @@ class FirebaseService {
   handleForegroundMessage = async () => {
     messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-  
-      // Muestra la notificación al usuario
+
       PushNotification.localNotification({
+        channelId: 'channel-id',
         title: remoteMessage.notification.title,
         message: remoteMessage.notification.body,
       });
     });
   }
-  
+
   handleBackgroundMessage = async () => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('A new FCM message arrived in the background!', JSON.stringify(remoteMessage));
@@ -100,6 +100,20 @@ class FirebaseService {
     } catch (error) {
       console.error("Failed to parse JSON response. Original response:\n", responseText);
     }
+  }
+  createNotificationChannel() {
+    PushNotification.createChannel(
+      {
+        channelId: 'channel-id',
+        channelName: 'My channel',
+        channelDescription: 'A channel to categorise your notifications',
+        playSound: true,
+        soundName: 'default',
+        importance: 4,
+        vibrate: true,
+      },
+      created => console.log(`createChannel returned '${created}'`)
+    );
   }
 }
 
