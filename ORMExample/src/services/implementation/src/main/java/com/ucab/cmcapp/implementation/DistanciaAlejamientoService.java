@@ -9,13 +9,12 @@ import com.ucab.cmcapp.logic.commands.CommandFactory;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.atomic.GetDistanciaAlejamientoByUsuariosCommand;
 import com.ucab.cmcapp.logic.commands.DistanciaAlejamiento.composite.*;
 
+import com.ucab.cmcapp.logic.commands.alerta.composite.GetAllAlertaCommand;
 import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByIdCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.DeleteUsuarioCommand;
 import com.ucab.cmcapp.logic.commands.usuario.composite.UpdateUsuarioCommand;
+import com.ucab.cmcapp.logic.dtos.*;
 import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
-import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoDto;
-import com.ucab.cmcapp.logic.dtos.DistanciaAlejamientoWithSeparacionDto;
-import com.ucab.cmcapp.logic.dtos.UsuarioDto;
 import com.ucab.cmcapp.logic.mappers.*;
 import com.ucab.cmcapp.persistence.DBHandler;
 import com.ucab.cmcapp.persistence.dao.AlertaDao;
@@ -140,12 +139,90 @@ public class DistanciaAlejamientoService extends BaseService
                 command.closeHandlerSession();
         }
 
-
-
-
-
         _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Busqueda por Id Usuario: " + distanciaId)).build();
+    }
+
+    public DistanciaAlejamientoDto getDistanciaAlejamientoUsuario2(long distanciaId )
+    {
+        DistanciaAlejamientoDto response = null;
+        GetDistanciaAlejamientoUsuariosCommand command = null;
+        _logger.debug( "Get in DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
+
+        try
+        {
+            _logger.debug("Creating GetDistanciaAlejamientoUsuariosCommand with IdUsuario: " + distanciaId);
+            command = CommandFactory.createGetDistanciaAlejamientoUsuariosCommand(distanciaId);
+            _logger.debug("Executing GetDistanciaAlejamientoUsuariosCommand");
+            command.execute();
+            if(command.getReturnParam() != null && !command.getReturnParam().isEmpty()){
+                _logger.debug("Mapping entities to DTOs");
+                List<DistanciaAlejamientoDto> resultList = DistanciaAlejamientoMapper.mapListEntityToDto(command.getReturnParam());
+                response = resultList.get(0); // Get the first result
+            }else{
+                _logger.debug("No entities found for IdUsuario: " + distanciaId);
+            }
+        }
+        catch ( Exception e )
+        {
+            _logger.debug(String.format("error: %s", e));
+            _logger.error("An error occurred", e);
+        }
+        finally
+        {
+            if (command != null)
+                command.closeHandlerSession();
+        }
+
+        _logger.debug( "Leaving DistanciaAlejamientoService.getDistanciaAlejamientoUsuario" );
+        return response;
+    }
+
+    @GET
+    @Path("/findRecentAlertasDistancia")
+    public Response getRecentAlertasDistancia() {
+        List<AlertaDistanciaDto> response = new ArrayList<>();
+        GetAllAlertaCommand command = null;
+
+        // Get the current timestamp
+        long currentTime = System.currentTimeMillis();
+
+        // Subtract 10 minutes from the current timestamp
+        long lowerLimitTime = currentTime - 600 * 1000;
+
+        try {
+            command = CommandFactory.createGetAllAlertaCommand();
+            command.execute();
+            if(command.getReturnParam() != null){
+                List<AlertaDto> alertas = AlertaMapper.mapListEntityToDto(command.getReturnParam());
+                for (AlertaDto alerta : alertas) {
+                    // Check if the fechaHora is in the range of lowerLimitTime
+                    if (alerta.get_fechaHora().getTime() >= lowerLimitTime) {
+                        AlertaDistanciaDto alertaDistancia = new AlertaDistanciaDto();
+
+                        alertaDistancia.set_tipoAlerta(alerta.get_tipoAlerta());
+                        alertaDistancia.set_fechaHora(alerta.get_fechaHora());
+                        alertaDistancia.setId(alerta.getId());
+                        alertaDistancia.setUsuario(alerta.getUsuario());
+
+                        DistanciaAlejamientoDto distancia = getDistanciaAlejamientoUsuario2(alerta.getUsuario().getId());
+                        alertaDistancia.setDistanciaAlejamiento(distancia);
+                        response.add(alertaDistancia);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.OK).entity(new CustomResponse<>("Error in Alerta ")).build();
+        } finally {
+            if (command != null) {
+                command.closeHandlerSession();
+            }
+        }
+
+        // Sort the response list by fechaHora in descending order
+        response.sort((a1, a2) -> a2.get_fechaHora().compareTo(a1.get_fechaHora()));
+
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>(response, "Recent alerts in the last 10 minutes")).build();
     }
 
 
