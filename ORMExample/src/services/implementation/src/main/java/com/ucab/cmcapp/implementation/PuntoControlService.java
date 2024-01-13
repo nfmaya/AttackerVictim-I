@@ -20,6 +20,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.Date;
 
 @Path( "/puntos" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -83,6 +84,7 @@ public class PuntoControlService extends BaseService
 
         try
         {
+            userDto.setFechaHora(new Date());
             entity = PuntoControlMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreatePuntoControlCommand( entity );
             command.execute();
@@ -163,6 +165,8 @@ public class PuntoControlService extends BaseService
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
 
             }
+            userDto.setFechaHora(new Date());
+
             entity = PuntoControlMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdatePuntoControlCommand( entity );
             command.execute();

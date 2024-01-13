@@ -531,6 +531,7 @@ return distance;
         //endregion
 
         try{
+            userDto.setFechaHora(new Date());
             entity = PosicionMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreatePosicionCommand( entity );
             command.execute();
@@ -613,6 +614,7 @@ return distance;
 
         try
         {
+            userDto.setFechaHora(new Date());
             entity = PosicionMapper.mapDtoToEntityInsert( userDto );
             command = CommandFactory.createCreatePosicionCommand( entity );
             command.execute();
@@ -785,6 +787,7 @@ return distance;
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + userDto.getId())).build();
 
             }
+            userDto.setFechaHora(new Date());
             entity = PosicionMapper.mapDtoToEntity( userDto );
             command = CommandFactory.createUpdatePosicionCommand( entity );
             command.execute();

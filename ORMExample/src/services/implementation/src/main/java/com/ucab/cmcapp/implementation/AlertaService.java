@@ -30,6 +30,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -234,6 +235,7 @@ public class AlertaService extends BaseService
 
         try
         {
+            alertaDto.set_fechaHora(new Date());
             entity = AlertaMapper.mapDtoToEntityInsert( alertaDto );
             command = CommandFactory.createCreateAlertaCommand( entity );
             command.execute();
@@ -313,6 +315,7 @@ public class AlertaService extends BaseService
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + alertaDto.getId())).build();
 
             }
+
             entity = AlertaMapper.mapDtoToEntity(alertaDto);
             command = CommandFactory.createUpdateAlertaCommand(entity);
             command.execute();
@@ -351,6 +354,7 @@ public class AlertaService extends BaseService
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se encuentra el Objeto registrado " + alertaDto.getId())).build();
 
             }
+            alertaDto.set_fechaHora(new Date());
             entity = AlertaMapper.mapDtoToEntity(alertaDto);
             command = CommandFactory.createUpdateAlertaCommand(entity);
             command.execute();
