@@ -560,6 +560,18 @@ return distance;
 
                         //TAMBIEN SE VA A LLAMAR AL FIREBASE
 
+                        FirebaseSender firebaseSender = new FirebaseSender();
+
+                        try {
+                            firebaseSender.SenderVictim(userDto.getUsuario().getIMEI()
+                                    //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                    ,"Alerta","Agresor Dentro radio");
+
+
+                        } catch (IOException | FirebaseMessagingException e) {
+                            throw new RuntimeException(e);
+                        }
+
                     }
                 }
               //  checkAllUsersLastPositionTimestamp();
