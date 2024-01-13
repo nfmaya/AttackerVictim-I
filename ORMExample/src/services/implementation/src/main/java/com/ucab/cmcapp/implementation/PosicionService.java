@@ -440,6 +440,73 @@ return distance;
         }
     }
 
+    @GET
+    @Path( "/checkAllUsersSamePosition" )
+    public Response checkAllUsersSamePosition2() {
+        // Get a list of all users
+        UsuarioService usuarioService = new UsuarioService();
+        List<UsuarioDto> allUsers = usuarioService.getAllUsuarioList();
+        List<PosicionDto> response;
+        GetAllPosicionCommand command = null;
+
+        // Iterate over all users
+        for (UsuarioDto user : allUsers) {
+            // Get the last 5 positions of the user
+            try {
+                command = CommandFactory.createGetAllPosicionCommand(user.getId());
+                command.execute();
+                if(command.getReturnParam() != null){
+                    response = PosicionMapper.mapListEntityToDto(command.getReturnParam());
+                    if (response.size() >= 5) {
+                        // Check if the last 10 positions are the same
+                        PosicionDto referencePosition = response.get(response.size() - 1);
+                        boolean allSame = true;
+                        for (int i = 2; i <= 5; i++) {
+                            PosicionDto currentPosition = response.get(response.size() - i);
+                            if (currentPosition.getCoordenadaX() != referencePosition.getCoordenadaX() ||
+                                    currentPosition.getCoordenadaY() != referencePosition.getCoordenadaY()) {
+                                allSame = false;
+                                break;
+                            }
+                        }
+                        if (allSame) {
+                            // The user is sending the same location
+                            //aqui se construye el objeto de alerta
+
+                            // Create an instance of AlertaDto
+                            AlertaDto alertaDto = new AlertaDto();
+                            // Set the properties of alertaDto as needed
+                            alertaDto.set_tipoAlerta("Inactivo por 5 envios");
+                            alertaDto.set_fechaHora(new Date());
+                            alertaDto.setUsuario(user);
+
+                            // Create an instance of AlertaService
+                            AlertaService alertaService = new AlertaService();
+                            // Call the method to insert the alert
+                            alertaService.addAlerta(alertaDto);
+
+                            //TAMBIEN SE VA A LLAMAR AL FIREBASE
+                            FirebaseSender firebaseSender = new FirebaseSender();
+
+                            try {
+                                firebaseSender.SenderVictim(alertaDto.getUsuario().getIMEI()
+                                        //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                        ,"Alerta","No Actualiza Posicion");
+
+
+                            } catch (IOException | FirebaseMessagingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                }
+            }
+            catch ( Exception e ) {
+                continue;
+            }
+        }
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>("Checkeo de Posicion")).build();
+    }
 
 
     //endpoint para insertar la ultima ubicacion de la Victima. devuelve la ultima posicion en el response del POST
