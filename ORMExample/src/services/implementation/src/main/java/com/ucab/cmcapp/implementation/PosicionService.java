@@ -422,8 +422,8 @@ return distance;
                             FirebaseSender firebaseSender = new FirebaseSender();
 
                             try {
-                                //firebaseSender.SenderVictim(distanciaAlejamiento.get_victima().getIMEI());
-                                firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                firebaseSender.SenderVictim(alertaDto.getUsuario().getIMEI()
+                                //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
                                         ,"Alerta","No Actualiza Posicion");
 
 
@@ -495,9 +495,9 @@ return distance;
 
                     }
                 }
-                checkAllUsersLastPositionTimestamp();
-                checkAgresorInsideVictimaZonaSeguridad();
-                checkAllUsersSamePosition();
+              //  checkAllUsersLastPositionTimestamp();
+                //checkAgresorInsideVictimaZonaSeguridad();
+                //checkAllUsersSamePosition();
             }else{
                 return Response.status(Response.Status.OK).entity(new CustomResponse<>("No se puede Insertar " + userDto.getId())).build();
             }
@@ -555,7 +555,7 @@ return distance;
                 command.closeHandlerSession();
         }
 
-        checkAgresorInsideVictimaZonaSeguridad();
+        //checkAgresorInsideVictimaZonaSeguridad();
 
         _logger.debug( "Leaving PosicionService.addPosicion" );
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response,"Insertado: " + userDto.getId())).build();
@@ -621,8 +621,8 @@ return distance;
                     FirebaseSender firebaseSender = new FirebaseSender();
 
                     try {
-                        //firebaseSender.SenderVictim(distanciaAlejamiento.get_victima().getIMEI());
-                        firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                        firebaseSender.SenderVictim(distanciaAlejamiento.get_victima().getIMEI()
+                        //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
                                 ,"Alerta","Agresor Dentro Zona Seguridad: " + zonaSeguridad.getZonaSeguridadDto().getNombreZona());
 
 
@@ -634,6 +634,20 @@ return distance;
                 }
             }
         }
+    }
+
+    @Path("/checkAll")
+    @GET
+    public Response checkAll() {
+        try {
+            checkAgresorInsideVictimaZonaSeguridad();
+            checkAllUsersSamePosition();
+            checkAllUsersLastPositionTimestamp();
+        } catch (Exception e) {
+            _logger.error("Error while checking all conditions", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new CustomResponse<>("Error while checking all conditions")).build();
+        }
+        return Response.status(Response.Status.OK).entity(new CustomResponse<>("All checks completed successfully")).build();
     }
 
     @DELETE
