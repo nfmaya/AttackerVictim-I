@@ -4,8 +4,7 @@ import User_Status from "../Components/User_Status";
 import Last_Conection from "../Components/Last_Conection";
 import Img_Button from "../Components/Boton_Imagen";
 import NetInfo from "@react-native-community/netinfo";
-import Geolocation from 'react-native-geolocation-service';
-
+import Geolocation from '@react-native-community/geolocation';
 const Home = ({ navigation }) => {
 
     /////////////////////////////////////////////////////////////

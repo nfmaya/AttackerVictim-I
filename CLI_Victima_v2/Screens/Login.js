@@ -3,8 +3,7 @@ import { StyleSheet, View, Image, ScrollView, Text } from "react-native";
 import Boton from "../Components/Boton";
 import Email_Input from "../Components/Text_Input";
 import Password_Input from "../Components/Password_Input";
-import FirebaseService from "../Components/FirebaseService";
-import messaging from "@react-native-firebase/messaging";//FirebaseService
+import FirebaseService from "../Components/FirebaseService";//Clase Firebase
 import axios from 'axios'; // Para hacer las solicitudes HTTP
 import { Alert } from 'react-native'; // Importa el componente Alert
 
@@ -34,36 +33,42 @@ const Login = ({ navigation }) => {
 
 
   const handleLogin = async () => {
-    //Esto lo hago para probar si se envian notificaciones push
-    await FirebaseService.sendNotification(token);
-
     //Variable para guardar el JSON de todo los datos del usuario
     let userDetails = null;  
     
     try{// Obtiene los detalles del usuario
       const response = await axios.get(`https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/usuarios/username/${username}`);
       userDetails = response.data.response;
+      if (userDetails.usuarioTypeDto.name=="Victima") {
+        if (userDetails.imei=="" || userDetails.imei==token) {
+          try {
+            // Actualiza el IMEI del usuario
+            const updatedUserDetails = { ...userDetails, imei: token };
+            await axios.put(`https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/usuarios/update`, updatedUserDetails);
+            //Esto lo hago para probar si se envian notificaciones push
+            await FirebaseService.sendNotification(token);
+            //Lo cambia a home
+            navigation.navigate("Home");
+            
+          } catch (error) {
+            console.error(error);
+          }
+          //Si ya inicio sesión en otro telefono, no podra entrar y le sale este error 
+        }else{Alert.alert(
+          "Error",
+          "No se puede agregar porque ya inicio sesión en otro teléfono"
+        );};
+      } else {
+        Alert.alert(
+          "Error",
+          "No se puede iniciar sesion porque no esta registrado como victima"
+      );};
     } catch (error) {
-      console.error(error);
-    }
-    //Agregar el imei en la API backend solo para el usuario nuevo que acaba de ingresar sesión
-    if (userDetails.imei=="" || userDetails.imei==token) {
-      try {
-        // Actualiza el IMEI del usuario
-        const updatedUserDetails = { ...userDetails, imei: token };
-        await axios.put(`https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/usuarios/update`, updatedUserDetails);
-        //Lo cambia a home
-        navigation.navigate("Home");
-      } catch (error) {
-        console.error(error);
-      }
-      //Si ya inicio sesión en otro telefono, no podra entrar y le sale este error 
-    }else{Alert.alert(
-      "Error",
-      "No se puede agregar porque ya inicio sesión en otro teléfono"
+      Alert.alert(
+        "Error",
+        "No se puede iniciar sesion porque el usuario no esta registrado"
     );};
-    
-  };
+  }
     return(
         <View style={styles.container}>
             <View style={styles.header_container}>
