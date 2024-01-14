@@ -31,7 +31,7 @@ export default function User_Status ({ _isconected=false }) {
             <View style={styles.container}>
                 <Text style={styles.text}>Last Connection</Text>
                 <Image
-                    source={require('../assets/cronometer.png')}
+                    source={require('../../assets/cronometer.png')}
                     style={{
                         width: 160,
                         height: 160,

@@ -4,9 +4,8 @@ import Boton from "../Components/Boton";
 import Email_Input from "../Components/Text_Input";
 import Password_Input from "../Components/Password_Input";
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
 
-    
     // Function to toggle the password visibility state 
     const toggleShowPassword = () => { 
         setShowPassword(!showPassword); 
@@ -14,13 +13,14 @@ const Login = ({ navigation }) => {
 
     const [showPassword, setShowPassword] = useState(false); 
     const [email, set_email] = useState("");
+    const [tlfn, set_tlfn] = useState("");
     const [password, set_password] = useState("");
 
     return(
         <View style={styles.container}>
             <View style={styles.header_container}>
                 <Image
-                    source={require('../assets/logo_app.jpg')}
+                    source={require('../../assets/logo_app.jpg')}
                     style={{
                         width: 200,
                         height: 200,
@@ -32,13 +32,13 @@ const Login = ({ navigation }) => {
                 <ScrollView contentContainerStyle={styles.scrollview} showsVerticalScrollIndicator={false}> 
 
                     <View style={{flex: 0.5, justifyContent: 'center', alignItems: 'center'}}> 
-                        <Email_Input text= {email}  set_text= {set_email} kb_type="email-address" _margin={15} />
+                        <Email_Input text= {email}  set_text= {set_email} kb_type="email-address"/>
+                        <Email_Input type="phone" _placeholder="Phone Number" text= {tlfn}  set_text= {set_tlfn} kb_type="phone-pad" />
                         <Password_Input showPassword={showPassword} toggleShowPassword={toggleShowPassword} password={password} set_password={set_password}/>
                     </View>
 
                     <View style={{flex: 0.5, justifyContent: 'top'}}>
-                        <Boton text="Log In" color="#878683" al_apretar={() => navigation.navigate("Home")} />
-                        <Boton text="Sign Up" al_apretar={() => navigation.navigate("Register")} />
+                        <Boton text="Register Me" color="#878683" al_apretar={() => navigation.navigate("Home")} />
                     </View>
 
                 </ScrollView>
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Login;
+export default Register;

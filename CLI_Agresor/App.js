@@ -1,12 +1,13 @@
 import { StatusBar, View, Text  } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';1
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import login_screen from './Screens/Login';
-import registro_screen from './Screens/Register';
-import HomeScreen from './Screens/Home';
-import Notifications_screen from './Screens/Notifications';
-import CustomAlert from "./Components/Alerta";
+import login_screen from './view/Screens/Login';
+import registro_screen from './view/Screens/Register';
+import HomeScreen from './view/Screens/Home';
+import Notifications_screen from './view/Screens/Notifications';
+import CustomAlert from "./view/Components/Alerta";
+import FirebaseService from "./view/Components/FirebaseService";//Clase FirebaseService
 
 export default function App() {
 
@@ -19,7 +20,17 @@ export default function App() {
   const handleDismissAlert = () => {
     setAlertVisible(false);
   };
+  useEffect(()=>{
+    FirebaseService.requestUserPermission();
+    FirebaseService.getToken();
+    FirebaseService.createNotificationChannel();
 
+    // Maneja las notificaciones entrantes cuando la aplicación está en primer plano
+    FirebaseService.handleForegroundMessage();
+
+    // Maneja las notificaciones entrantes cuando la aplicación está en segundo plano
+    FirebaseService.handleBackgroundMessage();
+  },[])
 
   function NoBackScreen({navigation}) {
   
