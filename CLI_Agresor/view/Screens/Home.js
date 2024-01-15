@@ -5,8 +5,24 @@ import Last_Conection from "../Components/Last_Conection";
 import Img_Button from "../Components/Boton_Imagen";
 import NetInfo from "@react-native-community/netinfo";
 import Geolocation from '@react-native-community/geolocation';
+import HomeViewModel from '../../view_model/HomeViewModel';
+import PosicionViewModel from '../../view_model/PosicionViewModel';
 const Home = ({ navigation }) => {
-
+    /////////////////////////////////////////////////////////////
+    //Nombre del Usuario
+    ////////////////////////////////////////////////////////////
+ 
+    const homeViewModel = new HomeViewModel();
+    const [username, set_username] = useState("");
+    useEffect(() => {
+        const fetchUserName = async () => {
+         
+          const name = await homeViewModel.getUserName(global.usernameusuario);
+          set_username(name);
+        };
+      
+        fetchUserName();
+      }, []);
     /////////////////////////////////////////////////////////////
     //Conectado a internet
     /////////////////////////////////////////////////////////////
@@ -76,23 +92,37 @@ const Home = ({ navigation }) => {
             return;
         }
     }
-
+    /////////////////////////////////////////////////////////////
+    //Geolocalizacion - Envia coordenadas a la API
+    /////////////////////////////////////////////////////////////
+    const posicionViewModel = new PosicionViewModel();
     useEffect(() => {
         requestLocationPermission();
     
+        // Enviar la ubicación de la víctima cada minuto
+        const intervalId = setInterval(async () => {
+            if (locationData) {
+                const fechaHora = Date.now();
+                const usuarioId = global.idusuario;  // Aquí debes poner el ID del usuario actual
+                console.log(usuarioId);
+                const response = await posicionViewModel.handleAddPosicionAgresor(locationData.latitude, locationData.longitude, fechaHora, usuarioId);
+                console.log(response);  // Puedes manejar la respuesta como necesites
+            }
+        }, 5000);  // 60000 milisegundos equivalen a 1 minuto
+    
+        // Limpiar el intervalo cuando el componente se desmonte
         return () => {
+            clearInterval(intervalId);
             if (locationWatcher) {
                 locationWatcher.remove();
             }
         }
     }, []);
-
-    /////////////////////////////////////////////////////////////
-
+    
     return(
         <View style={styles.container}>
             <View style={{flex: 0.3, justifyContent: 'flex-end'}}>
-                <User_Status name="Diego De Queiros" _isconected={isConnected} />
+            <User_Status name={username} _isconected={isConnected} />
             </View>
             <View style={styles.sub_container}>
                 {locationData ? (

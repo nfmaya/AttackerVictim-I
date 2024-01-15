@@ -4,9 +4,8 @@ import Boton from "../Components/Boton";
 import Email_Input from "../Components/Text_Input";
 import Password_Input from "../Components/Password_Input";
 import FirebaseService from "../Components/FirebaseService";//Clase Firebase
-import axios from 'axios'; // Para hacer las solicitudes HTTP
 import { Alert } from 'react-native'; // Importa el componente Alert
-
+import LoginViewModel from "../../view_model/LoginViewModel";
 const Login = ({ navigation }) => {
 
     
@@ -29,54 +28,17 @@ const Login = ({ navigation }) => {
       
         getToken();
       }, []);
+      const loginViewModel = new LoginViewModel();
   
-  
-    const handleLogin = async () => {
-      
-  
-      //Variable para guardar el JSON de todo los datos del usuario
-      let userDetails = null;  
-      
-      try{// Obtiene los detalles del usuario
-        const response = await axios.get(`https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/usuarios/username/${username}`);
-        userDetails = response.data.response;
-        if (userDetails.usuarioTypeDto.name=="Agresor") {
-          if (userDetails.imei=="" || userDetails.imei==token) {
-            try {
-              // Actualiza el IMEI del usuario
-              const updatedUserDetails = { ...userDetails, imei: token };
-              await axios.put(`https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/usuarios/update`, updatedUserDetails);
-              //Esto lo hago para probar si se envian notificaciones push
-              await FirebaseService.sendNotification(token);
-              //Lo cambia a home
-              navigation.navigate("Home");
-              
-            } catch (error) {
-              console.error(error);
-            }
-            //Si ya inicio sesión en otro telefono, no podra entrar y le sale este error 
-          }else{Alert.alert(
-            "Error",
-            "No se puede agregar porque ya inicio sesión en otro teléfono"
-          );};
+      const handleLogin = async () => {
+        const result = await loginViewModel.handleLogin(username, password, token, navigation);
+        if (result.success) {
+          global.usernameusuario=username;
+          navigation.navigate("Home");
         } else {
-          Alert.alert(
-            "Error",
-            "No se puede iniciar sesion porque no esta registrado como agresor"
-        );};
-      } catch (error) {
-        Alert.alert(
-          "Error",
-          "No se puede iniciar sesion porque el usuario no esta registrado"
-      );
-      }
-      //Agregar el imei en la API backend solo para el usuario nuevo que acaba de ingresar sesión
-      
-      
-      
-      
-      
-    };
+          Alert.alert("Error", result.message);
+        }
+      };
     return(
         <View style={styles.container}>
             <View style={styles.header_container}>
