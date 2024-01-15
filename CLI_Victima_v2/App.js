@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { StatusBar, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import login_screen from "./Screens/Login";
-import HomeScreen from "./Screens/Home";
-import Alarma from "./Screens/Alarma";
-import Notifications_screen from "./Screens/Notifications";
-import CustomAlert from "./Components/Alerta";
-import FirebaseService from "./Components/FirebaseService";//Clase FirebaseService
-
+import login_screen from "./view/Screens/Login";
+import HomeScreen from "./view/Screens/Home";
+import Alarma from "./view/Screens/Alarma";
+import Notifications_screen from "./view/Screens/Notifications";
+import CustomAlert from "./view/Components/Alerta";
+import FirebaseService from "./view/Components/FirebaseService";//Clase FirebaseService
+import { UsernameProvider } from './UsernameContext';
 export default function App() {
   const Stack = createNativeStackNavigator();
   
@@ -67,6 +67,7 @@ export default function App() {
         message="You cant go back from this screen, you must remain logged in at all times."
         onDismiss={handleDismissAlert}
       />
+      
     </>
     
   );
