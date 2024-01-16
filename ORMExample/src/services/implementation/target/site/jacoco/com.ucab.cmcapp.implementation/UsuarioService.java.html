@@ -301,7 +301,7 @@ public Response getUsuario(@PathParam( &quot;id&quot; ) long userId )
         try
         {
 <span class="nc" id="L303">            app.NewConnection();</span>
-<span class="nc" id="L304">            respuesta=app.verificarUsuario(userDto.get_Username(),userDto.get_Nombre(), userDto.get_password() );</span>
+<span class="nc" id="L304">            respuesta=app.verificarUsuario(userDto.get_Username(), userDto.get_password() );</span>
 
         }
 <span class="nc" id="L307">        catch (NullPointerException e){</span>

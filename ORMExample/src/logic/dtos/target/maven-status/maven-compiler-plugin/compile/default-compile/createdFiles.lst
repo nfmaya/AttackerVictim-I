@@ -1,3 +1,4 @@
+com\ucab\cmcapp\logic\dtos\AlertaDistanciaDto.class
 com\ucab\cmcapp\logic\dtos\UsuarioLDAPDto.class
 com\ucab\cmcapp\logic\dtos\DistanciaAlejamientoDto.class
 com\ucab\cmcapp\logic\dtos\DistanciaAlejamientoWithSeparacionDto.class
