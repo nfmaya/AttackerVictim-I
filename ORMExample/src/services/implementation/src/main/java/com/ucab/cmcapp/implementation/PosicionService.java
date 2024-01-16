@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Path( "/posicion" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -259,8 +260,7 @@ return distance;
     }
 
 
-    //TODO:
-    //ver si se pone como endpoint o se llama desde otro lado
+
 
     //metodo que checkea si un usuario no ha actualizado su posicion en un tiempo determinado
     public void checkAllUsersLastPositionTimestamp() {
@@ -371,8 +371,7 @@ return distance;
     }
 
 
-    //TODO:
-    //ver si se pone como endpoint o se llama desde otro lado
+
 
     //metodo que checkea si un usuario esta enviando la misma posicion. despues de 10 envios
     public void checkAllUsersSamePosition() {
@@ -419,17 +418,20 @@ return distance;
                             alertaService.addAlerta(alertaDto);
 
                             //TAMBIEN SE VA A LLAMAR AL FIREBASE
-                            FirebaseSender firebaseSender = new FirebaseSender();
+                            if (!Objects.equals(alertaDto.getUsuario().getIMEI(), "1")){
+                                FirebaseSender firebaseSender = new FirebaseSender();
 
-                            try {
-                                firebaseSender.SenderVictim(alertaDto.getUsuario().getIMEI()
-                                //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
-                                        ,"Alerta","No Actualiza Posicion");
+                                try {
+                                    firebaseSender.SenderVictim(alertaDto.getUsuario().getIMEI()
+                                            //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                            ,"Alerta","No Actualiza Posicion");
 
 
-                            } catch (IOException | FirebaseMessagingException e) {
-                                throw new RuntimeException(e);
+                                } catch (IOException | FirebaseMessagingException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
+
                         }
                     }
                 }
@@ -486,17 +488,22 @@ return distance;
                             alertaService.addAlerta(alertaDto);
 
                             //TAMBIEN SE VA A LLAMAR AL FIREBASE
-                            FirebaseSender firebaseSender = new FirebaseSender();
 
-                            try {
-                                firebaseSender.SenderVictim(alertaDto.getUsuario().getIMEI()
-                                        //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
-                                        ,"Alerta","No Actualiza Posicion");
+                            if (!Objects.equals(alertaDto.getUsuario().getIMEI(), "1")){
+                                FirebaseSender firebaseSender = new FirebaseSender();
+
+                                try {
+                                    firebaseSender.SenderVictim(alertaDto.getUsuario().getIMEI()
+                                            //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                            ,"Alerta","No Actualiza Posicion");
 
 
-                            } catch (IOException | FirebaseMessagingException e) {
-                                throw new RuntimeException(e);
+                                } catch (IOException | FirebaseMessagingException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
+
+
                         }
                     }
                 }
@@ -513,7 +520,7 @@ return distance;
     //asi como tambien si el agresor se encuentra dentro del radio de distancia minima, envia una Alerta
     //y tambien si el agresor se encuentra dentro de la zona de seguridad de la victima, envia una Alerta
     //ejecuta el checkeo de la ultima posicion
-    //TODO: ver si las llamadas de los checkeos se hacen aca
+
     @POST
     @Path("/insertVictima")
     public Response addPosicionVictima( PosicionDto userDto )
@@ -560,18 +567,21 @@ return distance;
                         alertaService.addAlerta(alertaDto);
 
                         //TAMBIEN SE VA A LLAMAR AL FIREBASE
+                        if (!Objects.equals(entity.getUsuario().getIMEI(), "1")){
+                            FirebaseSender firebaseSender = new FirebaseSender();
 
-                        FirebaseSender firebaseSender = new FirebaseSender();
-
-                        try {
-                            firebaseSender.SenderVictim(entity.getUsuario().getIMEI()
-                                    //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
-                                    ,"Alerta","Agresor Dentro radio");
+                            try {
+                                firebaseSender.SenderVictim(entity.getUsuario().getIMEI()
+                                        //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                        ,"Alerta","Agresor Dentro radio");
 
 
-                        } catch (IOException | FirebaseMessagingException e) {
-                            throw new RuntimeException(e);
+                            } catch (IOException | FirebaseMessagingException e) {
+                                throw new RuntimeException(e);
+                            }
+
                         }
+
 
 
 
@@ -601,7 +611,7 @@ return distance;
 
 
     //endpoint para insertar la posicion de un Agresor. solo vse ejecuta el checkeo de la zona de seguridad
-    //TODO: ver si la llamada del chekceo se hace aca
+
     @POST
     @Path("/insertAgresor")
     public Response addPosicionAgresor( PosicionDto userDto )
@@ -680,10 +690,14 @@ return distance;
 
                 // Step 5: Get the last position of the Agresor
                 List<PosicionDto> agresorLastPosition = getAllPosicionUsuarioLast1Me(agresorId);
-                PosicionDto agresorLastPos = agresorLastPosition.get(agresorLastPosition.size() - 1);
-
+                PosicionDto agresorLastPos = null;
+                if (!agresorLastPosition.isEmpty()) {
+                    agresorLastPos = agresorLastPosition.get(agresorLastPosition.size() - 1);
+                }
 
                 // Step 6: Check if the Agresor position is inside the ZonaSeguridad polygon
+                if (agresorLastPos != null) {
+
                 if (isUserInsideSafeZone(agresorLastPos, allCoordenadas)) {
                     //aqui se construye el objeto de alerta
 
@@ -700,21 +714,23 @@ return distance;
                     alertaService.addAlerta(alertaDto);
 
                     //TAMBIEN SE VA A LLAMAR AL FIREBASE
+                    if (!Objects.equals(distanciaAlejamiento.get_victima().getIMEI(), "1")) {
+                        FirebaseSender firebaseSender = new FirebaseSender();
 
-                    FirebaseSender firebaseSender = new FirebaseSender();
-
-                    try {
-                        firebaseSender.SenderVictim(distanciaAlejamiento.get_victima().getIMEI()
-                        //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
-                                ,"Alerta","Agresor Dentro Zona Seguridad: " + zonaSeguridad.getZonaSeguridadDto().getNombreZona());
+                        try {
+                            firebaseSender.SenderVictim(distanciaAlejamiento.get_victima().getIMEI()
+                                    //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                    , "Alerta", "Agresor Dentro Zona Seguridad: " + zonaSeguridad.getZonaSeguridadDto().getNombreZona());
 
 
-                    } catch (IOException | FirebaseMessagingException e) {
-                        throw new RuntimeException(e);
+                        } catch (IOException | FirebaseMessagingException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
 
 
                 }
+            }
             }
         }
     }
@@ -728,7 +744,7 @@ return distance;
             checkAllUsersLastPositionTimestamp();
         } catch (Exception e) {
             _logger.error("Error while checking all conditions", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new CustomResponse<>("Error while checking all conditions")).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new CustomResponse<>("Error while checking all conditions" + e)).build();
         }
         return Response.status(Response.Status.OK).entity(new CustomResponse<>("All checks completed successfully")).build();
     }
