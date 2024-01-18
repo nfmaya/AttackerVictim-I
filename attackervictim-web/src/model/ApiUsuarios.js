@@ -59,7 +59,21 @@ const ApiUsuarios = {
         console.error(`Error al hacer GET en /posicion/estatus/${ID}`, error);
         throw error;
     }
-},
+  },
+
+  validateUserName: async (USERNAME) => {
+    try {
+        const response = await fetch(`${BASE_URL}/usuarios/username/${USERNAME}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data; 
+    } catch (error) {
+        console.error(`Error al hacer GET en /usuarios/username/${USERNAME}`, error);
+        throw error;
+    }
+  },
 
 };
 

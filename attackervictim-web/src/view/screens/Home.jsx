@@ -372,8 +372,8 @@ function Home() {
 
         <div>
             <p className='description-home' style={{marginRight:'650px'}}>Active safe zones : {Zones.length} </p>
-            <div style={{display:'flex', flexDirection:'row',alignItems:'center'}}>
-                <SafeZoneBtn text='Delete'/>
+            <div style={{display:'flex', flexDirection:'row',alignItems:'center',justifyContent:'start', height:'80px'}}>
+                {/* <SafeZoneBtn text='Delete'/> */}
                 <p className='description-home' style={{marginLeft:'20px'}}>Selected zone : {selectedZoneName} </p>
             </div>
             <div style={{display:'flex', flexDirection:'row',alignItems:'center'}}>

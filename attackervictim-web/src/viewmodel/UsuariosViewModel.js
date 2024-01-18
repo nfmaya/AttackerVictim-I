@@ -40,6 +40,22 @@ const LoginViewModel = {
         const status = await ApiUsuarios.getUsersConection(ID);
         return status;
     },
+
+    validateUserName: async (USERNAME) => {
+
+        try {
+            const response = await apiUsuarios.validateUserName(USERNAME)
+            if (response && response.response) {
+                    const username = response.response._Username
+                return username;
+            } else {
+                throw new Error('Response format is incorrect');
+            }
+        } catch (error) {
+            console.error(`Error al validar username : ${USERNAME}`, error);
+            throw error;
+        }
+    },
 };
 
 export default LoginViewModel;
