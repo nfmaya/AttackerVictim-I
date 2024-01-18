@@ -1,0 +1,2 @@
+global.usernameusuario = '';
+global.idusuario='';

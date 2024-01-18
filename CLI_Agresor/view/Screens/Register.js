@@ -20,7 +20,7 @@ const Register = ({ navigation }) => {
         <View style={styles.container}>
             <View style={styles.header_container}>
                 <Image
-                    source={require('../assets/logo_app.jpg')}
+                    source={require('../../assets/logo_app.jpg')}
                     style={{
                         width: 200,
                         height: 200,

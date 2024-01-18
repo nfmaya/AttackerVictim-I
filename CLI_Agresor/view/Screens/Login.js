@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Image, ScrollView, Text } from "react-native";
+import React, { useState, useEffect } from 'react';1
+import { StyleSheet, View, Image, ScrollView } from "react-native";
 import Boton from "../Components/Boton";
 import Email_Input from "../Components/Text_Input";
 import Password_Input from "../Components/Password_Input";
-
+import FirebaseService from "../Components/FirebaseService";//Clase Firebase
+import { Alert } from 'react-native'; // Importa el componente Alert
+import LoginViewModel from "../../view_model/LoginViewModel";
 const Login = ({ navigation }) => {
 
     
@@ -13,14 +15,35 @@ const Login = ({ navigation }) => {
     }; 
 
     const [showPassword, setShowPassword] = useState(false); 
-    const [email, set_email] = useState("");
+    const [username, set_username] = useState("");
     const [password, set_password] = useState("");
-
+    const [token, setToken] = useState('');
+    // Solicita permiso al firebase y obtén el token al cargar la aplicación
+    useEffect(() => {
+        const getToken = async () => {
+          const token = await FirebaseService.requestPermissionAndGetToken();
+          setToken(token);
+          FirebaseService.createNotificationChannel();
+        };
+      
+        getToken();
+      }, []);
+      const loginViewModel = new LoginViewModel();
+  
+      const handleLogin = async () => {
+        const result = await loginViewModel.handleLogin(username, password, token, navigation);
+        if (result.success) {
+          global.usernameusuario=username;
+          navigation.navigate("Home");
+        } else {
+          Alert.alert("Error", result.message);
+        }
+      };
     return(
         <View style={styles.container}>
             <View style={styles.header_container}>
                 <Image
-                    source={require('../assets/logo_app.jpg')}
+                    source={require('../../assets/logo_app.jpg')}
                     style={{
                         width: 200,
                         height: 200,
@@ -32,16 +55,17 @@ const Login = ({ navigation }) => {
                 <ScrollView contentContainerStyle={styles.scrollview} showsVerticalScrollIndicator={false}> 
 
                     <View style={{flex: 0.5, justifyContent: 'center', alignItems: 'center'}}> 
-                        <Email_Input text= {email}  set_text= {set_email} kb_type="email-address" _margin={15} />
+                    <Email_Input text={username} set_text={set_username} kb_type="default" _margin={15} />
                         <Password_Input showPassword={showPassword} toggleShowPassword={toggleShowPassword} password={password} set_password={set_password}/>
                     </View>
 
                     <View style={{flex: 0.5, justifyContent: 'top'}}>
-                        <Boton text="Log In" color="#878683" al_apretar={() => navigation.navigate("Home")} />
+                        <Boton text="Log In" color="#878683" al_apretar={handleLogin} />
+                        <Boton text="Sign Up" al_apretar={() => navigation.navigate("Register")} />
                     </View>
 
                 </ScrollView>
-                </View>
+            </View>
         </View>
     );
 }
@@ -53,14 +77,14 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     header_container: {
-        flex: 0.5,
+        flex: 0.4,
         backgroundColor: '#444444',
         alignItems: 'center',
         justifyContent: 'center',
     },
     content_container: {
-        flex: 0.5,
-        backgroundColor: '#2069E0',
+        flex: 0.6,
+        backgroundColor: '#23851B',
         alignItems: 'center',
         justifyContent: 'center',
         borderTopLeftRadius: 30,
