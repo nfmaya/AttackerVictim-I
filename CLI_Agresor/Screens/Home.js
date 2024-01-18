@@ -61,6 +61,7 @@ const Home = ({ navigation }) => {
             const watcher = Geolocation.getCurrentPosition(
                 (position) => {
                   setLocationData(position.coords);
+                  //enviar datos posicion al back cada 12000 milisegundos
                 },
                 (error) => {
                     console.warn(error);

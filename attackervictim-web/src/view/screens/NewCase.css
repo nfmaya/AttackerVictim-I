@@ -19,7 +19,7 @@
     height: 550px;
     padding: 0px;
     margin: 0px;
-    margin-bottom: -10px;
+    margin-bottom: 20px;
     gap: 90px;
 }
 
@@ -38,16 +38,17 @@
     padding: 0px;
     margin: 0px;
     margin-right: 875px;
-    margin-top: -30px;
+    margin-top: -10px;
 }
 
 .description-newcase {
     color: #fff;
     font-size: 24px;
     font-weight: 500;
-    padding: 20px;
+    padding: 30px;
     margin: 0px;
     margin-right: 440px;
+    margin-top: -20px;
 }
 
 .image-newcase {

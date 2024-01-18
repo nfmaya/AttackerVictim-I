@@ -6,13 +6,15 @@ function CustomButton({text='Button', isprimarybutton=true, rute='', executethis
 
   let navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = async () => {
 
     if (typeof executethis === 'function') {
-      executethis();
+      const canNavigate = await executethis();
+      if (canNavigate && rute) { 
+        navigate(rute); // Navega solo si la validación es verdadera
+      }
     }
-
-    if (rute) {
+    else if (rute) {
       navigate(rute);
     }
   };
