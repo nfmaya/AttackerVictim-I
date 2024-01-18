@@ -161,7 +161,7 @@ public class AlertaService extends BaseService
         long currentTime = System.currentTimeMillis();
 
         // Subtract 15 seconds from the current timestamp
-        long lowerLimitTime = currentTime - 60 * 1000;
+        long lowerLimitTime = currentTime - 7200 * 1000;
 
         try {
             command = CommandFactory.createGetAllAlertaCommand();
@@ -182,7 +182,7 @@ public class AlertaService extends BaseService
                 command.closeHandlerSession();
             }
         }
-
+        response.sort((a1, a2) -> a2.get_fechaHora().compareTo(a1.get_fechaHora()));
         return Response.status(Response.Status.OK).entity(new CustomResponse<>(response, "Recent alerts in the last 15 seconds")).build();
     }
 
