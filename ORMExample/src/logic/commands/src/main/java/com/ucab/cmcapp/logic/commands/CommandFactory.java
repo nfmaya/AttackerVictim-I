@@ -23,14 +23,8 @@ import com.ucab.cmcapp.logic.commands.alerta.atomic.*;
 import com.ucab.cmcapp.logic.commands.alerta.composite.*;
 import com.ucab.cmcapp.logic.commands.posicion.atomic.*;
 import com.ucab.cmcapp.logic.commands.posicion.composite.*;
-import com.ucab.cmcapp.logic.commands.puntoControl.atomic.AddPuntoControlCommand;
-import com.ucab.cmcapp.logic.commands.puntoControl.atomic.DeletePuntoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.puntoControl.atomic.GetPuntoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.puntoControl.atomic.UpdatePuntoControlByIdCommand;
-import com.ucab.cmcapp.logic.commands.puntoControl.composite.CreatePuntoControlCommand;
-import com.ucab.cmcapp.logic.commands.puntoControl.composite.DeletePuntoControlCommand;
-import com.ucab.cmcapp.logic.commands.puntoControl.composite.GetPuntoControlCommand;
-import com.ucab.cmcapp.logic.commands.puntoControl.composite.UpdatePuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.atomic.*;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.*;
 
 import com.ucab.cmcapp.logic.commands.usuario.atomic.*;
 import com.ucab.cmcapp.logic.commands.usuario.composite.*;
@@ -415,6 +409,17 @@ public class CommandFactory
     public static UpdatePuntoControlCommand createUpdatePuntoControlCommand(PuntoControl user)
     {
         return new UpdatePuntoControlCommand(user);
+    }
+
+    public static GetAllPuntoControlCommand createGetAllPuntoControlCommand()
+    {
+        return new GetAllPuntoControlCommand();
+    }
+
+
+    public static GetAllPuntoControlByIdCommand createGetAllPuntoControlByIdCommand (DBHandler handler )
+    {
+        return new GetAllPuntoControlByIdCommand(handler);
     }
 
 

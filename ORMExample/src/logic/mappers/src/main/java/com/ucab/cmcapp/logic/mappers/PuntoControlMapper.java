@@ -2,11 +2,15 @@ package com.ucab.cmcapp.logic.mappers;
 
 import com.ucab.cmcapp.common.EntityFactory;
 import com.ucab.cmcapp.common.entities.PuntoControl;
+import com.ucab.cmcapp.common.entities.PuntoControl;
+import com.ucab.cmcapp.logic.dtos.PuntoControlDto;
 import com.ucab.cmcapp.logic.dtos.PuntoControlDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class PuntoControlMapper extends BaseMapper
@@ -107,7 +111,13 @@ public class PuntoControlMapper extends BaseMapper
     }
 
 
-
+    public static List<PuntoControlDto> mapListEntityToDto(List<PuntoControl> entities) {
+        List<PuntoControlDto> dtos = new ArrayList<>();
+        for (PuntoControl entity : entities) {
+            dtos.add(mapEntityToDto(entity));
+        }
+        return dtos;
+    }
 
 
 }
