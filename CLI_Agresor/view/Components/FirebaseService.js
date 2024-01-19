@@ -2,7 +2,6 @@ import messaging from '@react-native-firebase/messaging';
 import PushNotification from "react-native-push-notification";
 class FirebaseService {
   token = ''; // Variable para almacenar el token
-
   FirebaseService(){}
   
   async requestUserPermission() {
@@ -46,7 +45,7 @@ class FirebaseService {
   handleForegroundMessage = async () => {
     messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-
+      this.alertaViewModel.EnviarAlerta(JSON.stringify(remoteMessage).body)
       PushNotification.localNotification({
         channelId: 'channel-id',
         title: remoteMessage.notification.title,
@@ -54,10 +53,11 @@ class FirebaseService {
       });
     });
   }
-
+  
   handleBackgroundMessage = async () => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('A new FCM message arrived in the background!', JSON.stringify(remoteMessage));
+      this.alertaViewModel.EnviarAlerta(JSON.stringify(remoteMessage).body)
     });
   }
  async requestPermissionAndGetToken (){

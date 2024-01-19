@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { PermissionsAndroid, Platform, StyleSheet, View, Text } from "react-native";
+import React, {  useRef ,useState, useEffect } from 'react';
+import { PermissionsAndroid, Platform, StyleSheet, View, Text, Alert } from "react-native";
 import User_Status from "../Components/User_Status";
 import Img_Button from "../Components/Boton_Imagen";
 import MapView, { Marker, Polygon } from 'react-native-maps';
@@ -52,6 +52,26 @@ const Home = ({ navigation}) => {
     const [locationData, setLocationData] = useState(null);
     const [locationWatcher, setLocationWatcher] = useState(null);
 
+    //Actualizacion de posicion
+    useEffect(() => {
+        const watchId = Geolocation.watchPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setLocationData({ latitude, longitude });
+          },
+          (error) => {
+            console.error(error);
+          },
+          {
+            enableHighAccuracy: true,
+            distanceFilter: 10,
+            interval: 15000, // Actualiza cada 15 segundos
+          }
+        );
+    
+        // Limpieza: detener el seguimiento de la ubicación cuando el componente se desmonte
+        return () => Geolocation.clearWatch(watchId);
+      }, []);
     async function requestLocationPermission() {
         
         let granted;
@@ -74,23 +94,18 @@ const Home = ({ navigation}) => {
         }
 
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log("Location permission granted");
-
-            const watcher = Geolocation.getCurrentPosition(
+            Geolocation.watchPosition(
                 (position) => {
-                  setLocationData(position.coords);
+                    // Actualiza el estado
+                    setLocationData(position.coords);
                 },
                 (error) => {
-                  console.warn(error);
+                    console.warn(error);
                 },
-                { enableHighAccuracy: true, timeout: 12000, maximumAge: 8000 }
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
             );
-
-            setLocationWatcher(watcher);
-
         } else {
             console.log("Location permission denied");
-
             alert('Permission to access location was denied');
             return;
         }
@@ -100,29 +115,44 @@ const Home = ({ navigation}) => {
     //Geolocalizacion - Envia coordenadas a la API
     /////////////////////////////////////////////////////////////
     const posicionViewModel = new PosicionViewModel();
-    useEffect(() => {
-        requestLocationPermission();
-    
-        // Enviar la ubicación de la víctima cada minuto
-        const intervalId = setInterval(async () => {
+    const  [distanciaagresor, setdistanciaagresor] = useState("");
+      
+      const runLogic = async () => {
+        console.log(locationData)
+          if (locationData) {
+          const fechaHora = Date.now();
+          const usuarioId = global.idusuario; // Aquí debes poner el ID del usuario actual
+          console.log(usuarioId);
+          const response = await posicionViewModel.handleAddPosicionVictima(locationData.latitude, locationData.longitude, fechaHora, usuarioId);
+          setdistanciaagresor(global.distanciaagresor);
+          console.log(response); // Puedes manejar la respuesta como necesites
+          }
+      };
+
+      //Solicita permisos, y agrega valor a locationData
+
+        useEffect(() => {
+            requestLocationPermission();
+        }, []);
+
+
+        useEffect(() => {
+            let intervalId;
             if (locationData) {
-                const fechaHora = Date.now();
-                const usuarioId = global.idusuario;  // Aquí debes poner el ID del usuario actual
-                console.log(usuarioId);
-                const response = await posicionViewModel.handleAddPosicionVictima(locationData.latitude, locationData.longitude, fechaHora, usuarioId);
-                console.log(response);  // Puedes manejar la respuesta como necesites
+                intervalId = setInterval(() => {
+                    runLogic();
+                }, 15000); // 15000 milisegundos = 15 segundos
             }
-        }, 5000);  // 60000 milisegundos equivalen a 1 minuto
-    
-        // Limpiar el intervalo cuando el componente se desmonte
-        return () => {
-            clearInterval(intervalId);
-            if (locationWatcher) {
-                locationWatcher.remove();
-            }
-        }
-    }, []);
-    
+        
+            // Función de limpieza para el intervalo y el watcher
+            return () => {
+                if (intervalId) clearInterval(intervalId);
+                if (locationWatcher) {
+                    Geolocation.clearWatch(locationWatcher);
+                }
+            };
+        }, [locationData]); 
+        
     /////////////////////////////////////////////////////////////
     //Geolocalizacion - Obtiene Poligonos
     /////////////////////////////////////////////////////////////
@@ -177,13 +207,7 @@ const Home = ({ navigation}) => {
             showsUserLocation={true}
             followsUserLocation={true}
         >
-            <Marker
-                coordinate={{
-                latitude: locationData.latitude,
-                longitude: locationData.longitude,
-                }}
-                title={"Your Location"}
-            />
+
 
             {polygonsCoordinates.map((polygon, index) => (
                 <Polygon
@@ -202,7 +226,9 @@ const Home = ({ navigation}) => {
         )}
 
         <View style={styles.statusContainer}>
-        <User_Status name={username} _isconected={isConnected} />
+        <User_Status name={username} _isconected={isConnected} /> 
+        <Text style={styles.Agresordirectextenum} >{"Distancia del agresor:"}</Text>
+        <Text style={styles.Agresordirecval} >{distanciaagresor?(distanciaagresor+" metros"):"Cargando distancia"}</Text>
         </View>
 
         <View style={styles.botton_container}>
@@ -255,6 +281,22 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
     },
+    Agresordirectextenum: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: -80 }, { translateY: -20 }],
+        color: '#fff',
+        fontSize: 16,
+    },
+    Agresordirecval: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: -45 }, { translateY: 2 }],
+        color: '#fff',
+        fontSize: 16,
+    }
 });
 
 export default Home;

@@ -8,7 +8,7 @@ import Alarma from "./view/Screens/Alarma";
 import Notifications_screen from "./view/Screens/Notifications";
 import CustomAlert from "./view/Components/Alerta";
 import FirebaseService from "./view/Components/FirebaseService";//Clase FirebaseService
-import { UsernameProvider } from './UsernameContext';
+
 export default function App() {
   const Stack = createNativeStackNavigator();
   
@@ -25,9 +25,9 @@ export default function App() {
 
     // Maneja las notificaciones entrantes cuando la aplicación está en primer plano
     FirebaseService.handleForegroundMessage();
-
     // Maneja las notificaciones entrantes cuando la aplicación está en segundo plano
     FirebaseService.handleBackgroundMessage();
+    
   },[])
 
   function NoBackScreen({navigation}) {

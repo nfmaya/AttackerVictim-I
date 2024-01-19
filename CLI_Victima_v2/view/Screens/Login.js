@@ -25,6 +25,7 @@ const Login = ({ navigation }) => {
         const token = await FirebaseService.requestPermissionAndGetToken();
         setToken(token);
         FirebaseService.createNotificationChannel();
+        
       };
     
       getToken();
@@ -39,6 +40,7 @@ const Login = ({ navigation }) => {
       const result = await loginViewModel.handleLogin(username, password, token, navigation);
       if (result.success) {
         global.usernameusuario = username;
+        //FirebaseService.sendNotification();
         navigation.navigate('Home');
       } else {
         Alert.alert("Error", result.message);

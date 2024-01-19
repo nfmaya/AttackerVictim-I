@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const BASE_URL="https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/usuarios";
+import '../view/Components/global'
+const BASE_URL=global.GLOBAL_URL+"/usuarios";
 
 class ApiLogin {
   async validarUsuario(username, password) {
