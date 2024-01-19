@@ -74,10 +74,28 @@ public class PosicionService extends BaseService
     }
 
     //metodo para calcular la disrtancia entre dos puntos
+    /*
     public double calculateDistance(PosicionDto pos1, PosicionDto pos2) {
         float xDiff = pos1.getCoordenadaX() - pos2.getCoordenadaX();
         float yDiff = pos1.getCoordenadaY() - pos2.getCoordenadaY();
         return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+    }
+    */
+    public double calculateDistance(PosicionDto pos1, PosicionDto pos2) {
+        double EARTH_RADIUS_KM = 6371.0;
+        double KM_TO_METERS = 1000.0;
+        float xDiff = pos1.getCoordenadaX() - pos2.getCoordenadaX();
+        float yDiff = pos1.getCoordenadaY() - pos2.getCoordenadaY();
+        double distanceInDegrees = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+
+        // Convert latitude from degrees to radians
+        double latitudeRadians = Math.toRadians(pos1.getCoordenadaY());
+
+        // Calculate the length of a degree of longitude at the given latitude
+        double degreeLength = Math.PI * EARTH_RADIUS_KM * Math.cos(latitudeRadians) / 180.0;
+
+        // Convert kilometers to meters and return
+        return degreeLength * distanceInDegrees * KM_TO_METERS;
     }
 
     //endpoint para obtener la ultima posicion de un usuario dado su id
