@@ -582,19 +582,33 @@ return distance;
                         // Call the method to insert the alert
                         alertaService.addAlerta(alertaDto);
 
+
                         //TAMBIEN SE VA A LLAMAR AL FIREBASE
                         if (!Objects.equals(entity.getUsuario().getIMEI(), "1")){
                             FirebaseSender firebaseSender = new FirebaseSender();
 
-                            try {
-                                firebaseSender.SenderVictim(entity.getUsuario().getIMEI()
-                                        //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
-                                        ,"Alerta","Agresor Dentro radio");
+                            if (distancia <= 10.0){
+                                try {
+                                    firebaseSender.SenderVictim(entity.getUsuario().getIMEI()
+                                            //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                            ,"Alerta","AGRESOR SUPER CERCA! CORRE!");
 
 
-                            } catch (IOException | FirebaseMessagingException e) {
-                                throw new RuntimeException(e);
+                                } catch (IOException | FirebaseMessagingException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }else {
+                                try {
+                                    firebaseSender.SenderVictim(entity.getUsuario().getIMEI()
+                                            //firebaseSender.SenderVictim("f6pIHEg_QVCPankV0cBSJq:APA91bF8pdkwuXP89onw4tY0xcTc-GOxKY4XVH4yenJRTFTEBb-QMUOPt2Gq5rAZENwhNdc5mkdK0_3tlLwJJOCHlBLrhbyIMQkfnTZ3oO9Nh-eE4t9RVK5nlb6IsYqrsjncOzvlRUCQ"
+                                            ,"Alerta","Agresor Dentro radio");
+
+
+                                } catch (IOException | FirebaseMessagingException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
+
 
                         }
 
