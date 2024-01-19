@@ -1,0 +1,43 @@
+.container-usercard {
+    width: 400px;
+    height: 160px;
+    background-color: #0b0a0ac0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px;
+    padding: 0px;
+    border-radius: 15px;
+}
+
+.description-usercard {
+    width: 400px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    border-radius: 15px;
+}
+
+.description-text-bold {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.description-text-regular {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+    padding-top: 4px;
+}
+
+.connection-status {
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 10px;
+    margin: 0px;
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ZonaSeguridadUsuarioDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dao</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.persistence.dao</a> &gt; <span class="el_source">ZonaSeguridadUsuarioDao.java</span></div><h1>ZonaSeguridadUsuarioDao.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.persistence.dao;
+
+import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
+import com.ucab.cmcapp.common.entities.ZonaSeguridad;
+import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
+import com.ucab.cmcapp.common.exceptions.CupraException;
+import com.ucab.cmcapp.persistence.DBHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
+
+
+public class ZonaSeguridadUsuarioDao extends BaseDao&lt;ZonaSeguridadUsuario&gt;
+{
+<span class="nc" id="L22">    private static Logger _logger = LoggerFactory.getLogger( ZonaSeguridadUsuarioDao.class );</span>
+    private EntityManager _em;
+    private CriteriaBuilder _builder;
+
+
+    public ZonaSeguridadUsuarioDao()
+    {
+<span class="nc" id="L29">        super();</span>
+<span class="nc" id="L30">    }</span>
+
+    public ZonaSeguridadUsuarioDao(DBHandler handler )
+    {
+<span class="nc" id="L34">        super( handler );</span>
+
+<span class="nc" id="L36">        _em = getDBHandler().getSession();</span>
+<span class="nc" id="L37">        _builder = _em.getCriteriaBuilder();</span>
+<span class="nc" id="L38">    }</span>
+
+    public List&lt;ZonaSeguridadUsuario&gt; getZonaSeguridadUsuarioByIdUsuario(long id)
+    {
+<span class="nc" id="L42">        List&lt;ZonaSeguridadUsuario&gt; result = null;</span>
+<span class="nc" id="L43">        _logger.debug( String.format( &quot;Get in UsuarioDao.getUsuarioByUsername: parameter {%s}&quot;, id ) );</span>
+        try
+        {
+<span class="nc" id="L46">            CriteriaQuery&lt;ZonaSeguridadUsuario&gt; criteriaQuery = _builder.createQuery( ZonaSeguridadUsuario.class );</span>
+<span class="nc" id="L47">            Root&lt;ZonaSeguridadUsuario&gt; root = criteriaQuery.from( ZonaSeguridadUsuario.class );</span>
+
+<span class="nc" id="L49">            Query query = _em.createQuery(&quot;FROM ZonaSeguridadUsuario WHERE usuario.id = :IdUsuario&quot;, ZonaSeguridadUsuario.class);</span>
+<span class="nc" id="L50">            query.setParameter(&quot;IdUsuario&quot;, id);</span>
+<span class="nc" id="L51">            result = query.getResultList();</span>
+        }
+<span class="nc" id="L53">        catch ( NoResultException e )</span>
+        {
+<span class="nc" id="L55">            _logger.error( String.format( &quot;Error UsuarioDao.getUsuarioByUsername: No Result {%s}&quot;, e.getMessage() ) );</span>
+        }
+<span class="nc" id="L57">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L59">            _logger.error( String.format( &quot;Error UsuarioDao.getUsuarioByUsername: {%s}&quot;, e.getMessage() ) );</span>
+<span class="nc" id="L60">            throw new CupraException( e.getMessage() );</span>
+<span class="nc" id="L61">        }</span>
+        //region Instrumentation
+<span class="nc" id="L63">        _logger.debug( String.format( &quot;Leavin UsuarioDao.getUsuarioByUsername: result {%s}&quot;, result ) );</span>
+        //endregion
+
+<span class="nc" id="L66">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

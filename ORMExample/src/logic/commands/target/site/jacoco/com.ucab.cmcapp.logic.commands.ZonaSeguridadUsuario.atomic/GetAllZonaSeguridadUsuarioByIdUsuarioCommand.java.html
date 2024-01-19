@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetAllZonaSeguridadUsuarioByIdUsuarioCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">command</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.atomic</a> &gt; <span class="el_source">GetAllZonaSeguridadUsuarioByIdUsuarioCommand.java</span></div><h1>GetAllZonaSeguridadUsuarioByIdUsuarioCommand.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.logic.commands.ZonaSeguridadUsuario.atomic;
+
+import com.ucab.cmcapp.common.entities.ZonaSeguridadUsuario;
+import com.ucab.cmcapp.logic.commands.Command;
+import com.ucab.cmcapp.persistence.DBHandler;
+import com.ucab.cmcapp.persistence.DaoFactory;
+import com.ucab.cmcapp.persistence.dao.ZonaSeguridadUsuarioDao;
+
+import java.util.List;
+
+public class GetAllZonaSeguridadUsuarioByIdUsuarioCommand extends Command&lt;ZonaSeguridadUsuario&gt; {
+
+    private List&lt;ZonaSeguridadUsuario&gt; _result;
+    private ZonaSeguridadUsuarioDao _dao;
+
+    private long idZona;
+
+<span class="nc" id="L18">    public GetAllZonaSeguridadUsuarioByIdUsuarioCommand(DBHandler handler, long id) {</span>
+
+<span class="nc" id="L20">        idZona = id;</span>
+<span class="nc" id="L21">        setHandler(handler);</span>
+<span class="nc" id="L22">        _dao = DaoFactory.createZonaSeguridadUsuarioDao(getHandler());</span>
+<span class="nc" id="L23">    }</span>
+
+    @Override
+    public void execute() {
+<span class="nc" id="L27">        _result = _dao.getZonaSeguridadUsuarioByIdUsuario(idZona);</span>
+<span class="nc" id="L28">    }</span>
+
+    @Override
+    public List&lt;ZonaSeguridadUsuario&gt; getReturnParam() {
+<span class="nc" id="L32">        return _result;</span>
+    }
+
+    @Override
+    public void closeHandlerSession() {
+<span class="nc" id="L37">        getHandler().closeSession();</span>
+<span class="nc" id="L38">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

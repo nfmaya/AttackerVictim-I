@@ -1,0 +1,25 @@
+.Notificationbuttom {
+    height: 48px;
+    width: 48px;
+    padding: 10px;
+    margin: 10px; 
+    background-color: #ee0f0f;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    color: #fff;
+    
+    /* Estilos para el estado 'focus' */
+    &:focus {
+        border-color: #444;
+        outline: none; /* Elimina el contorno por defecto para navegadores como Chrome */
+        }
+}
+      
+.Notificationbuttom:hover,
+.Notificationbuttom:focus {
+    border-color: #777;
+}
+      
+.Notificationbuttom:active {
+    transform: scale(0.95);
+}

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PuntoControlService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">implementation</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.implementation</a> &gt; <span class="el_source">PuntoControlService.java</span></div><h1>PuntoControlService.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.implementation;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
+import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.common.entities.PuntoControl;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.CreatePuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.DeletePuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.GetPuntoControlCommand;
+import com.ucab.cmcapp.logic.commands.puntoControl.composite.UpdatePuntoControlCommand;
+import com.ucab.cmcapp.logic.dtos.PuntoControlDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.PuntoControlMapper;
+import com.ucab.cmcapp.persistence.dao.PuntoControlDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.util.Date;
+
+@Path( &quot;/puntos&quot; )
+@Produces( MediaType.APPLICATION_JSON )
+@Consumes( MediaType.APPLICATION_JSON )
+<span class="nc" id="L28">public class PuntoControlService extends BaseService</span>
+{
+<span class="nc" id="L30">    private static Logger _logger = LoggerFactory.getLogger( PuntoControlService.class );</span>
+
+    @GET
+    @Path( &quot;/{id}&quot; )
+    public Response getPuntoControl(@PathParam( &quot;id&quot; ) long userId )
+    {
+        PuntoControl entity;
+        PuntoControlDto response;
+<span class="nc" id="L38">        GetPuntoControlCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L40">        _logger.debug( &quot;Get in PuntoControlService.getPuntoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L45">            entity = PuntoControlMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L46">            command = CommandFactory.createGetPuntoControlCommand( entity );</span>
+<span class="nc" id="L47">            command.execute();</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L49">                response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L51">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
+            }
+        }
+<span class="nc" id="L54">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L56">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Punto Control &quot; + userId)).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L62">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L65">        _logger.debug( &quot;Leaving PuntoControlService.getPuntoControl&quot; );</span>
+<span class="nc" id="L66">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Punto Control: &quot; + userId)).build();</span>
+    }
+
+
+
+
+
+
+    @POST
+    @Path(&quot;/insert&quot;)
+    public Response addPuntoControl( PuntoControlDto userDto )
+    {
+        PuntoControl entity;
+        PuntoControlDto response;
+<span class="nc" id="L80">        CreatePuntoControlCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L82">        _logger.debug( &quot;Get in PuntoControlService.addPuntoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L87">            userDto.setFechaHora(new Date());</span>
+<span class="nc" id="L88">            entity = PuntoControlMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L89">            command = CommandFactory.createCreatePuntoControlCommand( entity );</span>
+<span class="nc" id="L90">            command.execute();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L92">                response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L94">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+            }
+        }
+<span class="nc" id="L97">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L99">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Punto Control &quot; + userDto.getId())).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L105">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L108">        _logger.debug( &quot;Leaving PuntoControlService.addPuntoControl&quot; );</span>
+<span class="nc" id="L109">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
+    }
+
+    @DELETE
+    @Path(&quot;/delete&quot;)
+    public Response deletePuntoControl( PuntoControlDto userDto )
+    {
+        PuntoControl entity;
+        PuntoControlDto response;
+<span class="nc" id="L118">        DeletePuntoControlCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L120">        _logger.debug( &quot;Get in PuntoControlService.deletePuntoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L125">            entity = PuntoControlMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L126">            command = CommandFactory.createDeletePuntoControlCommand( entity );</span>
+<span class="nc" id="L127">            command.execute();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L129">                response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L131">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+            }
+        }
+<span class="nc" id="L134">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L136">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Punto Control &quot; + userDto.getId())).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L142">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L145">        _logger.debug( &quot;Leaving PuntoControlService.deletePuntoControl&quot; );</span>
+<span class="nc" id="L146">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+    }
+
+
+    @PUT
+    @Path(&quot;/update&quot;)
+    public Response updatePuntoControl( PuntoControlDto userDto )
+    {
+        PuntoControl entity;
+        PuntoControlDto response;
+<span class="nc" id="L156">        UpdatePuntoControlCommand command = null;</span>
+<span class="nc" id="L157">        PuntoControlDao base = new PuntoControlDao();</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L159">        _logger.debug( &quot;Get in PuntoControlService.deletePuntoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if (base.find(userDto.getId(), PuntoControl.class) == null){</span>
+<span class="nc" id="L165">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+
+            }
+<span class="nc" id="L168">            userDto.setFechaHora(new Date());</span>
+
+<span class="nc" id="L170">            entity = PuntoControlMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L171">            command = CommandFactory.createUpdatePuntoControlCommand( entity );</span>
+<span class="nc" id="L172">            command.execute();</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L174">                response = PuntoControlMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L176">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+            }
+        }
+<span class="nc" id="L179">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L181">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Punto Control &quot; + userDto.getId())).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L186" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L187">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L190">        _logger.debug( &quot;Leaving PuntoControlService.deletePuntoControl&quot; );</span>
+<span class="nc" id="L191">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

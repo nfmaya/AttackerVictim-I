@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetUsuarioCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">command</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.logic.commands.usuario.composite</a> &gt; <span class="el_source">GetUsuarioCommand.java</span></div><h1>GetUsuarioCommand.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.logic.commands.usuario.composite;
+
+import com.ucab.cmcapp.common.entities.Usuario;
+import com.ucab.cmcapp.logic.commands.Command;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.usuario.atomic.GetUsuarioByIdCommand;
+import com.ucab.cmcapp.persistence.DBHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class GetUsuarioCommand extends Command&lt;Usuario&gt;
+{
+<span class="nc" id="L13">    private static Logger _logger = LoggerFactory.getLogger( GetUsuarioCommand.class );</span>
+    private Usuario _user;
+    long _id;
+
+    public GetUsuarioCommand( Usuario user )
+<span class="nc" id="L18">    {</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L20">        _logger.debug( String.format( &quot;Get in GetUsuarioCommand.ctor: parameter {%s}&quot;,</span>
+<span class="nc" id="L21">                user.toString() ) );</span>
+<span class="nc" id="L22">        _id = user.get_idUsuario();</span>
+<span class="nc" id="L23">        _user = user;</span>
+<span class="nc" id="L24">        setHandler(new DBHandler());</span>
+
+        //region Instrumentation DEBUG
+<span class="nc" id="L27">        _logger.debug( String.format( &quot;Leaving GetUsuarioCommand.ctor: attribute {%s}&quot;,</span>
+<span class="nc" id="L28">                _user.toString() ) );</span>
+        //endregion
+<span class="nc" id="L30">    }</span>
+
+    @Override
+    public void execute()
+    {
+        try
+        {
+<span class="nc" id="L37">            GetUsuarioByIdCommand getUsuarioByIdCommand = CommandFactory.createGetUsuarioByIdCommand(getHandler(), _id);</span>
+<span class="nc" id="L38">            getUsuarioByIdCommand.execute();</span>
+<span class="nc" id="L39">            _user = getUsuarioByIdCommand.getReturnParam();</span>
+        }
+<span class="nc" id="L41">        catch (Exception e)</span>
+        {
+<span class="nc" id="L43">            getHandler().rollbackTransaction();</span>
+<span class="nc" id="L44">            getHandler().closeSession();</span>
+<span class="nc" id="L45">            throw e;</span>
+<span class="nc" id="L46">        }</span>
+<span class="nc" id="L47">    }</span>
+
+    @Override
+    public Usuario getReturnParam()
+    {
+<span class="nc" id="L52">        return _user;</span>
+    }
+
+    @Override
+    public void closeHandlerSession()
+    {
+<span class="nc" id="L58">        getHandler().closeSession();</span>
+<span class="nc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
