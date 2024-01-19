@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const BASE_URL="https://8hnz2brw-8080.use2.devtunnels.ms/cmcapp-backend-1.0/api/v1/posicion";
+const BASE_URL=global.GLOBAL_URL+"/posicion";
 
 class ApiPosicion {
+  
   async addPosicionVictima(coordenadaX, coordenadaY, fechaHora, usuarioId) {
     try {
       const posicionDto = {

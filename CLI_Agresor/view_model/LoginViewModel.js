@@ -8,10 +8,10 @@ class LoginViewModel {
   async handleLogin(username, password, token, navigation) {
     try {
       const validationResponse = await this.apiLogin.validarUsuario(username, password);
-
+        console.log(validationResponse.description);
       if (validationResponse && validationResponse.description === "Validacion: true") {
         const userDetails = await this.apiLogin.getUsuario(username);
-
+        
         if (userDetails && userDetails.usuarioTypeDto.name === "Agresor") {
           if (userDetails.imei === "" || userDetails.imei === token) {
             const updatedUserDetails = { ...userDetails, imei: token };
@@ -25,7 +25,7 @@ class LoginViewModel {
           return { success: false, message: "No se puede iniciar sesion porque no esta registrado como agresor" };
         }
       } else {
-        return { success: false, message: "No se puede iniciar sesion porque el usuario no esta registrado" };
+        return { success: false, message: "No se puede iniciar sesion porque el usuario no esta registrado o los datos incorrectos" };
       }
     } catch (error) {
       console.error(error);

@@ -11,7 +11,7 @@ class LoginViewModel {
 
       if (validationResponse && validationResponse.description === "Validacion: true") {
         const userDetails = await this.apiLogin.getUsuario(username);
-
+        console.log(userDetails.usuarioTypeDto.name);
         if (userDetails && userDetails.usuarioTypeDto.name === "Victima") {
           if (userDetails.imei === "" || userDetails.imei === token) {
             const updatedUserDetails = { ...userDetails, imei: token };
@@ -22,10 +22,10 @@ class LoginViewModel {
             return { success: false, message: "No se puede agregar porque ya inicio sesión en otro teléfono" };
           }
         } else {
-          return { success: false, message: "No se puede iniciar sesion porque no esta registrado como agresor" };
+          return { success: false, message: "No se puede iniciar sesion porque no esta registrado como victima" };
         }
       } else {
-        return { success: false, message: "No se puede iniciar sesion porque el usuario no esta registrado" };
+        return { success: false, message: "No se puede iniciar sesion porque el usuario no esta registrado o los datos incorrectos" };
       }
     } catch (error) {
       console.error(error);

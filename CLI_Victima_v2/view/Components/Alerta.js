@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-
+import AlertaViewModel from "../../view_model/AlertaViewModel";
+import { Alert } from 'react-native'; // Importa el componente Alert
 const CustomAlert = ({ visible, message, button_msg="OK", onDismiss, sos_visible=false }) => {
 
   const [ButtonDisabled, setButtonDisabled] = useState(false);
@@ -8,7 +9,7 @@ const CustomAlert = ({ visible, message, button_msg="OK", onDismiss, sos_visible
   const [underline, setunderline] = useState(sos_visible);
   const [Msg, setMsg] = useState(message);
 
-  const handlePress = () => {
+  const handlePress =async () => {
     setMsg('You are already being contacted by an agent.');
     setunderline(false);
     setButtonDisabled(true);
@@ -19,6 +20,13 @@ const CustomAlert = ({ visible, message, button_msg="OK", onDismiss, sos_visible
       setunderline(sos_visible);
       setButtonDisabled(false);
     }, 10000);
+    const alertaViewModel = new AlertaViewModel();
+    const result = await alertaViewModel.EnviarAlerta("SOS");
+    if (result.success) {
+      Alert.alert("Sucess", result.message);
+    } else {
+      Alert.alert("Error", result.message);
+    }
   };
 
   return (
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 24,
-    backgroundColor: "white",
+    backgroundColor: "black",
     borderRadius: 20,
     padding: 30,
     alignItems: "center",
@@ -83,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#878683"
   },
   buttonText: {
-    color: "white",
+    color: "black",
     fontWeight: "bold",
     textAlign: "center"
   },
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
   },
   underlinedText: {
     textDecorationLine: 'underline',
-    color: 'blue',
+    color: 'white',
     fontWeight: "bold",
     marginBottom: 20,
     fontSize: 16

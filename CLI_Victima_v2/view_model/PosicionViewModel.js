@@ -8,6 +8,7 @@ class PosicionViewModel {
   async handleAddPosicionVictima(coordenadaX, coordenadaY, fechaHora, usuarioId, id) {
     try {
       const response = await this.apiPosicion.addPosicionVictima(coordenadaX, coordenadaY, fechaHora, usuarioId, id);
+      global.distanciaagresor=response.description;
       return response;
     } catch (error) {
       console.error(error);

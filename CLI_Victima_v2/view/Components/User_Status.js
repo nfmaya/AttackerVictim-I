@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 28,
         fontWeight: "bold",
-        margin: 5,
+        margin: 30,
     },
     Status_Text: {
         fontSize: 34,
         fontWeight: "bold",
-        margin: 10,
+        margin: 20,
     },
 })

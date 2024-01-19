@@ -1,5 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from "react-native-push-notification";
+
 class FirebaseService {
   token = ''; // Variable para almacenar el token
 
@@ -30,7 +31,7 @@ class FirebaseService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'AAAACi9DFPg:APA91bFoz_h5vJts87e4bNE9jq3ep-JKa4TT5G_GSk4VH9q3zVHJCXCZlr6oxVEruTmHGBJm9tTwkN-oKNIaFwmJJ7ZwmdcQ-i0tMRy7E-isy7GuJ1-_mFY45nz2sZVEMlWNb3IUQlMn', // Reemplaza esto con tu clave de servidor
+        Authorization: 'AAAACi9DFPg:APA91bEgig-o_t-K9_VHhrPXOQnpMHe_B485BDQ7dcpPEyCHGYgowx0ijRw82hvWWk7H-TTdt66AAO6WumweJT3CgS1MNQQ8ME7i9NMc2syHzNtCxScMubB5zSJZRrDxMfP93kL5pgi9', // Reemplaza esto con tu clave de servidor
       },
       body: JSON.stringify(message),
     })
@@ -42,11 +43,10 @@ class FirebaseService {
       console.error('Error:', error); // Imprime cualquier error en la consola
     });
   }
-  
+
   handleForegroundMessage = async () => {
     messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-
       PushNotification.localNotification({
         channelId: 'channel-id',
         title: remoteMessage.notification.title,
@@ -58,6 +58,7 @@ class FirebaseService {
   handleBackgroundMessage = async () => {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('A new FCM message arrived in the background!', JSON.stringify(remoteMessage));
+      this.alertaViewModel.EnviarAlerta(JSON.stringify(remoteMessage).body);
     });
   }
  async requestPermissionAndGetToken (){
