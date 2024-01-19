@@ -617,7 +617,7 @@ return distance;
 
                     }
                 }
-              //checkAllUsersLastPositionTimestamp();
+                //checkAllUsersLastPositionTimestamp();
                 //checkAgresorInsideVictimaZonaSeguridad();
                 //checkAllUsersSamePosition();
             }else{
