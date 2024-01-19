@@ -1,0 +1,48 @@
+.text-input {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    width: 100%;
+}
+
+.input-container {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #17171B;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #17171B;
+    display: flex;
+  
+    /* Agrega algunos estilos para la interacción */
+    transition: border-color 0.3s;
+  
+    /* Estilos para el estado 'hover' */
+    &:hover {
+      border-color: #777;
+    }
+  
+    /* Estilos para el estado 'focus' */
+    &:focus {
+      border-color: #444;
+      outline: none; /* Elimina el contorno por defecto para navegadores como Chrome */
+    }
+}
+
+/*cuando se selecciona el input desenfoca el container*/
+.input-container:focus-within {
+    border-color: #444;
+    outline: none;
+}
+
+.icono {
+    padding-right: 8px;
+    font-size: 24px;
+    left: 5px;
+    color: #fff;
+    stroke-width: 1px;
+}

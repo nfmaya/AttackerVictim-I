@@ -1,0 +1,56 @@
+.priamry-button {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #34363B;
+    border-radius: 10px;
+    color: #fff;
+    width: 200px;
+    background-color: #34363B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+  
+    /* Agrega algunos estilos para la interacción */
+    transition: border-color 0.3s;
+  
+    /* Estilos para el estado 'hover' */
+    &:hover {
+      border-color: #777;
+    }
+  
+    /* Estilos para el estado 'focus' */
+    &:focus {
+      border-color: #444;
+      outline: none; /* Elimina el contorno por defecto para navegadores como Chrome */
+    }
+}
+
+.secondary-button {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #1E1E1E;
+    border-radius: 10px;
+    color: #fff;
+    width: 130px;
+    font-size: 13px;
+    height: 30px;
+    background-color: #1E1E1E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    /* Agrega algunos estilos para la interacción */
+    transition: border-color 0.3s;
+  
+    /* Estilos para el estado 'hover' */
+    &:hover {
+      border-color: #777;
+    }
+  
+    /* Estilos para el estado 'focus' */
+    &:focus {
+      border-color: #444;
+      outline: none; /* Elimina el contorno por defecto para navegadores como Chrome */
+    }
+}

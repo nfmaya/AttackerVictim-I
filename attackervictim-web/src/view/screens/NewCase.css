@@ -1,0 +1,62 @@
+.sub-container-registercase{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1000px;
+    height: 550px;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 20px;
+    gap: 90px;
+}
+
+.rc-newcase {
+    background: #888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 1250px;
+    height: 800px;
+    border-radius: 10px;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 60px;
+}
+
+.cellphone-image {
+    transform: translate(0, -25%);
+    border-radius: 20px;
+    width: 400px;
+    height: 300px;
+}
+
+.title-newcase {
+    color: #fff;
+    font-weight: bold;
+    font-size: 36px;
+    padding: 0px;
+    margin: 0px;
+    margin-right: 875px;
+    margin-top: -10px;
+}
+
+.description-newcase {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+    padding: 30px;
+    margin: 0px;
+    margin-right: 440px;
+    margin-top: -20px;
+}
+
+.image-newcase {
+    position: absolute;
+    border-radius: 20px;
+    width: 185px;
+    height: 341px;
+    margin-left: 1050px;
+    margin-top: 300px;
+    transform: rotate(16deg);
+}
