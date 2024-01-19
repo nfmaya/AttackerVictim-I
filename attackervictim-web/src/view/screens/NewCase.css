@@ -1,4 +1,16 @@
-.container-registercase {
+.sub-container-registercase{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1000px;
+    height: 550px;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 20px;
+    gap: 90px;
+}
+
+.rc-newcase {
     background: #888;
     display: flex;
     justify-content: center;
@@ -9,20 +21,8 @@
     border-radius: 10px;
     padding: 0px;
     margin: 0px;
+    margin-top: 60px;
 }
-
-.sub-container-registercase{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1000px;
-    height: 550px;
-    padding: 0px;
-    margin: 0px;
-    margin-bottom: -10px;
-    gap: 90px;
-}
-
 
 .cellphone-image {
     transform: translate(0, -25%);
@@ -38,16 +38,17 @@
     padding: 0px;
     margin: 0px;
     margin-right: 875px;
-    margin-top: -30px;
+    margin-top: -10px;
 }
 
 .description-newcase {
     color: #fff;
     font-size: 24px;
     font-weight: 500;
-    padding: 20px;
+    padding: 30px;
     margin: 0px;
     margin-right: 440px;
+    margin-top: -20px;
 }
 
 .image-newcase {

@@ -94,6 +94,7 @@ const Home = ({ navigation }) => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             Geolocation.watchPosition(
                 (position) => {
+
                     // Actualiza el estado
                     setLocationData(position.coords);
                 },

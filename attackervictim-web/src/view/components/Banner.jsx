@@ -9,7 +9,7 @@ function Banner() {
 
   const handleLogout = () => {
     
-    // lógica para cerrar sesión
+    localStorage.removeItem('isAuthenticated') //cierra sesion
 
     navigate('/'); // Redirigir al usuario a la página de inicio de sesión
   };
