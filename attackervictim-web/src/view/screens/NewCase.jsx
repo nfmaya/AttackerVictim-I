@@ -116,7 +116,7 @@ function NewCase() {
   };
 
   return (
-    <div className='container-registercase'>
+    <div className='rc-newcase'>
         <h2 className='title-newcase'>Register a new case</h2>
         <p className='description-newcase'>Please fill out the following information :</p>
         <div className='sub-container-registercase'>
@@ -159,7 +159,7 @@ function NewCase() {
           <CustomButton text={'Send'} executethis={handleButton}/>
         </div>
 
-        <img src={cellphoneImage} className='image-newcase'/>
+        {/* <img src={cellphoneImage} className='image-newcase'/> */}
     </div>
   )
 }
