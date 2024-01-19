@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TiempoControlService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">implementation</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.implementation</a> &gt; <span class="el_source">TiempoControlService.java</span></div><h1>TiempoControlService.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.implementation;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salas.Sender;
+import com.ucab.cmcapp.common.entities.Alerta;
+import com.ucab.cmcapp.common.entities.TiempoControl;
+import com.ucab.cmcapp.logic.commands.CommandFactory;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.CreateTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.DeleteTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.UpdateTiempoControlCommand;
+import com.ucab.cmcapp.logic.commands.TiempoControl.composite.GetAllTiempoControlCommand;
+import com.ucab.cmcapp.logic.dtos.TiempoControlDto;
+import com.ucab.cmcapp.logic.dtos.TiempoControlDto;
+import com.ucab.cmcapp.logic.mappers.AlertaMapper;
+import com.ucab.cmcapp.logic.mappers.TiempoControlMapper;
+import com.ucab.cmcapp.logic.mappers.TiempoControlMapper;
+import com.ucab.cmcapp.persistence.dao.TiempoControlDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import java.io.IOException;
+import java.util.List;
+
+
+@Path( &quot;/tiempos&quot; )
+@Produces( MediaType.APPLICATION_JSON )
+@Consumes( MediaType.APPLICATION_JSON )
+<span class="nc" id="L33">public class TiempoControlService extends BaseService {</span>
+<span class="nc" id="L34">    private static Logger _logger = LoggerFactory.getLogger(TiempoControlService.class);</span>
+
+    @GET
+    @Path( &quot;/{id}&quot; )
+    public Response getTiempoControl(@PathParam( &quot;id&quot; ) long userId )
+    {
+        TiempoControl entity;
+        TiempoControlDto response;
+<span class="nc" id="L42">        GetTiempoControlCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L44">        _logger.debug( &quot;Get in TiempoControlService.getTiempoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L49">            entity = TiempoControlMapper.mapDtoToEntity( userId );</span>
+<span class="nc" id="L50">            command = CommandFactory.createGetTiempoControlCommand( entity );</span>
+<span class="nc" id="L51">            command.execute();</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L53">                response = TiempoControlMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L55">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; + userId)).build();</span>
+            }
+        }
+<span class="nc" id="L58">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L60">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Tiempo Control &quot; + userId)).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L66">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L69">        _logger.debug( &quot;Leaving TiempoControlService.getTiempoControl&quot; );</span>
+<span class="nc" id="L70">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id Tiempo Control: &quot; + userId)).build();</span>
+    }
+
+
+    @GET
+    @Path( &quot;/findAll&quot; )
+    public Response getAllTiempoControl()
+    {
+        List&lt;TiempoControlDto&gt; response;
+<span class="nc" id="L79">        GetAllTiempoControlCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L81">        _logger.debug( &quot;Get in TiempoControlService.getTiempoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L86">            command = CommandFactory.createGetAllTiempoControlCommand();</span>
+<span class="nc" id="L87">            command.execute();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L89">                response = TiempoControlMapper.mapListEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L91">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Buscar por &quot; )).build();</span>
+            }
+        }
+<span class="nc" id="L94">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L96">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en TiempoControl &quot;)).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L102">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L105">        _logger.debug( &quot;Leaving TiempoControlService.getTiempoControl&quot; );</span>
+<span class="nc" id="L106">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Busqueda por Id TiempoControl: &quot; )).build();</span>
+    }
+
+    @POST
+    @Path(&quot;/insert&quot;)
+    public Response addTiempoControl( TiempoControlDto userDto )
+    {
+        TiempoControl entity;
+        TiempoControlDto response;
+<span class="nc" id="L115">        CreateTiempoControlCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L117">        _logger.debug( &quot;Get in TiempoControlService.addTiempoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L122">            entity = TiempoControlMapper.mapDtoToEntityInsert( userDto );</span>
+<span class="nc" id="L123">            command = CommandFactory.createCreateTiempoControlCommand( entity );</span>
+<span class="nc" id="L124">            command.execute();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L126">                response = TiempoControlMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L128">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede Insertar &quot; + userDto.getId())).build();</span>
+            }
+        }
+<span class="nc" id="L131">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L133">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Tiempo Control &quot; + userDto.getId())).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L138" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L139">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L142">        _logger.debug( &quot;Leaving TiempoControlService.addTiempoControl&quot; );</span>
+<span class="nc" id="L143">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Insertado: &quot; + userDto.getId())).build();</span>
+    }
+
+    @DELETE
+    @Path(&quot;/delete&quot;)
+    public Response deleteTiempoControl( TiempoControlDto userDto )
+    {
+        TiempoControl entity;
+        TiempoControlDto response;
+<span class="nc" id="L152">        DeleteTiempoControlCommand command = null;</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L154">        _logger.debug( &quot;Get in TiempoControlService.deleteTiempoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc" id="L159">            entity = TiempoControlMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L160">            command = CommandFactory.createDeleteTiempoControlCommand( entity );</span>
+<span class="nc" id="L161">            command.execute();</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L163">                response = TiempoControlMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L165">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede eliminar &quot; + userDto.getId())).build();</span>
+            }
+        }
+<span class="nc" id="L168">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L170">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Tiempo Control &quot; + userDto.getId())).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L175" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L176">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L179">        _logger.debug( &quot;Leaving TiempoControlService.deleteTiempoControl&quot; );</span>
+<span class="nc" id="L180">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Eliminado: &quot; + userDto.getId())).build();</span>
+    }
+
+
+    @PUT
+    @Path(&quot;/update&quot;)
+    public Response updateTiempoControl( TiempoControlDto userDto )
+    {
+        TiempoControl entity;
+        TiempoControlDto response;
+<span class="nc" id="L190">        UpdateTiempoControlCommand command = null;</span>
+<span class="nc" id="L191">        TiempoControlDao base = new TiempoControlDao();</span>
+        //region Instrumentation DEBUG
+<span class="nc" id="L193">        _logger.debug( &quot;Get in TiempoControlService.deleteTiempoControl&quot; );</span>
+        //endregion
+
+        try
+        {
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            if (base.find(userDto.getId(), TiempoControl.class) == null){</span>
+<span class="nc" id="L199">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se encuentra el Objeto registrado &quot; + userDto.getId())).build();</span>
+
+            }
+<span class="nc" id="L202">            entity = TiempoControlMapper.mapDtoToEntity( userDto );</span>
+<span class="nc" id="L203">            command = CommandFactory.createUpdateTiempoControlCommand( entity );</span>
+<span class="nc" id="L204">            command.execute();</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">            if(command.getReturnParam() != null){</span>
+<span class="nc" id="L206">                response = TiempoControlMapper.mapEntityToDto(command.getReturnParam());</span>
+            }else{
+<span class="nc" id="L208">                return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;No se puede editar &quot; + userDto.getId())).build();</span>
+            }
+        }
+<span class="nc" id="L211">        catch ( Exception e )</span>
+        {
+<span class="nc" id="L213">            return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(&quot;Error en Tiempo Control &quot; + userDto.getId())).build();</span>
+
+        }
+        finally
+        {
+<span class="nc bnc" id="L218" title="All 2 branches missed.">            if (command != null)</span>
+<span class="nc" id="L219">                command.closeHandlerSession();</span>
+        }
+
+<span class="nc" id="L222">        _logger.debug( &quot;Leaving TiempoControlService.deleteTiempoControl&quot; );</span>
+<span class="nc" id="L223">        return Response.status(Response.Status.OK).entity(new CustomResponse&lt;&gt;(response,&quot;Editado: &quot; + userDto.getId())).build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

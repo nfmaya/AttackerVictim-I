@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DistanciaAlejamiento.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">entities</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.common.entities</a> &gt; <span class="el_source">DistanciaAlejamiento.java</span></div><h1>DistanciaAlejamiento.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.common.entities;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = &quot;DistanciaAlejamiento&quot;)
+public class DistanciaAlejamiento {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;IdAlej&quot;)
+    private long _IdAlej;
+
+
+    @Column(name = &quot;DistanciaMinima&quot;)
+    private float _distanciaMinima;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = &quot;Victima_id&quot;, nullable = false)
+    private Usuario _victima;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = &quot;Agresor_id&quot;, nullable = false)
+    private Usuario _agresor;
+
+
+
+<span class="nc" id="L29">    public DistanciaAlejamiento() {</span>
+
+<span class="nc" id="L31">    }</span>
+
+<span class="nc" id="L33">    public DistanciaAlejamiento(DistanciaAlejamiento distanciaAlejamiento){</span>
+<span class="nc" id="L34">        _distanciaMinima = distanciaAlejamiento._distanciaMinima;</span>
+<span class="nc" id="L35">        _victima = distanciaAlejamiento._victima;</span>
+<span class="nc" id="L36">        _agresor = distanciaAlejamiento._agresor;</span>
+<span class="nc" id="L37">    }</span>
+
+<span class="nc" id="L39">    public DistanciaAlejamiento(long id){</span>
+<span class="nc" id="L40">        _IdAlej = id;</span>
+<span class="nc" id="L41">    }</span>
+
+    public long get_IdAlej() {
+<span class="nc" id="L44">        return _IdAlej;</span>
+    }
+
+    public void set_IdAlej(long _IdAlej) {
+<span class="nc" id="L48">        this._IdAlej = _IdAlej;</span>
+<span class="nc" id="L49">    }</span>
+
+    public float get_distanciaMinima() {
+<span class="nc" id="L52">        return _distanciaMinima;</span>
+    }
+
+    public void set_distanciaMinima(float _distanciaMinima) {
+<span class="nc" id="L56">        this._distanciaMinima = _distanciaMinima;</span>
+<span class="nc" id="L57">    }</span>
+
+
+    public Usuario get_victima() {
+<span class="nc" id="L61">        return _victima;</span>
+    }
+
+    public void set_victima(Usuario _victima) {
+<span class="nc" id="L65">        this._victima = _victima;</span>
+<span class="nc" id="L66">    }</span>
+
+    public Usuario get_agresor() {
+<span class="nc" id="L69">        return _agresor;</span>
+    }
+
+    public void set_agresor(Usuario _agresor) {
+<span class="nc" id="L73">        this._agresor = _agresor;</span>
+<span class="nc" id="L74">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

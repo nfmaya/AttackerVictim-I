@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Usuario.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">entities</a> &gt; <a href="index.source.html" class="el_package">com.ucab.cmcapp.common.entities</a> &gt; <span class="el_source">Usuario.java</span></div><h1>Usuario.java</h1><pre class="source lang-java linenums">package com.ucab.cmcapp.common.entities;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = &quot;Usuario&quot;)
+public class Usuario {
+
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;IdUsuario&quot;)
+    private long _idUsuario;
+
+    @Column(name = &quot;Username&quot;, unique = true, nullable = false)
+    private String _Username;
+
+    @Column(name = &quot;NombreUsuario&quot;, nullable = false)
+    private String _Nombre;
+
+    //AGREGAR ESTOS ATRIBUTOS
+
+    @Column(name = &quot;DocIdentidad&quot;, unique = true, nullable = false)
+    private String DocIdentidad;
+
+    @Column(name = &quot;IMEI&quot;)
+    private String IMEI;
+
+    @Column(name = &quot;Estatus&quot;)
+    private boolean Estatus;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn( name = &quot;user_type_id&quot;, nullable = false )
+    private UserType _userType;
+
+    /*
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn( name = &quot;IdAlerta&quot; )
+    private List&lt;Alerta&gt; alertas;
+*/
+<span class="nc" id="L46">    public Usuario() {</span>
+
+<span class="nc" id="L48">    }</span>
+
+
+
+<span class="nc" id="L52">    public Usuario(Usuario usuario){</span>
+<span class="nc" id="L53">        _Username = usuario._Username;</span>
+<span class="nc" id="L54">        _Nombre = usuario._Nombre;</span>
+<span class="nc" id="L55">        _userType = usuario._userType;</span>
+        //alertas = usuario.alertas;
+<span class="nc" id="L57">        DocIdentidad = usuario.DocIdentidad;</span>
+<span class="nc" id="L58">        IMEI = usuario.IMEI;</span>
+<span class="nc" id="L59">        Estatus = usuario.Estatus;</span>
+<span class="nc" id="L60">    }</span>
+
+    public Usuario( long id )
+<span class="nc" id="L63">    {</span>
+<span class="nc" id="L64">        _idUsuario = id;</span>
+<span class="nc" id="L65">    }</span>
+
+    public long get_idUsuario() {
+<span class="nc" id="L68">        return _idUsuario;</span>
+    }
+
+    public void set_idUsuario(long _idUsuario) {
+<span class="nc" id="L72">        this._idUsuario = _idUsuario;</span>
+<span class="nc" id="L73">    }</span>
+
+    public String get_Username() {
+<span class="nc" id="L76">        return _Username;</span>
+    }
+
+    public void set_Username(String _Username) {
+<span class="nc" id="L80">        this._Username = _Username;</span>
+<span class="nc" id="L81">    }</span>
+
+    public String get_Nombre() {
+<span class="nc" id="L84">        return _Nombre;</span>
+    }
+
+    public void set_Nombre(String _Nombre) {
+<span class="nc" id="L88">        this._Nombre = _Nombre;</span>
+<span class="nc" id="L89">    }</span>
+
+    public UserType get_userType() {
+<span class="nc" id="L92">        return _userType;</span>
+    }
+
+    public void set_userType(UserType _userType) {
+<span class="nc" id="L96">        this._userType = _userType;</span>
+<span class="nc" id="L97">    }</span>
+
+
+    public String getDocIdentidad() {
+<span class="nc" id="L101">        return DocIdentidad;</span>
+    }
+
+    public void setDocIdentidad(String docIdentidad) {
+<span class="nc" id="L105">        DocIdentidad = docIdentidad;</span>
+<span class="nc" id="L106">    }</span>
+
+    public String getIMEI() {
+<span class="nc" id="L109">        return IMEI;</span>
+    }
+
+    public void setIMEI(String IMEI) {
+<span class="nc" id="L113">        this.IMEI = IMEI;</span>
+<span class="nc" id="L114">    }</span>
+
+    public boolean isEstatus() {
+<span class="nc" id="L117">        return Estatus;</span>
+    }
+
+    public void setEstatus(boolean estatus) {
+<span class="nc" id="L121">        Estatus = estatus;</span>
+<span class="nc" id="L122">    }</span>
+
+
+
+    /*
+    public List&lt;Alerta&gt; getAlertas() {
+        return alertas;
+    }
+
+    public void setAlertas(List&lt;Alerta&gt; alertas) {
+        this.alertas = alertas;
+    }
+
+    public void addAlertas(Alerta alerta){
+        alertas.add(alerta);
+    }
+
+ */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

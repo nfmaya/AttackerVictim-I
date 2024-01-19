@@ -1,0 +1,11 @@
+com\ucab\cmcapp\logic\mappers\TiempoControlMapper.class
+com\ucab\cmcapp\logic\mappers\AlertaMapper.class
+com\ucab\cmcapp\logic\mappers\ZonaSeguridadMapper.class
+com\ucab\cmcapp\logic\mappers\ZonaSeguridadUsuarioMapper.class
+com\ucab\cmcapp\logic\mappers\CoordenadaZonaSeguridadMapper.class
+com\ucab\cmcapp\logic\mappers\UsuarioMapper.class
+com\ucab\cmcapp\logic\mappers\BaseMapper.class
+com\ucab\cmcapp\logic\mappers\PuntoControlMapper.class
+com\ucab\cmcapp\logic\mappers\PosicionMapper.class
+com\ucab\cmcapp\logic\mappers\DistanciaAlejamientoMapper.class
+com\ucab\cmcapp\logic\mappers\UserTypeMapper.class

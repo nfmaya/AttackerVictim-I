@@ -1,0 +1,15 @@
+com\ucab\cmcapp\logic\dtos\AlertaDistanciaDto.class
+com\ucab\cmcapp\logic\dtos\UsuarioLDAPDto.class
+com\ucab\cmcapp\logic\dtos\DistanciaAlejamientoDto.class
+com\ucab\cmcapp\logic\dtos\DistanciaAlejamientoWithSeparacionDto.class
+com\ucab\cmcapp\logic\dtos\CoordenadaZonaSeguridadDto.class
+com\ucab\cmcapp\logic\dtos\ZonaSeguridadWithCoordenadasDto.class
+com\ucab\cmcapp\logic\dtos\PosicionDto.class
+com\ucab\cmcapp\logic\dtos\UsuarioDto.class
+com\ucab\cmcapp\logic\dtos\ZonaSeguridadUsuarioDto.class
+com\ucab\cmcapp\logic\dtos\ZonaSeguridadDto.class
+com\ucab\cmcapp\logic\dtos\UserTypeDto.class
+com\ucab\cmcapp\logic\dtos\AlertaDto.class
+com\ucab\cmcapp\logic\dtos\PuntoControlDto.class
+com\ucab\cmcapp\logic\dtos\TiempoControlDto.class
+com\ucab\cmcapp\logic\dtos\BaseDto.class
